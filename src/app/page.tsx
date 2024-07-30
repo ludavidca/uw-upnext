@@ -1,5 +1,7 @@
 "use client"
 
+import Navbar from './components/Navbar'
+
 export default function Home() {
   // const getMessages = async (e) => {
   //   e.preventDefault()
@@ -14,8 +16,9 @@ export default function Home() {
   // }
 
   return (
+    
     <div>
-      <p>Work in Progress</p>
+      <Navbar></Navbar>
     </div>
   );
-}
+} 
