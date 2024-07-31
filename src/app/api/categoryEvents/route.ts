@@ -1,4 +1,4 @@
-// returns a specific event based on index. In  the future, use objectid instead of index as multiple runs of webscrapping can result in duplicated ids, Object id is always unique.
+// returns all events for a specific category. Only TECH and DESIGN work for now. Check basePrompt.in for all categories listed.
 
 import { NextRequest, NextResponse } from "next/server";
 import { MongoClient } from "mongodb";
@@ -18,22 +18,27 @@ export async function GET(req: NextRequest) {
     const database = client.db("Instagram");
     const Events = database.collection("Events");
 
-    // Get the index from the query parameters
+    // Get the category from the query parameters
     const { searchParams } = new URL(req.url);
-    const index = searchParams.get("index");
+    const category = searchParams.get("index");
 
-    if (!index) {
-      return NextResponse.json({ error: "Index is required" }, { status: 400 });
+    console.log(category);
+
+    if (!category) {
+      return NextResponse.json(
+        { error: "Category is required" },
+        { status: 400 }
+      );
     }
 
-    const query = { index: parseInt(index, 10) };
-    const event = await Events.findOne(query);
+    const query = { "event_details.categories": category };
+    const events = await Events.find(query).toArray();
 
-    if (!event) {
-      return NextResponse.json({ error: "Event not found" }, { status: 404 });
+    if (events.length === 0) {
+      return NextResponse.json({ error: "No events found" }, { status: 404 });
     }
 
-    return NextResponse.json({ status: 200, results: event });
+    return NextResponse.json({ status: 200, results: events });
   } catch (err) {
     console.error(err);
     return NextResponse.json(

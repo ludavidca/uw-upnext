@@ -1,3 +1,5 @@
+// returns two closest matches based on vector db searches
+
 import { NextRequest, NextResponse } from "next/server";
 import { MongoClient } from "mongodb";
 import Together from "together-ai";

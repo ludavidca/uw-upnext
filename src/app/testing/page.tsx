@@ -3,19 +3,19 @@ import React, { useState } from "react";
 import Navbar from "../components/Navbar";
 
 const SingleButtonPage = () => {
-  const [index, setIndex] = useState("");
+  const [category, setCategory] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleIndexChange = (e) => {
+  const handleCategoryChange = (e) => {
     e.preventDefault();
-    setIndex(e.target.value);
+    setCategory(e.target.value);
   };
 
   const findSpecificEvent = async (e) => {
     e.preventDefault();
     setIsLoading(true);
     try {
-      const res = await fetch(`/api/findEvents?index=${index}`);
+      const res = await fetch(`/api/categoryEvents?category=${category}`);
       if (!res.ok) {
         throw new Error(`HTTP error! status: ${res.status}`);
       }
@@ -37,14 +37,14 @@ const SingleButtonPage = () => {
               htmlFor="index"
               className="block text-gray-700 text-sm font-bold mb-2"
             >
-              Find Index:
+              Find Category:
             </label>
             <input
               type="text"
-              id="index"
-              name="index"
-              value={index}
-              onChange={handleIndexChange}
+              id="category"
+              name="category"
+              value={category}
+              onChange={handleCategoryChange}
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             />
           </div>

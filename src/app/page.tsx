@@ -11,18 +11,47 @@ export default function SingleButtonPage() {
     setIndex(e.target.value);
   };
 
-  const findSpecificEvent = async (e) => {
+  const findSpecificEvents = async (e) => {
     e.preventDefault();
     setIsLoading(true);
     try {
-      const res = await fetch(`/api/findEvents?index=${index}`);
+      const res = await fetch(
+        `/api/findEvents?category=${index}`
+      );
       if (!res.ok) {
-        throw new Error(`HTTP error! status: ${res.status}`);
+        const errorData = await res.json();
+        throw new Error(
+          `HTTP error! status: ${res.status}, message: ${errorData.error || "Unknown error"}`
+        );
       }
       const data = await res.json();
       console.log("Response data:", data);
+      // Handle the successful response here (e.g., update state with the fetched data)
     } catch (err) {
       console.error("Fetch error:", err);
+      // Handle the error here (e.g., show an error message to the user)
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const findFeaturedEvents = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    try {
+      const res = await fetch(`/api/featuredEvents`);
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(
+          `HTTP error! status: ${res.status}, message: ${errorData.error || "Unknown error"}`
+        );
+      }
+      const data = await res.json();
+      console.log("Response data:", data);
+      // Handle the successful response here (e.g., update state with the fetched data)
+    } catch (err) {
+      console.error("Fetch error:", err);
+      // Handle the error here (e.g., show an error message to the user)
     } finally {
       setIsLoading(false);
     }
@@ -32,7 +61,7 @@ export default function SingleButtonPage() {
     <div>
       <Navbar></Navbar>
       <div className="text-center bg-white p-8 rounded-lg shadow-md">
-        <form onSubmit={findSpecificEvent} className="mb-4">
+        <form onSubmit={findSpecificEvents} className="mb-4">
           <div className="mb-4">
             <label
               htmlFor="index"
@@ -57,6 +86,13 @@ export default function SingleButtonPage() {
             {isLoading ? "Loading..." : "Find Event"}
           </button>
         </form>
+        <button
+          type="submit"
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-50"
+          onClick= {findFeaturedEvents}
+        >
+           Find Featured Events
+        </button>
       </div>
     </div>
   );
