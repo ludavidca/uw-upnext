@@ -25,7 +25,7 @@ export async function GET(req: NextRequest) {
 
   try {
     const togetherclient = new Together({
-      apiKey: process.env["TOGETHER_API_KEY"],
+      apiKey: togetherapi,
     });
 
     const embResponse = await togetherclient.embeddings.create({

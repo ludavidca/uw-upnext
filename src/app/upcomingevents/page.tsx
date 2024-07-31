@@ -57,7 +57,7 @@ const SingleButtonPage = () => {
           </button>
         </form>
       </div>
-      <Navbar><Navbar>
+      <Navbar></Navbar>
     </div>
   );
 };

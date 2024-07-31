@@ -1,23 +1,24 @@
-// src/app/components/Navbar.tsx
-
-import React, { useState } from "react";
+import React, { useState, KeyboardEvent } from "react";
 
 export default function Navbar() {
-    const [index, setIndex] = useState("");
-    const [isLoading, setIsLoading] = useState(false);
+  const [index, setIndex] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
-    const handleIndexChange = (e) => {
-      e.preventDefault();
-      setIndex(e.target.value);
-    };
+  const handleIndexChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setIndex(e.target.value);
+  };
 
+  const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      vectordbSearch();
+    }
+  };
 
-    const vectordbSearch = async(e) => {
-      e.preventDefault();
-      setIsLoading(true);
-      try {
-        const res = await fetch(`/api/vectorSearch?index=${index}`)
-        if (!res.ok) {
+  const vectordbSearch = async () => {
+    setIsLoading(true);
+    try {
+      const res = await fetch(`/api/vectorEvents?index=${index}`);
+      if (!res.ok) {
         throw new Error(`HTTP error! status: ${res.status}`);
       }
       const data = await res.json();
@@ -27,10 +28,10 @@ export default function Navbar() {
     } finally {
       setIsLoading(false);
     }
-    }
+  };
 
-    return (
-        <div className="flex items-center justify-between p-3 bg-transparent">
+  return (
+    <div className="flex items-center justify-between p-3 bg-transparent">
       {/* Logo */}
       <div className="flex items-center">
         <img src="./logo.svg" alt="Logo" className="w-30 h-16 " />
@@ -41,21 +42,23 @@ export default function Navbar() {
         <input
           type="text"
           placeholder="Search Topics"
-          style={{ textAlign: 'center' }}
-          className="flex-grow p-3  rounded-full bg-transparent transition-transform transform gradient-searchbar w-72 hover:w-96 hover:scale-110"
+          style={{ textAlign: "center" }}
+          className="flex-grow p-3 rounded-full bg-transparent transition-transform transform gradient-searchbar w-72 hover:w-96 hover:scale-110"
+          onChange={handleIndexChange}
+          onKeyPress={handleKeyPress}
+          value={index}
         />
       </div>
 
       {/* CTA Buttons */}
       <div className="flex items-center space-x-4">
-        <button className="px-4 py-2 bg-gray-300 rounded-3xl" style={{ color: 'rgb(133,0,205)' }}>
+        <button
+          className="px-4 py-2 bg-gray-300 rounded-3xl"
+          style={{ color: "rgb(133,0,205)" }}
+        >
           Sign In
         </button>
-        {/*<button className="px-4 py-2 bg-white text-blue-700 rounded-3xl">
-          Register
-    </button>*/}
       </div>
     </div>
-    );
-  } 
-
+  );
+}
