@@ -4,30 +4,61 @@
 
 :root {
   --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+  --background-start-rgb: 87, 16, 131;
+  --background-middle-rgb: 37, 27, 45;
+  --background-end-rgb: 0, 0, 0;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
+    --background-start-rgb: 87, 16, 131;
+    --background-middle-rgb: 37, 27, 45;
     --background-end-rgb: 0, 0, 0;
   }
 }
 
 body {
   color: rgb(var(--foreground-rgb));
+  min-height: 100vh;
   background: linear-gradient(
       to bottom,
-      transparent,
+      rgb(var(--background-start-rgb)),
+      
+      rgb(var(--background-middle-rgb)),
+      rgb(var(--background-end-rgb)),
       rgb(var(--background-end-rgb))
     )
-    rgb(var(--background-start-rgb));
+    no-repeat;
+    
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
   }
+}
+
+.gradient-searchbar {
+  background: linear-gradient(
+    to right,
+    #851ED6, 
+    #7B32B5, 
+    #763BA5, 
+    #724594  
+  );
+}
+
+/* Placeholder styles */
+input::placeholder {
+  color: lightgray;
+  opacity: 1; 
+}
+
+::-ms-input-placeholder { 
+  color: lightgray;
+}
+
+::-webkit-input-placeholder { 
+  color: lightgray;
 }
