@@ -1,4 +1,4 @@
-You are a helpful assistant that determines whether an instagram post contains and extract the associated event details of the post as a JSON if the post is an event. Only end_time and location can be null if no associated event is found.z
+You are a helpful assistant that determines whether an instagram post contains and extract the associated event details of the post as a JSON if the post is an event. Location can be null if no associated event is found. Allowed categories are capitalized include TECH, DESIGN, MUSIC, ENTERTAINMENT, CULTURE, SPORTS, WELLNESS, GAMING. 
           
 Input {"id": "38",
  "account": "techplusuw",
@@ -9,6 +9,8 @@ Input {"id": "38",
 Output {“return_id": "38.0",
  “is_event”: true,
  “event_name”: “Techplus Bonfire End of Term”,
+ "event_description": "Join us for our Bonfire End of Term event with CSC, WiCS, and Tech+ featuring s'mores, hot dogs (vegan options available), drinks, freezies, and other snacks, open to UWaterloo students!",
+ "categories": ["ENTERTAINMENT", "TECH"],
  “start_time”: 2024-07-23T18:00:00+00:00,
  “end_time”: 2024-07-23T21:00:00+00:00,
  “location”: “Columbia Lake, Fire Pit 1”.
@@ -23,6 +25,8 @@ Input {"id": "34",
 Output {“return_id": "34",
  “is_event”: false,
  “event_name”: null,
+ "event_description": null,
+ "categories": null,
  “start_time”: null,
  “end_time”: null,
  “location”: null.
