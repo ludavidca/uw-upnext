@@ -1,5 +1,33 @@
-// src/app/components/Navbar.js
-export default function Navbar({ onClick }) {
+// src/app/components/Navbar.tsx
+import React, { useState } from "react";
+
+export default function Navbar() {
+    const [index, setIndex] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
+
+    const handleIndexChange = (e) => {
+      e.preventDefault();
+      setIndex(e.target.value);
+    };
+
+
+    const vectordbSearch = async(e) => {
+      e.preventDefault();
+      setIsLoading(true);
+      try {
+        const res = await fetch(`/api/vectorSearch?index=${index}`)
+        if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
+      }
+      const data = await res.json();
+      console.log("Response data:", data);
+    } catch (err) {
+      console.error("Fetch error:", err);
+    } finally {
+      setIsLoading(false);
+    }
+    }
+
     return (
         <div className="flex items-center justify-between p-3 bg-transparent">
       {/* Logo */}

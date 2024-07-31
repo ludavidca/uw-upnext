@@ -1,7 +1,8 @@
 "use client";
 import React, { useState } from "react";
+import Navbar from "./components/Navbar";
 
-const SingleButtonPage = () => {
+export default function SingleButtonPage() {
   const [index, setIndex] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -28,7 +29,8 @@ const SingleButtonPage = () => {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen bg-gray-100">
+    <div>
+      <Navbar></Navbar>
       <div className="text-center bg-white p-8 rounded-lg shadow-md">
         <form onSubmit={findSpecificEvent} className="mb-4">
           <div className="mb-4">
@@ -59,5 +61,3 @@ const SingleButtonPage = () => {
     </div>
   );
 };
-
-export default SingleButtonPage;
