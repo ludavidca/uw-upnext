@@ -1,4 +1,5 @@
 // src/app/components/Navbar.tsx
+
 import React, { useState } from "react";
 
 export default function Navbar() {
@@ -57,3 +58,4 @@ export default function Navbar() {
     </div>
     );
   } 
+
