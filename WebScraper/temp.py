@@ -11,7 +11,7 @@ load_dotenv()
 togetherAPI = os.getenv('TOGETHER_API')
 client = Together(api_key=togetherAPI)
 
-basePrompt = open("C:/Users/david/Desktop/uw-upnext/WebScraper/basePrompt.txt","r", encoding = "utf-8").read()
+basePrompt = open("C:/Users/david/Desktop/uw-upnext/WebScraper/basePrompt.in","r", encoding = "utf-8").read()
 
 postsDf = pd.read_csv("C:/Users/david/Desktop/uw-upnext/WebScraper/instagram_raw.csv")
 
@@ -41,7 +41,6 @@ def remove_emojis(text):
     return emoji_pattern.sub(r'', text)
 
 class Category(Enum):
-    Null = None
     TECH = auto()
     DESIGN = auto()
     MUSIC = auto()
@@ -55,8 +54,8 @@ class Event(BaseModel):
     return_id: str = Field(description="return id of event")
     is_event: bool = Field(description="if the post contains an event")
     event_name: str = Field(description="name of event")
-    event_description: str = Field(description='concise 10 word description of what the event is, do not include time or location')
-    event_categories: Category = Field(description='categorize the event into two or more of the allowed categories. Return Non if is_event is false')
+    event_description: str = Field(description='concise 20 word summary of what the event is, skip time or location')
+    event_categories: Category = Field(description='Categorize into one of the following: TECH, DESIGN, MUSIC, ENTERTAINMENT, CULTURE, SPORTS, WELLNESS, GAMING')
     start_time: str = Field(description="start time of event")
     end_time: str = Field(description="end time of event")
     location: str = Field(description= "location of event")
@@ -82,4 +81,4 @@ def return_event_details(inputJson : str):
     return created_event
 
 
-print(return_event_details(processedjson[13]))
+print(return_event_details(processedjson[35]))
