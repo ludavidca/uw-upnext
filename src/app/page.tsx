@@ -1,22 +1,22 @@
 "use client";
-import React, { useState } from "react";
+import React, { ChangeEvent, FormEvent, useState } from "react";
 import Navbar from "./components/Navbar";
 
 export default function SingleButtonPage() {
   const [index, setIndex] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleIndexChange = (e) => {
+  const handleIndexChange = (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     setIndex(e.target.value);
   };
 
-  const findSpecificEvents = async (e) => {
+  const findSpecificEvents = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
     try {
       const res = await fetch(
-        `/api/findEvents?category=${index}`
+        `/api/findEvents?index=${index}`
       );
       if (!res.ok) {
         const errorData = await res.json();
@@ -35,7 +35,7 @@ export default function SingleButtonPage() {
     }
   };
 
-  const findFeaturedEvents = async (e) => {
+  const findFeaturedEvents = async (e: FormEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setIsLoading(true);
     try {

@@ -26,7 +26,7 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: "Index is required" }, { status: 400 });
     }
 
-    const query = { index: parseInt(index, 10) };
+    const query = { id: parseInt(index, 10) };
     const event = await Events.findOne(query);
 
     if (!event) {

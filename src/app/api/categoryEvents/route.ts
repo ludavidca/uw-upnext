@@ -20,9 +20,7 @@ export async function GET(req: NextRequest) {
 
     // Get the category from the query parameters
     const { searchParams } = new URL(req.url);
-    const category = searchParams.get("index");
-
-    console.log(category);
+    const category = searchParams.get("category");
 
     if (!category) {
       return NextResponse.json(

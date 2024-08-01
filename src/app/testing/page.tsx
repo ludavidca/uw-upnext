@@ -1,17 +1,17 @@
 "use client";
-import React, { useState } from "react";
+import React, { ChangeEvent, FormEvent, useState } from "react";
 import Navbar from "../components/Navbar";
 
 const SingleButtonPage = () => {
   const [category, setCategory] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleCategoryChange = (e) => {
+  const handleCategoryChange = (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     setCategory(e.target.value);
   };
 
-  const findSpecificEvent = async (e) => {
+  const findSpecificEvent = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
     try {
