@@ -1,6 +1,8 @@
 "use client";
 import React, { ChangeEvent, FormEvent, useState } from "react";
 import Navbar from "./components/Navbar";
+import SectionHeading from "./components/SectionHeading";
+
 
 export default function SingleButtonPage() {
   const [index, setIndex] = useState("");
@@ -94,6 +96,11 @@ export default function SingleButtonPage() {
            Find Featured Events
         </button>
       </div>
+      <SectionHeading text="Categories"></SectionHeading>
+      <SectionHeading text="Upcoming Events"></SectionHeading>
+      
+
     </div>
+    
   );
 };
