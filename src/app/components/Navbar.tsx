@@ -33,17 +33,17 @@ export default function Navbar() {
   return (
     <div className="flex items-center justify-between p-3 bg-transparent">
       {/* Logo */}
-      <div className="flex items-center">
+      <div className="flex items-center hidden sm:flex">
         <img src="./logo.svg" alt="Logo" className="w-30 h-16 " />
       </div>
 
       {/* Search Bar */}
-      <div className="flex">
+      <div className="flex w-full sm:w-auto">
         <input
           type="text"
           placeholder="Search Topics"
           style={{ textAlign: "center" }}
-          className="flex-grow p-3 rounded-full bg-transparent transition-transform transform gradient-searchbar w-72 hover:w-96 hover:scale-110"
+          className="flex-grow p-3 rounded-full bg-transparent transition-transform transform gradient-searchbar w-72 sm:hover:w-96 sm:hover:scale-110 "
           onChange={handleIndexChange}
           onKeyPress={handleKeyPress}
           value={index}
@@ -51,7 +51,7 @@ export default function Navbar() {
       </div>
 
       {/* CTA Buttons */}
-      <div className="flex items-center space-x-4">
+      <div className=" hidden sm:flex  items-center space-x-4">
         <button
           className="px-4 py-2 bg-gray-300 rounded-3xl"
           style={{ color: "rgb(133,0,205)" }}

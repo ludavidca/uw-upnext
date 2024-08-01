@@ -5,6 +5,7 @@ import { MongoClient } from "mongodb";
 
 export async function GET(req: NextRequest) {
   const uri = process.env.DATABASE_URI;
+  console.log(uri);
   if (!uri) {
     return NextResponse.json(
       { error: "Database URI is not configured" },
