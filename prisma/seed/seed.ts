@@ -1,3 +1,5 @@
+//@ts-nocheck
+
 /**
  * ! Executing this script will delete all data in your database and seed it with 10 user.
  * ! Make sure to adjust the script to your needs.
