@@ -2,6 +2,7 @@
 import React, { ChangeEvent, FormEvent, useState } from "react";
 import Navbar from "./components/Navbar";
 import SectionHeading from "./components/SectionHeading";
+import Event from "./components/Event";
 
 
 export default function SingleButtonPage() {
@@ -98,6 +99,13 @@ export default function SingleButtonPage() {
       </div>
       <SectionHeading text="Categories"></SectionHeading>
       <SectionHeading text="Upcoming Events"></SectionHeading>
+      <Event 
+      title="Frame Designathon" 
+      details="Jul 29th, 11:00am - 3pm" 
+      clubName="Communitech" 
+      description="A day-long event for students to design solutions to a given problem"
+      imgSource="./eventImage.svg"></Event>
+      
       
 
     </div>
