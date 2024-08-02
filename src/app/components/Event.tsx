@@ -1,5 +1,15 @@
 // src/app/components/Event.tsx
-export default function Event({ title, details, clubName, description, imgSource }) {
+
+interface EventProps {
+  title: string;
+  details: string;
+  clubName: string;
+  description: string;
+  imgSource: string;
+}
+
+
+export default function Event({ title, details, clubName, description, imgSource }: EventProps) {
     return (
         <div className="bg-purple-950 mx-10 my-10 max-w-screen-md rounded-3xl font-bold event p-5 ">
             <h2 className="text-xl mb-5">{title}</h2>
