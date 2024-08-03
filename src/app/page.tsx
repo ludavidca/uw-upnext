@@ -71,18 +71,23 @@ export default function SingleButtonPage() {
       <Navbar />
       {!selectedCategory && (
         <div>
-          <SectionHeading text="Categories" />
-          <Categories onSelectCategory={handleCategorySelect} />
-          <SectionHeading text="Upcoming Events" />
-          <Event
-            title="Frame Designathon"
-            details="Jul 29th, 11:00am - 3pm"
-            clubName="Communitech"
-            description="A day-long event for students to design solutions to a given problem"
-            imgSource="./eventImage.svg"
-          />
-        </div>
-      )}
+          <SectionHeading text="Featured Events"></SectionHeading>
+          <SectionHeading text="Categories"></SectionHeading> <br></br><br></br><br></br>
+          <SectionHeading text="Upcoming Events"></SectionHeading>
+          <Event 
+          title="Frame Designathon" 
+          details="Jul 29th, 11:00am - 3pm" 
+          clubName="Communitech" 
+          description="A day-long event for students to design solutions to a given problem"
+          imgSource="./eventImage.svg"></Event>
+          <Event 
+          title="Frame Designathon" 
+          details="Jul 29th, 11:00am - 3pm" 
+          clubName="Communitech" 
+          description="A day-long event for students to design solutions to a given problem"
+          imgSource="./eventImage.svg"></Event>
+            </div>
+       )}
       {!!selectedCategory && (
         <CategoryPage name={selectedCategory}/>
       )}
