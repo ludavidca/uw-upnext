@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 
 interface CategoryItemProps {
   name: string;
@@ -9,7 +10,12 @@ function CategoryItem({ name, eventCount }: CategoryItemProps) {
   return (
     <div className="flex items-center">
       <div className="flex items-center space-x-4 hover:bg-purple-900 rounded-xl pr-20 px-5 ">
-        <img src={`./categoryIcons/${name}.svg`} alt={`${name} icon`} />
+        <Image
+          src={`./categoryIcons/${name}.svg`}
+          alt={`${name} icon`}
+          width="64"
+          height="64"
+        />
         <div className="flex-col">
           <p className="text-xl font-bold">{name}</p>
           <p className="text-xs font-semibold text-gray-200">
