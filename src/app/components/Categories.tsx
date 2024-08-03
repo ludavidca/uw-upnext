@@ -7,11 +7,12 @@ interface CategoryItemProps {
 }
 
 function CategoryItem({ name, eventCount }: CategoryItemProps) {
+  const low_name = name.toLowerCase()
   return (
     <div className="flex items-center">
       <div className="flex items-center space-x-4 hover:bg-purple-900 rounded-xl pr-20 px-5 ">
         <Image
-          src={`/categoryIcons/${name}.svg`}
+          src={`/categoryIcons/${low_name}.svg`}
           alt={`${name} icon`}
           width="64"
           height="64"
