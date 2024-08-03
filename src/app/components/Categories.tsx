@@ -11,7 +11,7 @@ function CategoryItem({ name, eventCount }: CategoryItemProps) {
     <div className="flex items-center">
       <div className="flex items-center space-x-4 hover:bg-purple-900 rounded-xl pr-20 px-5 ">
         <Image
-          src={`./categoryIcons/${name}.svg`}
+          src={`/categoryIcons/${name}.svg`}
           alt={`${name} icon`}
           width="64"
           height="64"
