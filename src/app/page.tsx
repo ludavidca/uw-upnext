@@ -71,8 +71,8 @@ export default function SingleButtonPage() {
       <Navbar />
       {!selectedCategory && (
         <div>
-          <SectionHeading text="Featured Events"></SectionHeading>
-          <SectionHeading text="Categories"></SectionHeading> <br></br><br></br><br></br>
+          <SectionHeading text="Categories"></SectionHeading>
+          <Categories onSelectCategory={handleCategorySelect}/>
           <SectionHeading text="Upcoming Events"></SectionHeading>
           <Event 
           title="Frame Designathon" 
