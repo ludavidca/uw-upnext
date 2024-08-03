@@ -1,6 +1,6 @@
 "use client";
 
-import EventMain from "../components/EventMain.tsx";
+import EventMain from "../components/EventMain";
 
 const eventMainPage = () => {
   return (

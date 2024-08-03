@@ -4,7 +4,6 @@ import Navbar from "./components/Navbar";
 import SectionHeading from "./components/SectionHeading";
 import Event from "./components/Event";
 import Categories from "./components/Categories";
-import Image from "next/image";
 import CategoryPage from "./components/CategoryPage";
 
 export default function SingleButtonPage() {
