@@ -1,5 +1,15 @@
 // src/app/components/Event.tsx
-export default function EventMain({ title, details, clubName, description, imgSource, location }) {
+
+interface EventProps {
+    title: string
+    details: string
+    clubName: string
+    description: string
+    imgSource: string
+    location: string
+}
+
+export default function EventMain({ title, details, clubName, description, imgSource, location }: EventProps) {
     return (
         <div className="mx-auto mt-[12%] w-11/12 max-w-4xl rounded-[4rem] eventMain">
             <div className="flex flex-col md:flex-row mx-auto mt-[12%]">
