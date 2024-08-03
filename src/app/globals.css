@@ -66,3 +66,13 @@ input::placeholder {
 .event {
   background-color: rgb(62, 43, 75);
 }
+
+.eventMain {
+  background: linear-gradient(
+    to bottom, 
+    #301541,
+    #170E1C,
+    #170E1C,
+    #301541
+  );
+}
