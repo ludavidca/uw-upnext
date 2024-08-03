@@ -4,9 +4,11 @@ import Navbar from "./components/Navbar";
 import SectionHeading from "./components/SectionHeading";
 import Event from "./components/Event";
 import Categories from "./components/Categories";
-
+import Image from "next/image";
+import CategoryPage from "./components/CategoryPage";
 
 export default function SingleButtonPage() {
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [index, setIndex] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -19,9 +21,7 @@ export default function SingleButtonPage() {
     e.preventDefault();
     setIsLoading(true);
     try {
-      const res = await fetch(
-        `/api/findEvents?index=${index}`
-      );
+      const res = await fetch(`/api/findEvents?index=${index}`);
       if (!res.ok) {
         const errorData = await res.json();
         throw new Error(
@@ -61,20 +61,31 @@ export default function SingleButtonPage() {
     }
   };
 
+  const handleCategorySelect = (category: string) => {
+    setSelectedCategory(category);
+    console.log("Selected category:", category);
+  };
+
   return (
     <div>
-      <Navbar></Navbar>
-      <SectionHeading text="Categories"></SectionHeading>
-      <Categories/>
-      <SectionHeading text="Upcoming Events"></SectionHeading>
-      <Event 
-      title="Frame Designathon" 
-      details="Jul 29th, 11:00am - 3pm" 
-      clubName="Communitech" 
-      description="A day-long event for students to design solutions to a given problem"
-      imgSource="./eventImage.svg"></Event>
-
+      <Navbar />
+      {!selectedCategory && (
+        <div>
+          <SectionHeading text="Categories" />
+          <Categories onSelectCategory={handleCategorySelect} />
+          <SectionHeading text="Upcoming Events" />
+          <Event
+            title="Frame Designathon"
+            details="Jul 29th, 11:00am - 3pm"
+            clubName="Communitech"
+            description="A day-long event for students to design solutions to a given problem"
+            imgSource="./eventImage.svg"
+          />
+        </div>
+      )}
+      {!!selectedCategory && (
+        <CategoryPage name={selectedCategory}/>
+      )}
     </div>
-    
   );
-};
+}
