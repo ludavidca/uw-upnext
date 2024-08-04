@@ -31,7 +31,7 @@ export default function Navbar() {
   };
 
   return (
-    <div className="flex items-center justify-between p-3 bg-transparent">
+    <div className="flex items-center justify-between pt-3 bg-transparent mx-5">
       {/* Logo */}
       <div className="flex items-center hidden sm:flex">
         <img src="./logo.svg" alt="Logo" className="w-30 h-16 " />
@@ -41,7 +41,7 @@ export default function Navbar() {
       <div className="flex w-full sm:w-auto">
         <input
           type="text"
-          placeholder="Search Topics"
+          placeholder="Search Events"
           style={{ textAlign: "center" }}
           className="flex-grow p-3 rounded-full bg-transparent transition-transform transform gradient-searchbar w-72 sm:hover:w-96 sm:hover:scale-110 "
           onChange={handleIndexChange}
@@ -53,7 +53,7 @@ export default function Navbar() {
       {/* CTA Buttons */}
       <div className=" hidden sm:flex  items-center space-x-4">
         <button
-          className="px-4 py-2 bg-gray-300 rounded-3xl"
+          className="px-4 py-2 bg-gray-300 rounded-3xl font-medium"
           style={{ color: "rgb(133,0,205)" }}
         >
           Sign In

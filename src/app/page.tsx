@@ -7,7 +7,7 @@ import Categories from "./components/Categories";
 import CategoryPage from "./components/CategoryPage";
 
 export default function SingleButtonPage() {
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState("main");
   const [index, setIndex] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -60,35 +60,36 @@ export default function SingleButtonPage() {
     }
   };
 
-  const handleCategorySelect = (category: string) => {
-    setSelectedCategory(category);
-    console.log("Selected category:", category);
-  };
-
   return (
     <div>
       <Navbar />
-      {!selectedCategory && (
+      {selectedCategory=="main" && (
         <div>
-          <SectionHeading text="Categories"></SectionHeading>
-          <Categories onSelectCategory={handleCategorySelect}/>
-          <SectionHeading text="Upcoming Events"></SectionHeading>
-          <Event 
-          title="Frame Designathon" 
-          details="Jul 29th, 11:00am - 3pm" 
-          clubName="Communitech" 
-          description="A day-long event for students to design solutions to a given problem"
-          imgSource="./eventImage.svg"></Event>
-          <Event 
-          title="Frame Designathon" 
-          details="Jul 29th, 11:00am - 3pm" 
-          clubName="Communitech" 
-          description="A day-long event for students to design solutions to a given problem"
-          imgSource="./eventImage.svg"></Event>
-            </div>
-       )}
-      {!!selectedCategory && (
-        <CategoryPage name={selectedCategory}/>
+          <SectionHeading text="Categories" />
+          <Categories onSelectCategory={setSelectedCategory} />
+          <SectionHeading text="Upcoming Events" />
+          <Event
+            title="Frame Designathon"
+            details="Jul 29th, 11:00am - 3pm"
+            clubName="Communitech"
+            description="A day-long event for students to design solutions to a given problem"
+            imgSource="./eventImage.svg"
+          />
+          <Event
+            title="Frame Designathon"
+            details="Jul 29th, 11:00am - 3pm"
+            clubName="Communitech"
+            description="A day-long event for students to design solutions to a given problem"
+            imgSource="./eventImage.svg"
+          />
+        </div>
+      )}
+    {selectedCategory!=="main" && (
+        <CategoryPage
+          name={selectedCategory}
+          main="main"
+          onSelectMain={setSelectedCategory}
+        />
       )}
     </div>
   );

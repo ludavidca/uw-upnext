@@ -15,20 +15,21 @@ function CategoryItem({
   const lowName = name.toLowerCase();
 
   return (
-    <div className="flex items-center">
+    <div className="flex items-center pr-10">
       <button
-        className="flex items-center space-x-4 hover:bg-purple-900 rounded-xl pr-20 px-5"
+        className="flex items-center space-x-4 hover:bg-purple-900 rounded-xl pl-5 sm:pl-0 pr-5 sm:pr-20"
         onClick={() => onSelectCategory(name)}
       >
         <Image
           src={`/categoryIcons/${lowName}.svg`}
           alt={`${name} icon`}
-          width={64}
-          height={64}
+          width={0}
+          height={0}
+          className="w-2/5 sm:w-1/2 ml-0"
         />
-        <div className="flex-col">
-          <p className="text-xl font-bold">{name}</p>
-          <p className="text-xs font-semibold text-gray-200">
+        <div className="flex-col w-full">
+          <p className="text-xl w-20 font-bold text-left">{name}  </p>
+          <p className="text-xs font-semibold text-gray-200 text-left line-clamp-1">
             {eventCount} Events
           </p>
         </div>
@@ -49,7 +50,7 @@ interface CategoriesProps {
 export default function Categories({ onSelectCategory }: CategoriesProps) {
   const categories: Category[] = [
     { name: "Tech", eventCount: 6 },
-    { name: "Arts", eventCount: 3 },
+    { name: "Design", eventCount: 3 },
     { name: "Music", eventCount: 7 },
     { name: "Culture", eventCount: 4 },
     { name: "Social", eventCount: 6 },
@@ -59,7 +60,7 @@ export default function Categories({ onSelectCategory }: CategoriesProps) {
   ];
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-y-6 px-10">
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-y-6 px-0 sm:px-10">
       {categories.map((category, index) => (
         <CategoryItem
           key={index}
