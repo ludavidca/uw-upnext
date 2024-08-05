@@ -3,8 +3,11 @@ import React, { ChangeEvent, FormEvent, useState } from "react";
 import Navbar from "./components/Navbar";
 import SectionHeading from "./components/SectionHeading";
 import Event from "./components/Event";
+import FeaturedEvent from "./components/FeaturedEvent";
 import Categories from "./components/Categories";
 import CategoryPage from "./components/CategoryPage";
+//import React from 'react';
+import EventCarousel from './components/EventCarousel';
 
 export default function SingleButtonPage() {
   const [selectedCategory, setSelectedCategory] = useState("main");
@@ -60,14 +63,57 @@ export default function SingleButtonPage() {
     }
   };
 
+  const events = [
+    { title: 'Frame Designathon', details: 'Jul 29th, 11:00am - 3pm', clubName: 'Communitech' },
+    { title: 'Frame Designathon', details: 'Jul 29th, 11:00am - 3pm', clubName: 'Communitech' },
+    { title: 'Frame Designathon', details: 'Jul 29th, 11:00am - 3pm', clubName: 'Communitech' },
+    { title: 'Frame Designathon', details: 'Jul 29th, 11:00am - 3pm', clubName: 'Communitech' },
+    { title: 'Frame Designathon', details: 'Jul 29th, 11:00am - 3pm', clubName: 'Communitech' },
+    { title: 'Frame Designathon', details: 'Jul 29th, 11:00am - 3pm', clubName: 'Communitech' },
+
+  ];
+  
+
   return (
     <div>
       <Navbar />
       {selectedCategory=="main" && (
         <div>
+          <SectionHeading text="Featured Events" />
+
+
+      <EventCarousel>
+        {events.map((event, index) => (
+          <FeaturedEvent
+            key={index}
+            title={event.title}
+            details={event.details}
+            clubName={event.clubName}
+          ></FeaturedEvent>
+        ))}
+      </EventCarousel>
+      {/* 
+          <FeaturedEvent 
+          title="Frame Designathon"
+          details="Jul 29th, 11:00am - 3pm"
+          clubName="Communitech">
+          </FeaturedEvent>
+          <FeaturedEvent 
+          title="Frame Designathon"
+          details="Jul 29th, 11:00am - 3pm"
+          clubName="Communitech">
+          </FeaturedEvent>
+      */}
           <SectionHeading text="Categories" />
           <Categories onSelectCategory={setSelectedCategory} />
           <SectionHeading text="Upcoming Events" />
+          <Event
+            title="Frame Designathon"
+            details="Jul 29th, 11:00am - 3pm"
+            clubName="Communitech"
+            description="A day-long event for students to design solutions to a given problem"
+            imgSource="./eventImage.svg"
+          />
           <Event
             title="Frame Designathon"
             details="Jul 29th, 11:00am - 3pm"
