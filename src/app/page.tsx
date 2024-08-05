@@ -6,10 +6,11 @@ import Event from "./components/Event";
 import FeaturedEvent from "./components/FeaturedEvent";
 import Categories from "./components/Categories";
 import CategoryPage from "./components/CategoryPage";
-//import React from 'react';
 import EventCarousel from './components/EventCarousel';
+import TimelineHeading from './components/TimelineHeading';
+import TimelineWrapper from './components/TimelineWrapper';
+import VerticalBar from './components/VerticalBar';
 import internal from "stream";
-import { IntegerType } from "mongodb";
 
 interface event_details {
   return_id: string;
@@ -28,15 +29,14 @@ interface events {
   date: string;
   caption: string;
   hashtags: string;
-  id: IntegerType;
+  id: number;
   url: string;
-  likes: IntegerType;
+  likes: number;
   display_photo: string;
   is_event: boolean;
   embedded: Float64Array;
   event_details: event_details
 }
-
 
 export default function SingleButtonPage() {
   const [selectedCategory, setSelectedCategory] = useState("main");
@@ -146,6 +146,7 @@ export default function SingleButtonPage() {
       }
     };
 
+
     findUpcomingEvents();
 
     const findFeaturedEvents = async () => {
@@ -170,7 +171,6 @@ export default function SingleButtonPage() {
 
     findFeaturedEvents();
   }, []);
-
   
   return (
     <div>
@@ -180,13 +180,24 @@ export default function SingleButtonPage() {
           <SectionHeading text="Featured Events" />
 
           <EventCarousel>
+              {events.map((event, index) => (
+              <FeaturedEvent
+                key={index}
+                title={event.title}
+                details={event.details}
+                clubName={event.clubName}
+              />
+            ))}
+          </EventCarousel>
             {events.map((event: events) => (
+              <TimelineWrapper date="Today">
               <FeaturedEvent
                 title={event.event_details.event_name}
                 details={formatUnixTime(event.event_details.start_time)}
                 clubName={event.account}
                 imgSource={"/eventImage.svg"}
               />
+              </TimelineWrapper>
             ))}
           </EventCarousel>
 
