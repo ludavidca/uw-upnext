@@ -1,5 +1,5 @@
 "use client";
-import React, { ChangeEvent, FormEvent, useState } from "react";
+import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import Navbar from "./components/Navbar";
 import SectionHeading from "./components/SectionHeading";
 import Event from "./components/Event";
@@ -10,16 +10,98 @@ import EventCarousel from './components/EventCarousel';
 import TimelineHeading from './components/TimelineHeading';
 import TimelineWrapper from './components/TimelineWrapper';
 import VerticalBar from './components/VerticalBar';
+import internal from "stream";
+
+interface event_details {
+  return_id: string;
+  is_event: boolean;
+  event_name: string;
+  event_description: string;
+  categories: string;
+  start_time: number;
+  end_time: number;
+  location: string;
+}
+
+interface events {
+  _id: string;
+  account: string;
+  date: string;
+  caption: string;
+  hashtags: string;
+  id: number;
+  url: string;
+  likes: number;
+  display_photo: string;
+  is_event: boolean;
+  embedded: Float64Array;
+  event_details: event_details
+}
 
 export default function SingleButtonPage() {
   const [selectedCategory, setSelectedCategory] = useState("main");
   const [index, setIndex] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-
+  const [isLoading, setIsLoading] = useState(true);
+  const [events, setEvents] = useState<events[]>([]);
+  const [categoryEvents, setCategoryEvents] = useState<events[]>([]);
+  const [upcomingEvents, setUpcomingEvents] = useState<events[]>([]);
   const handleIndexChange = (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     setIndex(e.target.value);
   };
+
+  function formatUnixTime(unixTime: number) {
+    const date = new Date(unixTime * 1000);
+
+    const months = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ];
+
+    function getDaySuffix(day: number) {
+      if (day >= 11 && day <= 13) {
+        return "th";
+      }
+      switch (day % 10) {
+        case 1:
+          return "st";
+        case 2:
+          return "nd";
+        case 3:
+          return "rd";
+        default:
+          return "th";
+      }
+    }
+
+    const month = months[date.getMonth()];
+    const day = date.getDate();
+    let hours = date.getHours();
+    const ampm = hours >= 12 ? "PM" : "AM";
+
+    hours = hours % 12;
+    hours = hours ? hours : 12; // the hour '0' should be '12'
+
+    const daySuffix = getDaySuffix(day);
+
+    return `${month} ${day}${daySuffix} ${hours}${ampm}`;
+  }
+
+
+  function getImage(url: string) {
+    const thumbnail:string = `https://www.instagram.com/p/${url}/?size=l`;
+    return thumbnail
+  }
 
   const findSpecificEvents = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -43,37 +125,53 @@ export default function SingleButtonPage() {
     }
   };
 
-  const findFeaturedEvents = async (e: FormEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    setIsLoading(true);
-    try {
-      const res = await fetch(`/api/featuredEvents`);
-      if (!res.ok) {
-        const errorData = await res.json();
-        throw new Error(
-          `HTTP error! status: ${res.status}, message: ${errorData.error || "Unknown error"}`
-        );
+    useEffect(() => {
+    const findUpcomingEvents = async () => {
+      try {
+        const res = await fetch(`/api/upcomingEvents`);
+        if (!res.ok) {
+          const errorData = await res.json();
+          throw new Error(
+            `HTTP error! status: ${res.status}, message: ${errorData.error || "Unknown error"}`
+          );
+        }
+        const data = await res.json();
+        setUpcomingEvents(data.results);
+        console.log(data);
+      } catch (err) {
+        console.error("Fetch error:", err);
+        // Handle the error here (e.g., show an error message to the user)
+      } finally {
+        setIsLoading(false);
       }
-      const data = await res.json();
-      console.log("Response data:", data);
-      // Handle the successful response here (e.g., update state with the fetched data)
-    } catch (err) {
-      console.error("Fetch error:", err);
-      // Handle the error here (e.g., show an error message to the user)
-    } finally {
-      setIsLoading(false);
-    }
-  };
+    };
 
-  const events = [
-    { title: 'Frame Designathon', details: 'Jul 29th, 11:00am - 3pm', clubName: 'Communitech' },
-    { title: 'Frame Designathon', details: 'Jul 29th, 11:00am - 3pm', clubName: 'Communitech' },
-    { title: 'Frame Designathon', details: 'Jul 29th, 11:00am - 3pm', clubName: 'Communitech' },
-    { title: 'Frame Designathon', details: 'Jul 29th, 11:00am - 3pm', clubName: 'Communitech' },
-    { title: 'Frame Designathon', details: 'Jul 29th, 11:00am - 3pm', clubName: 'Communitech' },
-    { title: 'Frame Designathon', details: 'Jul 29th, 11:00am - 3pm', clubName: 'Communitech' },
-  ];
 
+    findUpcomingEvents();
+
+    const findFeaturedEvents = async () => {
+      try {
+        const res = await fetch(`/api/featuredEvents`);
+        if (!res.ok) {
+          const errorData = await res.json();
+          throw new Error(
+            `HTTP error! status: ${res.status}, message: ${errorData.error || "Unknown error"}`
+          );
+        }
+        const data = await res.json();
+        setEvents(data.results);
+        console.log(data);
+      } catch (err) {
+        console.error("Fetch error:", err);
+        // Handle the error here (e.g., show an error message to the user)
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    findFeaturedEvents();
+  }, []);
+  
   return (
     <div>
       <Navbar />
@@ -82,7 +180,7 @@ export default function SingleButtonPage() {
           <SectionHeading text="Featured Events" />
 
           <EventCarousel>
-            {events.map((event, index) => (
+              {events.map((event, index) => (
               <FeaturedEvent
                 key={index}
                 title={event.title}
@@ -91,46 +189,32 @@ export default function SingleButtonPage() {
               />
             ))}
           </EventCarousel>
-          
+            {events.map((event: events) => (
+              <TimelineWrapper date="Today">
+              <FeaturedEvent
+                title={event.event_details.event_name}
+                details={formatUnixTime(event.event_details.start_time)}
+                clubName={event.account}
+                imgSource={"/eventImage.svg"}
+              />
+              </TimelineWrapper>
+            ))}
+          </EventCarousel>
+
           <SectionHeading text="Categories" />
           <Categories onSelectCategory={setSelectedCategory} />
-          
+
           <SectionHeading text="Upcoming Events" />
-          <VerticalBar height="100%" width="3px" />
-          <TimelineWrapper date="Today">
+          {upcomingEvents.map((event: events) => (
             <Event
-              title="Frame Designathon"
-              details="Jul 29th, 11:00am - 3pm"
-              clubName="Communitech"
-              description="A day-long event for students to design solutions to a given problem"
-              imgSource="./eventImage.svg"
+              key={index}
+              title={event.event_details.event_name}
+              details={formatUnixTime(event.event_details.start_time)}
+              clubName={event.account}
+              description={event.event_details.event_description}
+              imgSource={"/eventImage.svg"}
             />
-          </TimelineWrapper>
-          <TimelineWrapper date="August 22, 2024">
-            <Event
-              title="Frame Designathon"
-              details="Jul 29th, 11:00am - 3pm"
-              clubName="Communitech"
-              description="A day-long event for students to design solutions to a given problem"
-              imgSource="./eventImage.svg"
-            />
-          </TimelineWrapper>
-          <TimelineWrapper date="September 2, 2024">
-            <Event
-              title="Frame Designathon"
-              details="Jul 29th, 11:00am - 3pm"
-              clubName="Communitech"
-              description="A day-long event for students to design solutions to a given problem"
-              imgSource="./eventImage.svg"
-            />
-            <Event
-              title="Frame Designathon"
-              details="Jul 29th, 11:00am - 3pm"
-              clubName="Communitech"
-              description="A day-long event for students to design solutions to a given problem"
-              imgSource="./eventImage.svg"
-            />
-          </TimelineWrapper>
+          ))}
         </div>
       )}
       {selectedCategory !== "main" && (

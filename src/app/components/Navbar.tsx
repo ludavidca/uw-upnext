@@ -10,7 +10,7 @@ export default function Navbar() {
 
   const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      vectordbSearch(); view
+      vectordbSearch();
     }
   };
 

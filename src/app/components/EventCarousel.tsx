@@ -15,7 +15,7 @@ export default function EventCarousel({ children }: EventCarouselProps) {
     slidesToShow: 4,
     slidesToScroll: 1,
     autoplay: true,
-    autoplaySpeed: 2000,
+    autoplaySpeed: 8000,
     pauseOnHover: true,
     responsive: [
       {
