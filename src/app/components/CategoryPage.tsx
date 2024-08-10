@@ -86,32 +86,41 @@ export default function CategoryPage({name, main, onSelectMain}: CategoryPagePro
         <div className="ml-[5%]">
           <SectionHeading text={`Upcoming ${name} Events`} />
 
-      <div className="hidden sm:block">
-        {noEvents ? (<p className="ml-[2.5%] mt-[0.5%] font-medium">No Events Found</p>) : (categoryEvents.map((event: events) => (
-          <Event
-            
-            title={event.event_details.event_name}
-            details={formatUnixTime(event.event_details.start_time)}
-            clubName={event.account}
-            description={event.event_details.event_description}
-            imgSource={event.url}
-          />
-        )))}
-      </div>
+          <div className="hidden sm:block">
+            {noEvents ? (
+              <p className="ml-[2.5%] mt-[0.5%] font-medium">No Events Found</p>
+            ) : (
+              categoryEvents.map((event: events, index) => (
+                <div key={event._id}>
+                  <Event
+                    title={event.event_details.event_name}
+                    details={formatUnixTime(event.event_details.start_time)}
+                    clubName={event.account}
+                    description={event.event_details.event_description}
+                    imgSource={event.url}
+                  />
+                </div>
+              ))
+            )}
+          </div>
 
-      {/* Render this on screens smaller than 640px */}
-      <div className="block sm:hidden">
-        {noEvents ? (<p className="ml-[2.5%] mt-[0.5%] font-medium">No Events Found</p>) : (categoryEvents.map((event: events) => (
-          <FeaturedEvent
-            title={event.event_details.event_name}
-            details={formatUnixTime(event.event_details.start_time)}
-            clubName={event.account}
-            imgSource={event.url}
-            
-          />
-        )))}
-      </div>
-
+          {/* Render this on screens smaller than 640px */}
+          <div className="block sm:hidden">
+            {noEvents ? (
+              <p className="ml-[2.5%] mt-[0.5%] font-medium">No Events Found</p>
+            ) : (
+              categoryEvents.map((event: events) => (
+                <div key={event._id}>
+                  <FeaturedEvent
+                    title={event.event_details.event_name}
+                    details={formatUnixTime(event.event_details.start_time)}
+                    clubName={event.account}
+                    imgSource={event.url}
+                  />
+                </div>
+              ))
+            )}
+          </div>
         </div>
       </div>
     );
