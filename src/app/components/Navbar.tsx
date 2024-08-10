@@ -1,4 +1,6 @@
 import React, { useState, KeyboardEvent } from "react";
+import { FaArrowRight } from "react-icons/fa"; // Import an arrow icon from react-icons
+
 
 export default function Navbar() {
   const [index, setIndex] = useState("");
@@ -38,18 +40,22 @@ export default function Navbar() {
       </div>
 
       {/* Search Bar */}
-      <div className="flex w-full sm:w-auto">
-        <input
-          type="text"
-          placeholder="Search Topics"
-          style={{ textAlign: "center" }}
-          className="flex-grow p-3 rounded-full bg-transparent transition-transform transform gradient-searchbar w-72 sm:hover:w-96 sm:hover:scale-110 "
-          onChange={handleIndexChange}
-          onKeyPress={handleKeyPress}
-          value={index}
-        />
-      </div>
 
+       <div className="relative flex w-full sm:w-auto">
+  <input
+    type="text"
+    placeholder="Search Topics"
+    className="flex-grow p-3 pl-10 pr-10 rounded-full bg-transparent transition-transform transform gradient-searchbar w-72 sm:hover:w-96 sm:hover:scale-110 text-center"
+    onChange={handleIndexChange}
+    onKeyPress={handleKeyPress}
+    value={index}
+  />
+  {/* Arrow Icon */}
+  <FaArrowRight
+    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-300 cursor-pointer sm:hidden"
+    onClick={vectordbSearch} 
+  />
+</div>
       {/* CTA Buttons */}
       <div className=" hidden sm:flex  items-center space-x-4">
         <button

@@ -2,8 +2,38 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import SectionHeading from "./SectionHeading";
 import Event from "./Event";
+<<<<<<< HEAD
 import { formatUnixTime } from "./functions/gettime";
 import { events } from "./types/eventType";
+=======
+import FeaturedEvent from "./FeaturedEvent";
+
+interface event_details {
+  return_id: string;
+  is_event: boolean;
+  event_name: string;
+  event_description: string;
+  categories: string;
+  start_time: number;
+  end_time: number;
+  location: string;
+}
+
+interface events {
+  _id: string;
+  account: string;
+  date: string;
+  caption: string;
+  hashtags: string;
+  id: number;
+  url: string;
+  likes: number;
+  display_photo: string;
+  is_event: boolean;
+  embedded: Float64Array;
+  event_details: event_details
+}
+>>>>>>> 7c8ae5b6720e5ea8f2e0823e9e9fb22f2c25b698
 
 interface CategoryPageProps {
   name: string;
@@ -84,6 +114,7 @@ export default function CategoryPage({name, main, onSelectMain}: CategoryPagePro
         </div>
         <div className="ml-[5%]">
           <SectionHeading text={`Upcoming ${name} Events`} />
+<<<<<<< HEAD
           {noEvents ? (<p className="ml-[2.5%] mt-[0.5%] font-medium">No Events Found</p>) : (
             categoryEvents.map((event: events) => (
             <Event
@@ -94,6 +125,34 @@ export default function CategoryPage({name, main, onSelectMain}: CategoryPagePro
               imgSource={event.url}
             />
           )))}
+=======
+           <div className="hidden sm:block">
+        {categoryEvents.map((event: events) => (
+          <Event
+            
+            title={event.event_details.event_name}
+            details={formatUnixTime(event.event_details.start_time)}
+            clubName={event.account}
+            description={event.event_details.event_description}
+            imgSource={"/eventImage.svg"}
+          />
+        ))}
+      </div>
+
+      {/* Render this on screens smaller than 640px */}
+      <div className="block sm:hidden">
+        {categoryEvents.map((event: events) => (
+          <FeaturedEvent
+            title={event.event_details.event_name}
+            details={formatUnixTime(event.event_details.start_time)}
+            clubName={event.account}
+            imgSource={"/eventImage.svg"}
+            
+          />
+        ))}
+      </div>
+
+>>>>>>> 7c8ae5b6720e5ea8f2e0823e9e9fb22f2c25b698
         </div>
       </div>
     );
