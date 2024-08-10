@@ -35,7 +35,7 @@ export default function Navbar() {
   return (
     <div className="flex items-center justify-between p-3 bg-transparent">
       {/* Logo */}
-      <div className="flex items-center hidden sm:flex">
+      <div className="items-center hidden sm:flex">
         <img src="./logo.svg" alt="Logo" className="w-30 h-16 " />
       </div>
 
