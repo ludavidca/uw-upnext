@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import SectionHeading from "./SectionHeading";
 import Event from "./Event";
+import FeaturedEvent from "./FeaturedEvent";
 
 interface event_details {
   return_id: string;
@@ -152,15 +153,32 @@ export default function CategoryPage({name, main, onSelectMain}: CategoryPagePro
         </div>
         <div className="ml-[5%]">
           <SectionHeading text={`Upcoming ${name} Events`} />
-          {categoryEvents.map((event: events) => (
-            <Event
-              title={event.event_details.event_name}
-              details={formatUnixTime(event.event_details.start_time)}
-              clubName={event.account}
-              description={event.event_details.event_description}
-              imgSource={"/eventImage.svg"}
-            />
-          ))}
+           <div className="hidden sm:block">
+        {categoryEvents.map((event: events) => (
+          <Event
+            
+            title={event.event_details.event_name}
+            details={formatUnixTime(event.event_details.start_time)}
+            clubName={event.account}
+            description={event.event_details.event_description}
+            imgSource={"/eventImage.svg"}
+          />
+        ))}
+      </div>
+
+      {/* Render this on screens smaller than 640px */}
+      <div className="block sm:hidden">
+        {categoryEvents.map((event: events) => (
+          <FeaturedEvent
+            title={event.event_details.event_name}
+            details={formatUnixTime(event.event_details.start_time)}
+            clubName={event.account}
+            imgSource={"/eventImage.svg"}
+            
+          />
+        ))}
+      </div>
+
         </div>
       </div>
     );

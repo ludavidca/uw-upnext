@@ -11,11 +11,11 @@ export default function EventCarousel({ children }: EventCarouselProps) {
   const settings = {
     dots: false,
     infinite: true,
-    speed: 1500,
-    slidesToShow: 4,
+    speed: 3000,
+    slidesToShow: 3,
     slidesToScroll: 1,
     autoplay: true,
-    autoplaySpeed: 8000,
+    autoplaySpeed: 100,
     pauseOnHover: true,
     responsive: [
       {

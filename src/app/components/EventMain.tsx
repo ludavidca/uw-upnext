@@ -44,7 +44,7 @@ export default function EventMain({ title, details, clubName, description, locat
                     <hr className="w-[80%] mb-3"></hr>
                     <p className="w-full md:w-72 text-xs mb-8"> {description} </p>
                     <img src="./map.svg" className="w-[90%] mb-2"></img>
-                    <h2 className="mb-2 text-yellow-300 mt-2">
+                    <h2 className="mb-2 text-yellow-300 mt-2 inline">
                         <img src="./pinEmoji.svg" className="inline px-1 w-6 h-6" alt="Pin Emoji" /> {location}
                         
                     </h2>

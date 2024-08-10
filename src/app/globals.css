@@ -89,6 +89,15 @@ input::placeholder {
   background-color:  rgb(62, 43, 75);
 }
 
+.pinimage {
+  display: inline;
+}
+
+.slick-slide .event img {
+  display: inline-block !important;
+  vertical-align: middle;
+}
+
 @keyframes marquee {
   0% { transform: translateX(100%); }
   100% { transform: translateX(-100%); }
