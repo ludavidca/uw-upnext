@@ -11,32 +11,7 @@ import EventCarousel from './components/EventCarousel';
 import internal from "stream";
 import { IntegerType } from "mongodb";
 import EventMain from "./components/EventMain";
-
-interface event_details {
-  return_id: string;
-  is_event: boolean;
-  event_name: string;
-  event_description: string;
-  categories: string;
-  start_time: number;
-  end_time: number;
-  location: string;
-}
-
-interface events {
-  _id: string;
-  account: string;
-  date: string;
-  caption: string;
-  hashtags: string;
-  id: IntegerType;
-  url: string;
-  likes: IntegerType;
-  display_photo: string;
-  is_event: boolean;
-  embedded: Float64Array;
-  event_details: event_details
-}
+import { events } from "./components/types/eventType";
 
 
 export default function SingleButtonPage() {
@@ -196,14 +171,40 @@ export default function SingleButtonPage() {
 
           <EventCarousel>
             {events.map((event: events) => (
-<<<<<<< HEAD
-              <FeaturedEvent
-                title={event.event_details.event_name}
-                details={formatUnixTime(event.event_details.start_time)}
-                clubName={event.account}
-                imgSource={event.url}
-              />
-=======
+              <div key={event._id} onClick={() => fetchEventInfo(event)}>
+                <FeaturedEvent
+                  title={event.event_details.event_name}
+                  details={formatUnixTime(event.event_details.start_time)}
+                  clubName={event.account}
+                  imgSource={event.url}
+                />
+              </div>
+            ))}
+          </EventCarousel>
+
+          <SectionHeading text="Categories" />
+          <Categories onSelectCategory={setSelectedCategory} />
+
+          <SectionHeading text="Upcoming Events" />
+          {/* Render this on screens wider than 640px */}
+          <div className="hidden sm:block">
+            {upcomingEvents.map((event: events) => (
+              <div key={event._id} onClick={() => fetchEventInfo(event)}>
+                <Event
+                  key={index}
+                  title={event.event_details.event_name}
+                  details={formatUnixTime(event.event_details.start_time)}
+                  clubName={event.account}
+                  description={event.event_details.event_description}
+                  imgSource={event.url}
+                />
+              </div>
+            ))}
+          </div>
+
+          {/* Render this on screens smaller than 640px */}
+          <div className="block sm:hidden">
+            {upcomingEvents.map((event: events) => (
               <div key={event._id} onClick={() => fetchEventInfo(event)}>
                 <FeaturedEvent
                   title={event.event_details.event_name}
@@ -212,59 +213,8 @@ export default function SingleButtonPage() {
                   imgSource={"/eventImage.svg"}
                 />
               </div>
->>>>>>> 7c8ae5b6720e5ea8f2e0823e9e9fb22f2c25b698
             ))}
-          </EventCarousel>
-
-          <SectionHeading text="Categories" />
-          <Categories onSelectCategory={setSelectedCategory} />
-
-          <SectionHeading text="Upcoming Events" />
-           {/* Render this on screens wider than 640px */}
-      <div className="hidden sm:block">
-        {upcomingEvents.map((event: events) => (
-          <div key={event._id} onClick={() => fetchEventInfo(event)}>
-            <Event
-<<<<<<< HEAD
-              key={index}
-              title={event.event_details.event_name}
-              details={formatUnixTime(event.event_details.start_time)}
-              clubName={event.account}
-              description={event.event_details.event_description}
-              imgSource={event.url}
-            />
-          ))}
-=======
-            key={index}
-            title={event.event_details.event_name}
-            details={formatUnixTime(event.event_details.start_time)}
-            clubName={event.account}
-            description={event.event_details.event_description}
-            imgSource={"/eventImage.svg"}
-          />
           </div>
-          
-        ))}
-      </div>
-
-      {/* Render this on screens smaller than 640px */}
-      <div className="block sm:hidden">
-        {upcomingEvents.map((event: events) => (
-          <div key={event._id} onClick={() => fetchEventInfo(event)}>
-            <FeaturedEvent
-            title={event.event_details.event_name}
-            details={formatUnixTime(event.event_details.start_time)}
-            clubName={event.account}
-            imgSource={"/eventImage.svg"}
-            
-          />
-          </div>
-          
-        ))}
-      </div>
-
-
->>>>>>> 7c8ae5b6720e5ea8f2e0823e9e9fb22f2c25b698
         </div>
       )}
       {selectedCategory !== "main" && (
@@ -276,7 +226,16 @@ export default function SingleButtonPage() {
       )}
 
       {showEventMain && selectedEvent && (
-        <EventMain title={selectedEvent.event_details.event_name} />
+        <EventMain
+          title={selectedEvent.event_details.event_name}
+          details={selectedEvent.event_details.event_description}
+          clubName={selectedEvent.account}
+          description={selectedEvent.event_details.event_description}
+          location={selectedEvent.event_details.location}
+          start_time={selectedEvent.event_details.start_time}
+          end_time={selectedEvent.event_details.end_time}
+          postUrl={selectedEvent.url}
+        />
       )}
     </div>
   );
