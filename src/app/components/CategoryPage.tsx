@@ -2,32 +2,8 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import SectionHeading from "./SectionHeading";
 import Event from "./Event";
-
-interface event_details {
-  return_id: string;
-  is_event: boolean;
-  event_name: string;
-  event_description: string;
-  categories: string;
-  start_time: number;
-  end_time: number;
-  location: string;
-}
-
-interface events {
-  _id: string;
-  account: string;
-  date: string;
-  caption: string;
-  hashtags: string;
-  id: number;
-  url: string;
-  likes: number;
-  display_photo: string;
-  is_event: boolean;
-  embedded: Float64Array;
-  event_details: event_details
-}
+import { formatUnixTime } from "./functions/gettime";
+import { events } from "./types/eventType";
 
 interface CategoryPageProps {
   name: string;
@@ -37,55 +13,9 @@ interface CategoryPageProps {
 
 export default function CategoryPage({name, main, onSelectMain}: CategoryPageProps) {
     const [categoryEvents, setCategoryEvents] = useState<events[]>([])
+    const [noEvents, setNoEvents] = useState<boolean | null>(null)
     const lowName = name.toLowerCase();
     const allCapsCategory = name.toUpperCase();
-
-      function formatUnixTime(unixTime: number) {
-        const date = new Date(unixTime * 1000);
-
-        const months = [
-          "January",
-          "February",
-          "March",
-          "April",
-          "May",
-          "June",
-          "July",
-          "August",
-          "September",
-          "October",
-          "November",
-          "December",
-        ];
-
-        function getDaySuffix(day: number) {
-          if (day >= 11 && day <= 13) {
-            return "th";
-          }
-          switch (day % 10) {
-            case 1:
-              return "st";
-            case 2:
-              return "nd";
-            case 3:
-              return "rd";
-            default:
-              return "th";
-          }
-        }
-
-        const month = months[date.getMonth()];
-        const day = date.getDate();
-        let hours = date.getHours();
-        const ampm = hours >= 12 ? "PM" : "AM";
-
-        hours = hours % 12;
-        hours = hours ? hours : 12; // the hour '0' should be '12'
-
-        const daySuffix = getDaySuffix(day);
-
-        return `${month} ${day}${daySuffix} ${hours}${ampm}`;
-      }
 
     
     useEffect(()=>{
@@ -97,15 +27,17 @@ export default function CategoryPage({name, main, onSelectMain}: CategoryPagePro
           if (!res.ok) {
             throw new Error(`HTTP error! status: ${res.status}`);
           }
+          setNoEvents(false);
           const data = await res.json();
           setCategoryEvents(data.results)
         } catch (err) {
+          setNoEvents(true);
           console.error("Fetch error:", err);
         }
       };
 
       findSpecificEvent();
-    },[])
+    },[allCapsCategory])
 
     return (
       <div className="flex-row items-center">
@@ -152,15 +84,16 @@ export default function CategoryPage({name, main, onSelectMain}: CategoryPagePro
         </div>
         <div className="ml-[5%]">
           <SectionHeading text={`Upcoming ${name} Events`} />
-          {categoryEvents.map((event: events) => (
+          {noEvents ? (<p className="ml-[2.5%] mt-[0.5%] font-medium">No Events Found</p>) : (
+            categoryEvents.map((event: events) => (
             <Event
               title={event.event_details.event_name}
               details={formatUnixTime(event.event_details.start_time)}
               clubName={event.account}
               description={event.event_details.event_description}
-              imgSource={"/eventImage.svg"}
+              imgSource={event.url}
             />
-          ))}
+          )))}
         </div>
       </div>
     );

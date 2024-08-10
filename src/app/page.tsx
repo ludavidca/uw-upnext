@@ -185,7 +185,7 @@ export default function SingleButtonPage() {
                 title={event.event_details.event_name}
                 details={formatUnixTime(event.event_details.start_time)}
                 clubName={event.account}
-                imgSource={"/eventImage.svg"}
+                imgSource={event.url}
               />
             ))}
           </EventCarousel>
@@ -201,7 +201,7 @@ export default function SingleButtonPage() {
               details={formatUnixTime(event.event_details.start_time)}
               clubName={event.account}
               description={event.event_details.event_description}
-              imgSource={"/eventImage.svg"}
+              imgSource={event.url}
             />
           ))}
         </div>
