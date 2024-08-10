@@ -20,7 +20,7 @@ export async function GET(req: NextRequest) {
     const Events = database.collection("Events");
 
     const events = await Events.aggregate([
-    { $sort: { "event_details.start_time": -1 } },
+    { $sort: { "event_details.start_time": 1 } },
     ]).toArray();
     if (events.length === 0) {
       return NextResponse.json({ error: "No events found" }, { status: 404 });
