@@ -173,8 +173,9 @@ export default function SingleButtonPage() {
           <SectionHeading text="Upcoming Events" />
           {/* Render this on screens wider than 640px */}
           <div className="">
-            <div className="flex">
-            <div className="w-2/3 pr-4">
+            <div className="">
+            <div className="flex flex-row ">
+              <div className="w-2/3">
               {upcomingEvents.map((event: events) => (
                 <div key={event._id} onClick={() => fetchEventInfo(event)}>
                   <Event
@@ -187,14 +188,16 @@ export default function SingleButtonPage() {
                   />
                 </div>
               ))}
-              <div className="w-1/3 pl-4">
+              </div>
+              <div className="ml-[5%] text-center">
                 <Image
+                
                   src="./bigmap.svg"
                   alt="Map of Events"
-                  width={1000}
+                  width={400}
                   height={1000}
                 />
-                <p className="font-semibold p-2 pl-10">Finding Events. Reimagined.</p>
+                <p className="font-semibold text-center">Finding Events. Reimagined.</p>
               </div>
             </div>
             </div>
