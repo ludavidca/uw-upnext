@@ -13,6 +13,7 @@ import { IntegerType } from "mongodb";
 import EventMain from "./components/EventMain";
 import { events } from "./components/types/eventType";
 import { formatUnixTime } from "./components/functions/gettime";
+import Image from "next/image";
 
 export default function SingleButtonPage() {
   const [selectedCategory, setSelectedCategory] = useState("main");
@@ -123,16 +124,17 @@ export default function SingleButtonPage() {
       {searchEvents.length > 0 && (
         <div>
           {searchEvents.map((event: events) => (
-              <div key={event._id} onClick={() => fetchEventInfo(event)}>
-                <Event
-                  key={index}
-                  title={event.event_details.event_name}
-                  details={formatUnixTime(event.event_details.start_time)}
-                  clubName={event.account}
-                  description={event.event_details.event_description}
-                  imgSource={event.url}
-                />
-              </div>))}
+            <div key={event._id} onClick={() => fetchEventInfo(event)}>
+              <Event
+                key={index}
+                title={event.event_details.event_name}
+                details={formatUnixTime(event.event_details.start_time)}
+                clubName={event.account}
+                description={event.event_details.event_description}
+                imgSource={event.url}
+              />
+            </div>
+          ))}
           {/* Render this on screens smaller than 640px */}
           <div className="block sm:hidden">
             {searchEvents.map((event: events) => (
@@ -146,8 +148,8 @@ export default function SingleButtonPage() {
               </div>
             ))}
           </div>
-          </div>
-        )}
+        </div>
+      )}
       {selectedCategory === "main" && searchEvents.length === 0 && (
         <div>
           <SectionHeading text="Featured Events" />
@@ -170,36 +172,50 @@ export default function SingleButtonPage() {
 
           <SectionHeading text="Upcoming Events" />
           {/* Render this on screens wider than 640px */}
-          <div className="hidden sm:block">
-            {upcomingEvents.map((event: events) => (
-              <div key={event._id} onClick={() => fetchEventInfo(event)}>
-                <Event
-                  key={index}
-                  title={event.event_details.event_name}
-                  details={formatUnixTime(event.event_details.start_time)}
-                  clubName={event.account}
-                  description={event.event_details.event_description}
-                  imgSource={event.url}
+          <div className="">
+            <div className="flex-row">
+            <div className="w-2/3 pr-4">
+              {upcomingEvents.map((event: events) => (
+                <div key={event._id} onClick={() => fetchEventInfo(event)}>
+                  <Event
+                    key={index}
+                    title={event.event_details.event_name}
+                    details={formatUnixTime(event.event_details.start_time)}
+                    clubName={event.account}
+                    description={event.event_details.event_description}
+                    imgSource={event.url}
+                  />
+                </div>
+              ))}
+              <div className="w-1/3 pl-4">
+                <Image
+                  src="./bigmap.svg"
+                  alt="Map of Events"
+                  width={1000}
+                  height={1000}
                 />
+                <p className="font-semibold p-2 pl-10">Finding Events. Reimagined.</p>
               </div>
-            ))}
-          </div>
+            </div>
+            </div>
 
-          {/* Render this on screens smaller than 640px */}
-          <div className="block sm:hidden">
-            {upcomingEvents.map((event: events) => (
-              <div key={event._id} onClick={() => fetchEventInfo(event)}>
-                <FeaturedEvent
-                  title={event.event_details.event_name}
-                  details={formatUnixTime(event.event_details.start_time)}
-                  clubName={event.account}
-                  imgSource={event.url}
-                />
-              </div>
-            ))}
+            {/* Render this on screens smaller than 640px */}
+            <div className="block sm:hidden">
+              {upcomingEvents.map((event: events) => (
+                <div key={event._id} onClick={() => fetchEventInfo(event)}>
+                  <FeaturedEvent
+                    title={event.event_details.event_name}
+                    details={formatUnixTime(event.event_details.start_time)}
+                    clubName={event.account}
+                    imgSource={event.url}
+                  />
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       )}
+
       {selectedCategory !== "main" && searchEvents.length === 0 && (
         <CategoryPage
           name={selectedCategory}
@@ -213,15 +229,25 @@ export default function SingleButtonPage() {
           title={selectedEvent.event_details.event_name}
           details={selectedEvent.event_details.event_description}
           clubName={selectedEvent.account}
-          description={selectedEvent.event_details.event_description}
+          description={selectedEvent.caption}
           location={selectedEvent.event_details.location}
           start_time={selectedEvent.event_details.start_time}
           end_time={selectedEvent.event_details.end_time}
           postUrl={selectedEvent.url}
           onClose={() => setShowEventMain(false)}
-          
         />
       )}
+      <div className="px-[10%] py-[2%] text-xs font-light text-slate-500">
+        <p>
+          ⚠️Legal Disclaimer: The events listed are curated by Language Learning
+          Models (LLMs) based on Instagram posts and are subject to change. UW
+          UpNext does not assume legal responsibility for any damages arising
+          from the use of our services. We strongly recommend verifying details
+          with the respective clubs to ensure you have the most current
+          information. If you notice any inaccuracies, please contact our
+          support team.
+        </p>
+      </div>
     </div>
   );
 }

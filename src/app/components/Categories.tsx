@@ -50,13 +50,13 @@ interface CategoriesProps {
 export default function Categories({ onSelectCategory }: CategoriesProps) {
   const categories: Category[] = [
     { name: "Tech", eventCount: 6 },
-    { name: "Design", eventCount: 3 },
-    { name: "Music", eventCount: 7 },
-    { name: "Culture", eventCount: 4 },
-    { name: "Social", eventCount: 6 },
-    { name: "Sports", eventCount: 2 },
-    { name: "Gaming", eventCount: 8 },
-    { name: "Wellness", eventCount: 5 },
+    { name: "Design", eventCount: 2 },
+    { name: "Music", eventCount: 0 },
+    { name: "Culture", eventCount: 1 },
+    { name: "Social", eventCount: 0 },
+    { name: "Sports", eventCount: 0 },
+    { name: "Gaming", eventCount: 0 },
+    { name: "Wellness", eventCount: 0 },
   ];
 
   return (
