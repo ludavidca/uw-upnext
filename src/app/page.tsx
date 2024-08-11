@@ -173,7 +173,7 @@ export default function SingleButtonPage() {
           <SectionHeading text="Upcoming Events" />
           {/* Render this on screens wider than 640px */}
           <div className="">
-            <div className="flex-row">
+            <div className="flex">
             <div className="w-2/3 pr-4">
               {upcomingEvents.map((event: events) => (
                 <div key={event._id} onClick={() => fetchEventInfo(event)}>
