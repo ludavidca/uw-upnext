@@ -5,6 +5,7 @@ import Event from "./Event";
 import { formatUnixTime } from "./functions/gettime";
 import { events } from "./types/eventType";
 import FeaturedEvent from "./FeaturedEvent";
+import EventMain from "./EventMain";
 
 interface CategoryPageProps {
   name: string;
@@ -17,6 +18,14 @@ export default function CategoryPage({name, main, onSelectMain}: CategoryPagePro
     const [noEvents, setNoEvents] = useState<boolean | null>(null)
     const lowName = name.toLowerCase();
     const allCapsCategory = name.toUpperCase();
+    const [showEventMain, setShowEventMain] = useState(false);
+    const [selectedEvent, setSelectedEvent] = useState<events | null>(null);
+
+    const fetchEventInfo = (event: events) => {
+      console.log(event);
+      setSelectedEvent(event);
+      setShowEventMain(true);
+    };
 
     
     useEffect(()=>{
@@ -91,7 +100,7 @@ export default function CategoryPage({name, main, onSelectMain}: CategoryPagePro
               <p className="ml-[2.5%] mt-[0.5%] font-medium">No Events Found</p>
             ) : (
               categoryEvents.map((event: events, index) => (
-                <div key={event._id}>
+                <div key={event._id} onClick={() => fetchEventInfo(event)}>
                   <Event
                     title={event.event_details.event_name}
                     details={formatUnixTime(event.event_details.start_time)}
@@ -110,7 +119,7 @@ export default function CategoryPage({name, main, onSelectMain}: CategoryPagePro
               <p className="ml-[2.5%] mt-[0.5%] font-medium">No Events Found</p>
             ) : (
               categoryEvents.map((event: events) => (
-                <div key={event._id}>
+                <div key={event._id} onClick={() => fetchEventInfo(event)}>
                   <FeaturedEvent
                     title={event.event_details.event_name}
                     details={formatUnixTime(event.event_details.start_time)}
@@ -122,6 +131,20 @@ export default function CategoryPage({name, main, onSelectMain}: CategoryPagePro
             )}
           </div>
         </div>
+        {showEventMain && selectedEvent && (
+        <EventMain
+          title={selectedEvent.event_details.event_name}
+          details={selectedEvent.event_details.event_description}
+          clubName={selectedEvent.account}
+          description={selectedEvent.event_details.event_description}
+          location={selectedEvent.event_details.location}
+          start_time={selectedEvent.event_details.start_time}
+          end_time={selectedEvent.event_details.end_time}
+          postUrl={selectedEvent.url}
+          onClose={() => setShowEventMain(false)}
+          
+        />
+      )}
       </div>
     );
     }
