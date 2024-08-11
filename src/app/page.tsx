@@ -122,7 +122,7 @@ export default function SingleButtonPage() {
         onLogoClick={setSearchEvents}
       />
       {searchEvents.length > 0 && (
-        <div>
+        <div className=" flex mt-[5%] max-w-[90%]">
           {searchEvents.map((event: events) => (
             <div key={event._id} onClick={() => fetchEventInfo(event)}>
               <Event

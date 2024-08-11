@@ -17,6 +17,11 @@ interface EventProps {
 }
 
 export default function EventMain({ title, details, start_time, end_time, clubName, description, location, postUrl, onClose }: EventProps) {
+    const handleBackdropClick = (event: React.MouseEvent<HTMLDivElement>) => {
+        if (event.target === event.currentTarget) {
+          onClose();
+        }
+      };
     // const [eventDetails, setEventDetails] = useState<events | null>(null);
     // const [isLoading, setIsLoading] = useState(true);
     // const [error, setError] = useState<string | null>(null);
@@ -62,43 +67,57 @@ export default function EventMain({ title, details, start_time, end_time, clubNa
 
 
     return (
-      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-        <div className="mx-auto  w-11/12 max-w-4xl rounded-[4rem] eventMain bg-white ">
-          <div className="flex flex-col md:flex-row mx-auto ">
-            <div className="w-full md:w-1/2 my-8 ml-0 md:ml-10">
-              {" "}
-              {/* Side 1 */}
-              <Image
-                src={`https://www.instagram.com/p/${postUrl}/media/?size=l`}
-                height={1000}
-                width={1000}
-                alt="Event Image"
-                className="w-[85%]  mx-auto md:mx-0 rounded-3xl"
-              />
-              <div className="m-2 flex items-center">
-                <img src="./uw_ux_logo.svg" className="inline w-10 h-10"></img>
-                <p className="inline text-xl ml-2"> {clubName} </p>
-              </div>
-              <div className="ml-5 mb-8 flex items-center">
-                <img
-                  src="./calendarImage.svg"
-                  className="inline mr-2 w-6 h-6"
-                ></img>
-                <p className="inline"> Add to Calendar </p>
-              </div>
-              <div className="flex space-x-5">
-                <a
-                  href={`https://www.instagram.com/p/${postUrl}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
+
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"  onClick={handleBackdropClick}>
+          <div className="mx-auto  w-11/12 max-w-4xl rounded-[4rem] eventMain bg-white ">
+            <div className="flex flex-col md:flex-row mx-auto ">
+              <div className="w-full md:w-1/2 my-8 ml-0 md:ml-10">
+                {" "}
+                {/* Side 1 */}
+                <Image
+                  src={`https://www.instagram.com/p/${postUrl}/media/?size=l`}
+                  height={1000}
+                  width={1000}
+                  alt="Event Image"
+                  className="w-[85%]  mx-auto md:mx-0"
+                />
+                <div className="m-2 flex items-center">
+                  <img
+                    src="./uw_ux_logo.svg"
+                    className="inline w-10 h-10"
+                  ></img>
+                  <p className="inline text-xl ml-2">
+                    {" "}
+                    {clubName}{" "}
+                  </p>
+                </div>
+                <div className="ml-5 mb-8 flex items-center">
+                  <img
+                    src="./calendarImage.svg"
+                    className="inline mr-2 w-6 h-6"
+                  ></img>
+                  <p className="inline"> Add to Calendar </p>
+                </div>
+                <div className="flex space-x-5">
+                  <a
+                    href={`https://www.instagram.com/p/${postUrl}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <button
+                      className="px-4 py-2 bg-gray-300 rounded-3xl w-40"
+                      style={{ color: "rgb(76,34,104)" }}
+                    >
+                      View Post
+                    </button>
+                  </a>
                   <button
                     className=" px-4 py-2 bg-gray-300 rounded-3xl w-[200%] sm:w-[350%]"
                     style={{ color: "rgb(76,34,104)" }}
                   >
                     View Post
                   </button>
-                </a>
+
               </div>
             </div>
             <div className="flex-row w-full md:w-1/2 my-8">
