@@ -17,6 +17,11 @@ interface EventProps {
 }
 
 export default function EventMain({ title, details, start_time, end_time, clubName, description, location, postUrl, onClose }: EventProps) {
+    const handleBackdropClick = (event: React.MouseEvent<HTMLDivElement>) => {
+        if (event.target === event.currentTarget) {
+          onClose();
+        }
+      };
     // const [eventDetails, setEventDetails] = useState<events | null>(null);
     // const [isLoading, setIsLoading] = useState(true);
     // const [error, setError] = useState<string | null>(null);
@@ -55,7 +60,7 @@ export default function EventMain({ title, details, start_time, end_time, clubNa
     // }
 
     return (
-      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"  onClick={handleBackdropClick}>
           <div className="mx-auto  w-11/12 max-w-4xl rounded-[4rem] eventMain bg-white ">
             <div className="flex flex-col md:flex-row mx-auto ">
               <div className="w-full md:w-1/2 my-8 ml-0 md:ml-10">

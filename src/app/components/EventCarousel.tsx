@@ -17,6 +17,7 @@ export default function EventCarousel({ children }: EventCarouselProps) {
     autoplay: true,
     autoplaySpeed: 100,
     pauseOnHover: true,
+    arrows: false,
     responsive: [
       {
         breakpoint: 640, 
@@ -29,7 +30,7 @@ export default function EventCarousel({ children }: EventCarouselProps) {
   };
 
   return (
-    <div className="carousel-container">
+    <div className="carousel-container" >
       <Slider {...settings}>
         {children}
       </Slider>
