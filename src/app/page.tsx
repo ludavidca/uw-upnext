@@ -122,23 +122,9 @@ export default function SingleButtonPage() {
         onLogoClick={setSearchEvents}
       />
       {searchEvents.length > 0 && (
-        <div className=" flex mt-[5%] max-w-[90%]">
+        <div className="flex mt-[5%] max-w-[100%]">
           {searchEvents.map((event: events) => (
-            <div key={event._id} onClick={() => fetchEventInfo(event)}>
-              <Event
-                key={index}
-                title={event.event_details.event_name}
-                details={formatUnixTime(event.event_details.start_time)}
-                clubName={event.account}
-                description={event.event_details.event_description}
-                imgSource={event.url}
-              />
-            </div>
-          ))}
-          {/* Render this on screens smaller than 640px */}
-          <div className="block sm:hidden">
-            {searchEvents.map((event: events) => (
-              <div key={event._id} onClick={() => fetchEventInfo(event)}>
+             <div key={event._id} onClick={() => fetchEventInfo(event)} className="w-1/3">
                 <FeaturedEvent
                   title={event.event_details.event_name}
                   details={formatUnixTime(event.event_details.start_time)}
@@ -146,8 +132,7 @@ export default function SingleButtonPage() {
                   imgSource={event.url}
                 />
               </div>
-            ))}
-          </div>
+          ))}
         </div>
       )}
       {selectedCategory === "main" && searchEvents.length === 0 && (

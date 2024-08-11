@@ -63,7 +63,7 @@ export async function GET(req: NextRequest) {
           queryVector: query_emb,
           path: "embedded",
           numCandidates: 100,
-          limit: 2,
+          limit: 3,
           index: "vector_index",
         },
       },
