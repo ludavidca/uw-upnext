@@ -12,7 +12,7 @@ import internal from "stream";
 import { IntegerType } from "mongodb";
 import EventMain from "./components/EventMain";
 import { events } from "./components/types/eventType";
-
+import { formatUnixTime } from "./components/functions/gettime";
 
 export default function SingleButtonPage() {
   const [selectedCategory, setSelectedCategory] = useState("main");
@@ -27,61 +27,12 @@ export default function SingleButtonPage() {
   };
   const [showEventMain, setShowEventMain] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState<events | null>(null);
-
-  function formatUnixTime(unixTime: number) {
-    const date = new Date(unixTime * 1000);
-
-    const months = [
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December",
-    ];
-
-    function getDaySuffix(day: number) {
-      if (day >= 11 && day <= 13) {
-        return "th";
-      }
-      switch (day % 10) {
-        case 1:
-          return "st";
-        case 2:
-          return "nd";
-        case 3:
-          return "rd";
-        default:
-          return "th";
-      }
-    }
-
-    const month = months[date.getMonth()];
-    const day = date.getDate();
-    let hours = date.getHours();
-    const ampm = hours >= 12 ? "PM" : "AM";
-
-    hours = hours % 12;
-    hours = hours ? hours : 12; // the hour '0' should be '12'
-
-    const daySuffix = getDaySuffix(day);
-
-    return `${month} ${day}${daySuffix} ${hours}${ampm}`;
-  }
-
+  const [searchEvents, setSearchEvents] = useState<events[]>([]);;
 
   function getImage(url: string) {
     const thumbnail:string = `https://www.instagram.com/p/${url}/?size=l`;
     return thumbnail
   }
-
-
 
   const fetchEventInfo = (event: events) => {
     console.log(event);
@@ -164,8 +115,40 @@ export default function SingleButtonPage() {
   
   return (
     <div>
-      <Navbar />
-      {selectedCategory == "main" && (
+      <Navbar
+        setCategory={setSelectedCategory}
+        onSearch={setSearchEvents}
+        onLogoClick={setSearchEvents}
+      />
+      {searchEvents.length > 0 && (
+        <div>
+          {searchEvents.map((event: events) => (
+              <div key={event._id} onClick={() => fetchEventInfo(event)}>
+                <Event
+                  key={index}
+                  title={event.event_details.event_name}
+                  details={formatUnixTime(event.event_details.start_time)}
+                  clubName={event.account}
+                  description={event.event_details.event_description}
+                  imgSource={event.url}
+                />
+              </div>))}
+          {/* Render this on screens smaller than 640px */}
+          <div className="block sm:hidden">
+            {searchEvents.map((event: events) => (
+              <div key={event._id} onClick={() => fetchEventInfo(event)}>
+                <FeaturedEvent
+                  title={event.event_details.event_name}
+                  details={formatUnixTime(event.event_details.start_time)}
+                  clubName={event.account}
+                  imgSource={event.url}
+                />
+              </div>
+            ))}
+          </div>
+          </div>
+        )}
+      {selectedCategory === "main" && searchEvents.length === 0 && (
         <div>
           <SectionHeading text="Featured Events" />
 
@@ -210,14 +193,14 @@ export default function SingleButtonPage() {
                   title={event.event_details.event_name}
                   details={formatUnixTime(event.event_details.start_time)}
                   clubName={event.account}
-                  imgSource={"/eventImage.svg"}
+                  imgSource={event.url}
                 />
               </div>
             ))}
           </div>
         </div>
       )}
-      {selectedCategory !== "main" && (
+      {selectedCategory !== "main" && searchEvents.length === 0 && (
         <CategoryPage
           name={selectedCategory}
           main="main"

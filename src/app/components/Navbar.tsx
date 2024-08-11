@@ -1,14 +1,28 @@
 import React, { useState, KeyboardEvent } from "react";
 import { FaArrowRight } from "react-icons/fa"; // Import an arrow icon from react-icons
+import { events } from "./types/eventType";
+import { Dispatch, SetStateAction } from "react";
 
+interface NavbarProps {
+  onLogoClick: Dispatch<SetStateAction<events[]>>;
+  onSearch: (results: events[]) => void;
+  setCategory: (main: string)=> void;
+}
 
-export default function Navbar() {
-  const [index, setIndex] = useState("");
+export default function Navbar({onLogoClick, onSearch, setCategory}:NavbarProps) {
+  const [query, setQuery] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   const handleIndexChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setIndex(e.target.value);
+    setQuery(e.target.value);
   };
+
+  const handleLogoClick= () => {
+    onLogoClick([]);
+    setCategory("main");
+    setQuery("");
+  }
+
 
   const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
@@ -19,12 +33,13 @@ export default function Navbar() {
   const vectordbSearch = async () => {
     setIsLoading(true);
     try {
-      const res = await fetch(`/api/vectorEvents?index=${index}`);
+      const res = await fetch(`/api/vectorEvents?index=${query}`);
       if (!res.ok) {
         throw new Error(`HTTP error! status: ${res.status}`);
       }
       const data = await res.json();
-      console.log("Response data:", data);
+      const results = data.results
+      onSearch(results); 
     } catch (err) {
       console.error("Fetch error:", err);
     } finally {
@@ -36,7 +51,7 @@ export default function Navbar() {
     <div className="flex items-center justify-between p-3 bg-transparent">
       {/* Logo */}
       <div className="items-center hidden sm:flex">
-        <img src="./logo.svg" alt="Logo" className="w-30 h-16 " />
+        <img src="./logo.svg" alt="Logo" onClick={handleLogoClick} className="w-30 h-16 " />
       </div>
 
       {/* Search Bar */}
@@ -48,7 +63,7 @@ export default function Navbar() {
     className="flex-grow p-3 pl-10 pr-10 rounded-full bg-transparent transition-transform transform gradient-searchbar w-72 sm:hover:w-96 sm:hover:scale-110 text-center"
     onChange={handleIndexChange}
     onKeyPress={handleKeyPress}
-    value={index}
+    value={query}
   />
   {/* Arrow Icon */}
   <FaArrowRight
