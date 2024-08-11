@@ -13,9 +13,10 @@ interface EventProps {
   description: string;
   location: string;
   postUrl: string;
+  onClose: () => void;
 }
 
-export default function EventMain({ title, details, start_time, end_time, clubName, description, location, postUrl }: EventProps) {
+export default function EventMain({ title, details, start_time, end_time, clubName, description, location, postUrl, onClose }: EventProps) {
     // const [eventDetails, setEventDetails] = useState<events | null>(null);
     // const [isLoading, setIsLoading] = useState(true);
     // const [error, setError] = useState<string | null>(null);
@@ -54,9 +55,9 @@ export default function EventMain({ title, details, start_time, end_time, clubNa
     // }
 
     return (
-      <div>
-          <div className="mx-auto mt-[12%] w-11/12 max-w-4xl rounded-[4rem] eventMain">
-            <div className="flex flex-col md:flex-row mx-auto mt-[12%]">
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="mx-auto  w-11/12 max-w-4xl rounded-[4rem] eventMain bg-white ">
+            <div className="flex flex-col md:flex-row mx-auto ">
               <div className="w-full md:w-1/2 my-8 ml-0 md:ml-10">
                 {" "}
                 {/* Side 1 */}
@@ -108,11 +109,15 @@ export default function EventMain({ title, details, start_time, end_time, clubNa
               <div className="flex-row w-full md:w-1/2 my-8">
                 {" "}
                 {/* Side 2 */}
-                <p className="text-3xl mb-1">
+                <div className="flex flex-row">
+                <p className="text-3xl mb-1 inline max-w-[70%]">
                   {" "}
                   {title}{" "}
-                  <img className="inline mb-[2%]" src="./crossbutton.svg"></img>{" "}
+                  
                 </p>
+                <img className="inline mb-[2%] ml-[10%]" src="./crossbutton.svg" onClick={onClose}></img>{" "}
+                </div>
+                
                 <img className="w-full mb-3"></img>
                 <p className="text-lg mb-5">
                   {formatUnixTime(start_time)}

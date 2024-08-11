@@ -235,6 +235,8 @@ export default function SingleButtonPage() {
           start_time={selectedEvent.event_details.start_time}
           end_time={selectedEvent.event_details.end_time}
           postUrl={selectedEvent.url}
+          onClose={() => setShowEventMain(false)}
+          
         />
       )}
     </div>
