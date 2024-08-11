@@ -27,7 +27,6 @@ export default function CategoryPage({name, main, onSelectMain}: CategoryPagePro
       setShowEventMain(true);
     };
 
-    
     useEffect(()=>{
       const findSpecificEvent = async () => {
         try {
@@ -68,9 +67,8 @@ export default function CategoryPage({name, main, onSelectMain}: CategoryPagePro
             <div className=" sm:w-full border-t-2 border-gray-300" />
 
             <p className="text-m font-small text-gray-300 text-ellipsis">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation
+              Discover the latest {name} events offered by clubs at the University of Waterloo
+              with UW UpNext. Details are subject to change.
             </p>
             <div className="w-full align-middle">
               <button
@@ -92,12 +90,14 @@ export default function CategoryPage({name, main, onSelectMain}: CategoryPagePro
             className="w-full sm:w-1/2 ml-0 sm:ml-[15%] "
           />
         </div>
-        <div className="ml-[5%]">
+        <div className="ml-[5%] flex-col place-items-start">
           <SectionHeading text={`Upcoming ${name} Events`} />
 
           <div className="hidden sm:block">
             {noEvents ? (
-              <p className="ml-[2.5%] mt-[0.5%] font-medium">No Events Found</p>
+              <p className="px-5 sm:px-10 py-3 pt-2 font-medium">
+                No Events Found
+              </p>
             ) : (
               categoryEvents.map((event: events, index) => (
                 <div key={event._id} onClick={() => fetchEventInfo(event)}>
@@ -132,19 +132,18 @@ export default function CategoryPage({name, main, onSelectMain}: CategoryPagePro
           </div>
         </div>
         {showEventMain && selectedEvent && (
-        <EventMain
-          title={selectedEvent.event_details.event_name}
-          details={selectedEvent.event_details.event_description}
-          clubName={selectedEvent.account}
-          description={selectedEvent.event_details.event_description}
-          location={selectedEvent.event_details.location}
-          start_time={selectedEvent.event_details.start_time}
-          end_time={selectedEvent.event_details.end_time}
-          postUrl={selectedEvent.url}
-          onClose={() => setShowEventMain(false)}
-          
-        />
-      )}
+          <EventMain
+            title={selectedEvent.event_details.event_name}
+            details={selectedEvent.event_details.event_description}
+            clubName={selectedEvent.account}
+            description={selectedEvent.event_details.event_description}
+            location={selectedEvent.event_details.location}
+            start_time={selectedEvent.event_details.start_time}
+            end_time={selectedEvent.event_details.end_time}
+            postUrl={selectedEvent.url}
+            onClose={() => setShowEventMain(false)}
+          />
+        )}
       </div>
     );
     }

@@ -59,7 +59,15 @@ export default function EventMain({ title, details, start_time, end_time, clubNa
     //     return <div>No event details found.</div>;
     // }
 
+    const mapsUrl = (inputString: string) => {
+      const baseUrl = "https://www.google.ca/maps/search/";
+      const encodedString = inputString.replace(/ /g, "+");
+      return baseUrl + encodedString;
+    };
+
+
     return (
+
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"  onClick={handleBackdropClick}>
           <div className="mx-auto  w-11/12 max-w-4xl rounded-[4rem] eventMain bg-white ">
             <div className="flex flex-col md:flex-row mx-auto ">
@@ -104,51 +112,54 @@ export default function EventMain({ title, details, start_time, end_time, clubNa
                     </button>
                   </a>
                   <button
-                    className="px-4 py-2 bg-gray-300 rounded-3xl w-40"
+                    className=" px-4 py-2 bg-gray-300 rounded-3xl w-[200%] sm:w-[350%]"
                     style={{ color: "rgb(76,34,104)" }}
                   >
-                    Register
+                    View Post
                   </button>
-                </div>
+
               </div>
-              <div className="flex-row w-full md:w-1/2 my-8">
+            </div>
+            <div className="flex-row w-full md:w-1/2 my-8">
+              {" "}
+              {/* Side 2 */}
+              <div className="flex flex-row">
+                <p className="text-3xl mb-1 inline max-w-[70%]"> {title} </p>
+                <img
+                  className="inline mb-[2%] ml-[10%]"
+                  src="./crossbutton.svg"
+                  onClick={onClose}
+                ></img>{" "}
+              </div>
+              <img className="w-full mb-3"></img>
+              <p className="text-lg mb-5">
+                {formatUnixTime(start_time)}
+                {start_time && end_time ? " - " : ""}
+                {formatUnixTime(end_time)}
+              </p>
+              <hr className="w-[80%] mb-3"></hr>
+              <p className="w-full md:w-[80%] text-xs mb-8 line-clamp-6">
                 {" "}
-                {/* Side 2 */}
-                <div className="flex flex-row">
-                <p className="text-3xl mb-1 inline max-w-[70%]">
-                  {" "}
-                  {title}{" "}
-                  
-                </p>
-                <img className="inline mb-[2%] ml-[10%]" src="./crossbutton.svg" onClick={onClose}></img>{" "}
-                </div>
-                
-                <img className="w-full mb-3"></img>
-                <p className="text-lg mb-5">
-                  {formatUnixTime(start_time)}
-                  {start_time &&
-                  end_time
-                    ? " - "
-                    : ""}
-                  {formatUnixTime(end_time)}
-                </p>
-                <hr className="w-[80%] mb-3"></hr>
-                <p className="w-full md:w-72 text-xs mb-8">
-                  {" "}
-                  {description}{" "}
-                </p>
-                <img src="./map.svg" className="w-[90%] mb-2"></img>
-                <h2 className="mb-2 text-yellow-300 mt-2">
+                {description}{" "}
+              </p>
+              <a
+                href={mapsUrl(location)}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img src="./map.svg" className="w-[80%] mb-2"></img>
+                <h2 className="mb-2 text-yellow-300 mt-2 underline underline-offset-4">
                   <img
                     src="./pinEmoji.svg"
                     className="inline px-1 w-6 h-6"
                     alt="Pin Emoji"
-                  />{" "}
+                  />
                   {location}
                 </h2>
-              </div>
+              </a>
             </div>
           </div>
+        </div>
       </div>
     );
 }
