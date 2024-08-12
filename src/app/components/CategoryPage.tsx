@@ -91,10 +91,10 @@ export default function CategoryPage({name, main, onSelectMain}: CategoryPagePro
             className="w-full sm:w-1/2 ml-0 sm:ml-[15%] "
           />
         </div>
-        <div className="ml-[5%] flex-col place-items-start w-[70%]">
+        <div className="ml-[5%] flex-col place-items-start">
           <SectionHeading text={`Upcoming ${name} Events`} />
 
-          <div className="hidden sm:block">
+          <div className="hidden sm:block  w-[70%]">
             {noEvents ? (
               <p className="px-5 sm:px-10 py-3 pt-2 font-medium text-white">
                 No Events Found
@@ -115,7 +115,7 @@ export default function CategoryPage({name, main, onSelectMain}: CategoryPagePro
           </div>
 
           {/* Render this on screens smaller than 640px */}
-          <div className="block sm:hidden">
+          <div className="block sm:hidden  w-[70%]">
             {noEvents ? (
               <p className="ml-[2.5%] mt-[0.5%] font-medium text-white">
                 No Events Found

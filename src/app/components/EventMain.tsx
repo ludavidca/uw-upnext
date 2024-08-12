@@ -125,7 +125,7 @@ export default function EventMain({ title, details, start_time, end_time, clubNa
               {" "}
               {/* Side 2 */}
               <div className="flex flex-row">
-                <p className="text-3xl mb-1 inline max-w-[70%]"> {title} </p>
+                <p className="text-3xl mb-1 inline max-w-[70%] text-white"> {title} </p>
                 <img
                   className="inline mb-[2%] ml-[10%]"
                   src="./crossbutton.svg"
