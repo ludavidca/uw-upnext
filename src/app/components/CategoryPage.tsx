@@ -60,15 +60,16 @@ export default function CategoryPage({name, main, onSelectMain}: CategoryPagePro
                 height={40}
               />
               <div className="flex items-baseline space-x-1">
-                <p className="text-2xl font-bold">{name}</p>
+                <p className="text-2xl font-bold text-white">{name}</p>
                 <p className="text-m font-semibold text-gray-300">at UW</p>
               </div>
             </div>
             <div className=" sm:w-full border-t-2 border-gray-300" />
 
             <p className="text-m font-small text-gray-300 text-ellipsis">
-              Discover the latest {name} events offered by clubs at the University of Waterloo
-              with UW UpNext. Details are subject to change.
+              Discover the latest {name} events offered by clubs at the
+              University of Waterloo with UW UpNext. Details are subject to
+              change.
             </p>
             <div className="w-full align-middle">
               <button
@@ -95,7 +96,7 @@ export default function CategoryPage({name, main, onSelectMain}: CategoryPagePro
 
           <div className="hidden sm:block">
             {noEvents ? (
-              <p className="px-5 sm:px-10 py-3 pt-2 font-medium">
+              <p className="px-5 sm:px-10 py-3 pt-2 font-medium text-white">
                 No Events Found
               </p>
             ) : (
@@ -116,7 +117,9 @@ export default function CategoryPage({name, main, onSelectMain}: CategoryPagePro
           {/* Render this on screens smaller than 640px */}
           <div className="block sm:hidden">
             {noEvents ? (
-              <p className="ml-[2.5%] mt-[0.5%] font-medium">No Events Found</p>
+              <p className="ml-[2.5%] mt-[0.5%] font-medium text-white">
+                No Events Found
+              </p>
             ) : (
               categoryEvents.map((event: events) => (
                 <div key={event._id} onClick={() => fetchEventInfo(event)}>

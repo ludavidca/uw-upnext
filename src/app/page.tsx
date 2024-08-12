@@ -124,14 +124,18 @@ export default function SingleButtonPage() {
       {searchEvents.length > 0 && (
         <div className="flex mt-[5%] max-w-[100%]">
           {searchEvents.map((event: events) => (
-             <div key={event._id} onClick={() => fetchEventInfo(event)} className="w-1/3">
-                <FeaturedEvent
-                  title={event.event_details.event_name}
-                  details={formatUnixTime(event.event_details.start_time)}
-                  clubName={event.account}
-                  imgSource={event.url}
-                />
-              </div>
+            <div
+              key={event._id}
+              onClick={() => fetchEventInfo(event)}
+              className="w-1/3"
+            >
+              <FeaturedEvent
+                title={event.event_details.event_name}
+                details={formatUnixTime(event.event_details.start_time)}
+                clubName={event.account}
+                imgSource={event.url}
+              />
+            </div>
           ))}
         </div>
       )}
@@ -159,32 +163,33 @@ export default function SingleButtonPage() {
           {/* Render this on screens wider than 640px */}
           <div className="">
             <div className="">
-            <div className="flex flex-row ">
-              <div className="w-2/3">
-              {upcomingEvents.map((event: events) => (
-                <div key={event._id} onClick={() => fetchEventInfo(event)}>
-                  <Event
-                    key={index}
-                    title={event.event_details.event_name}
-                    details={formatUnixTime(event.event_details.start_time)}
-                    clubName={event.account}
-                    description={event.event_details.event_description}
-                    imgSource={event.url}
-                  />
+              <div className="flex flex-row ">
+                <div className="w-2/3">
+                  {upcomingEvents.map((event: events) => (
+                    <div key={event._id} onClick={() => fetchEventInfo(event)}>
+                      <Event
+                        key={index}
+                        title={event.event_details.event_name}
+                        details={formatUnixTime(event.event_details.start_time)}
+                        clubName={event.account}
+                        description={event.event_details.event_description}
+                        imgSource={event.url}
+                      />
+                    </div>
+                  ))}
                 </div>
-              ))}
+                <div className="ml-[5%] text-center">
+                  <Image
+                    src="./bigmap.svg"
+                    alt="Map of Events"
+                    width={400}
+                    height={1000}
+                  />
+                  <p className="font-semibold text-center text-white">
+                    Finding Events. Reimagined.
+                  </p>
+                </div>
               </div>
-              <div className="ml-[5%] text-center">
-                <Image
-                
-                  src="./bigmap.svg"
-                  alt="Map of Events"
-                  width={400}
-                  height={1000}
-                />
-                <p className="font-semibold text-center">Finding Events. Reimagined.</p>
-              </div>
-            </div>
             </div>
 
             {/* Render this on screens smaller than 640px */}

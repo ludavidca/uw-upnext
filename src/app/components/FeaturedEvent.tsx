@@ -20,12 +20,9 @@ export default function FeaturedEvent({ title, details, clubName, imgSource}: Ev
           className="w-[30%] m-2 ml-3 rounded-2xl"
         />
         <div className="my-auto mx-4">
-          <p className="text-lg font-medium line-clamp-2">{title}</p>
-          <p className="text-sm">{details}</p>
-          <h2 className="mb-2 text-sm text-gray-300">
-            @
-            {clubName}
-          </h2>
+          <p className="text-lg font-medium line-clamp-2 text-white">{title}</p>
+          <p className="text-sm text-white">{details}</p>
+          <h2 className="mb-2 text-sm text-gray-300">@{clubName}</h2>
         </div>
       </div>
     );

@@ -28,7 +28,7 @@ function CategoryItem({
           className="w-2/5 sm:w-1/2 ml-0"
         />
         <div className="flex-col w-full">
-          <p className="text-xl w-20 font-bold text-left">{name}  </p>
+          <p className="text-xl w-20 font-bold text-left text-white">{name} </p>
           <p className="text-xs font-semibold text-gray-200 text-left line-clamp-1">
             {eventCount} Events
           </p>

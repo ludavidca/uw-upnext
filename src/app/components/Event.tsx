@@ -21,7 +21,9 @@ export default function Event({ title, details, clubName, description, imgSource
               @{clubName}
             </h2>
           </div>
-          <p className="max-w-[35%] font-medium absolute ml-56 line-clamp-3">{description}</p>
+          <p className="max-w-[35%] font-medium absolute ml-[10%] line-clamp-3 text-white">
+            {description}
+          </p>
           <Image
             src={`https://www.instagram.com/p/${imgSource}/media/?size=l`}
             alt="Event Image"

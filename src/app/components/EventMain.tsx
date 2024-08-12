@@ -96,7 +96,7 @@ export default function EventMain({ title, details, start_time, end_time, clubNa
                     src="./uw_ux_logo.svg"
                     className="inline w-10 h-8 ml-1 "
                   ></img>
-                  <p className="inline text-xl ml-2"> {clubName} </p>
+                  <p className="inline text-xl ml-2 text-white"> {clubName} </p>
                 </div>
               </a>
               <div className="ml-5 mb-8 flex items-center">
@@ -104,7 +104,7 @@ export default function EventMain({ title, details, start_time, end_time, clubNa
                   src="./calendarImage.svg"
                   className="inline mr-2 w-6 h-6"
                 ></img>
-                <p className="inline"> Add to Calendar </p>
+                <p className="inline text-white"> Add to Calendar </p>
               </div>
               <div className="flex space-x-5">
                 <a
@@ -133,13 +133,13 @@ export default function EventMain({ title, details, start_time, end_time, clubNa
                 ></img>{" "}
               </div>
               <img className="w-full mb-3"></img>
-              <p className="text-lg mb-5">
+              <p className="text-lg mb-5 text-white">
                 {formatUnixTime(start_time)}
                 {start_time && end_time ? " - " : ""}
                 {formatUnixTime(end_time)}
               </p>
               <hr className="w-[80%] mb-3"></hr>
-              <p className="w-full md:w-[80%] text-xs mb-8 line-clamp-6">
+              <p className="w-full md:w-[80%] text-xs mb-8 line-clamp-6 text-white">
                 {" "}
                 {description}{" "}
               </p>
