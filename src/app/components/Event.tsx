@@ -12,7 +12,7 @@ interface EventProps {
 
 export default function Event({ title, details, clubName, description, imgSource }: EventProps) {
     return (
-      <div className="bg-purple-950 mx-10 mb-5 max-w-screen-md min-w-[100%] rounded-3xl font-bold event p-5 ">
+      <div className="bg-purple-750 mx-10 mb-5 max-w-[100%] min-w-[60%] rounded-3xl font-bold event p-5 ">
         <h2 className="text-xl mb-5 line-clamp-2 w-3/4">{title}</h2>
         <div className="flex flex-col md:flex-row">
           <div className="flex-grow md:pr-5">

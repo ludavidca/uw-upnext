@@ -91,7 +91,7 @@ export default function CategoryPage({name, main, onSelectMain}: CategoryPagePro
             className="w-full sm:w-1/2 ml-0 sm:ml-[15%] "
           />
         </div>
-        <div className="ml-[5%] flex-col place-items-start">
+        <div className="ml-[5%] flex-col place-items-start w-[70%]">
           <SectionHeading text={`Upcoming ${name} Events`} />
 
           <div className="hidden sm:block">
@@ -139,7 +139,7 @@ export default function CategoryPage({name, main, onSelectMain}: CategoryPagePro
             title={selectedEvent.event_details.event_name}
             details={selectedEvent.event_details.event_description}
             clubName={selectedEvent.account}
-            description={selectedEvent.event_details.event_description}
+            description={selectedEvent.caption}
             location={selectedEvent.event_details.location}
             start_time={selectedEvent.event_details.start_time}
             end_time={selectedEvent.event_details.end_time}
