@@ -5,34 +5,42 @@ import 'slick-carousel/slick/slick-theme.css';
 
 interface EventCarouselProps {
   children: React.ReactNode;
+  onEventClick: () => void;
 }
 
 export default function EventCarousel({ children }: EventCarouselProps) {
   const settings = {
     dots: false,
     infinite: true,
-    speed: 10000,
-    slidesToShow: 3,
+    speed: 500,
+    slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: true,
-    autoplaySpeed: 100,
+    autoplaySpeed: 3000,
     pauseOnHover: true,
-    arrows: false,
+    arrows: true,
+    centerMode: true,
+    centerPadding: "15%",
+    draggable: false, 
     responsive: [
       {
-        breakpoint: 640, 
+        breakpoint: 640,
         settings: {
           slidesToShow: 1,
           slidesToScroll: 1,
+          centerMode: false,
+          arrows: false,
         },
       },
     ],
   };
 
+
+
   return (
-    <div className="carousel-container" >
+    <div className="carousel-container sm:w-1/2 sm:mx-auto">
       <Slider {...settings}>
-        {children}
+      {children}
       </Slider>
     </div>
   );

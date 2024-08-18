@@ -1,0 +1,37 @@
+.
+├── README.md
+├── WebScraper
+│   ├── basePrompt.txt
+│   ├── information_for_mongo.csv
+│   ├── main.ipynb
+│   └── mongoEmbeddings.ipynb
+├── env.d.ts
+├── next-env.d.ts
+├── next.config.mjs
+
+├── package-lock.json
+├── package.json
+├── postcss.config.mjs
+├── prisma
+│   ├── migrations
+│   │   ├── 20240726191107_init
+│   │   │   └── migration.sql
+│   │   └── migration_lock.toml
+│   ├── schema.prisma
+│   └── seed
+│       ├── seed.config.ts
+│       └── seed.ts
+├── public
+│   ├── next.svg
+│   └── vercel.svg
+├── src
+│   └── app
+│       ├── favicon.ico
+│       ├── globals.css
+│       ├── layout.tsx
+│       └── page.tsx
+├── tailwind.config.ts
+├── tree_structure.txt
+└── tsconfig.json
+
+4510 directories, 37161 files

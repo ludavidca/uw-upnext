@@ -232,7 +232,7 @@ export default function SingleButtonPage() {
       )}
       <div className="px-[10%] py-[2%] text-xs font-light text-slate-500">
         <p>
-          ⚠️Legal Disclaimer: The events listed are curated by Language Learning
+          ⚠️ Legal Disclaimer: The events listed are curated by Language Learning
           Models (LLMs) based on Instagram posts and are subject to change. UW
           UpNext does not assume legal responsibility for any damages arising
           from the use of our services. We strongly recommend verifying details

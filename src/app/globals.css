@@ -98,6 +98,16 @@ input::placeholder {
   vertical-align: middle;
 }
 
+
+.carousel-container .slick-slide {
+  opacity: 0.5; /* Faded opacity for non-centered slides */
+  transition: opacity 0.5s ease;
+}
+
+.carousel-container .slick-center {
+  opacity: 1; /* Full opacity for the centered slide */
+}
+
 @keyframes marquee {
   0% { transform: translateX(100%); }
   100% { transform: translateX(-100%); }
