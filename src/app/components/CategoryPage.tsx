@@ -115,7 +115,7 @@ export default function CategoryPage({name, main, onSelectMain}: CategoryPagePro
           </div>
 
           {/* Render this on screens smaller than 640px */}
-          <div className="block sm:hidden  w-[70%]">
+          <div className="block sm:hidden  w-[90%]">
             {noEvents ? (
               <p className="ml-[2.5%] mt-[0.5%] font-medium text-white">
                 No Events Found
