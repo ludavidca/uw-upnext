@@ -30,6 +30,7 @@ export default function EventCarousel({ children }: EventCarouselProps) {
           slidesToScroll: 1,
           centerMode: false,
           arrows: false,
+          draggable: true, 
         },
       },
     ],
