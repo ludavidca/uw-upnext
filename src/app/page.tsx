@@ -141,7 +141,7 @@ export default function SingleButtonPage() {
       )}
       {selectedCategory === "main" && searchEvents.length === 0 && (
         <div>
-          <SectionHeading text="Featured Events" />
+          <SectionHeading text="Popular Events" />
 
           <EventCarousel>
             {events.map((event: events) => (
@@ -164,7 +164,7 @@ export default function SingleButtonPage() {
           <div className="">
             <div className="">
               <div className="flex flex-row ">
-                <div className="w-2/3">
+                <div className="hidden sm:w-2/3">
                   {upcomingEvents.map((event: events) => (
                     <div key={event._id} onClick={() => fetchEventInfo(event)}>
                       <Event
@@ -178,7 +178,7 @@ export default function SingleButtonPage() {
                     </div>
                   ))}
                 </div>
-                <div className="ml-[5%] text-center">
+                <div className="hidden sm: ml-[5%] text-center">
                   <Image
                     src="./bigmap.svg"
                     alt="Map of Events"
@@ -195,7 +195,7 @@ export default function SingleButtonPage() {
             {/* Render this on screens smaller than 640px */}
             <div className="block sm:hidden">
               {upcomingEvents.map((event: events) => (
-                <div key={event._id} onClick={() => fetchEventInfo(event)}>
+                <div key={event._id} onClick={() => fetchEventInfo(event)} className="py-5">
                   <FeaturedEvent
                     title={event.event_details.event_name}
                     details={formatUnixTime(event.event_details.start_time)}

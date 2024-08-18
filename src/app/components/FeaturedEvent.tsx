@@ -11,7 +11,7 @@ interface EventProps {
 export default function FeaturedEvent({ title, details, clubName, imgSource}: EventProps) {
     
     return (
-      <div className=" rounded-2xl flex flex-row mx-10 featuredevent">
+      <div className=" rounded-2xl flex mx-4 sm:mx-10 featuredevent">
         <Image
           src={`https://www.instagram.com/p/${imgSource}/media/?size=l`}
           alt="featured event image"
