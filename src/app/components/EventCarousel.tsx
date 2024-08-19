@@ -5,7 +5,6 @@ import 'slick-carousel/slick/slick-theme.css';
 
 interface EventCarouselProps {
   children: React.ReactNode;
-  onEventClick: () => void;
 }
 
 export default function EventCarousel({ children }: EventCarouselProps) {
