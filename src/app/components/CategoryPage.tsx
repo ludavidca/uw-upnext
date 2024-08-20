@@ -115,14 +115,14 @@ export default function CategoryPage({name, main, onSelectMain}: CategoryPagePro
           </div>
 
           {/* Render this on screens smaller than 640px */}
-          <div className="block sm:hidden  w-[90%]">
+          <div className="flex-col sm:hidden  w-full">
             {noEvents ? (
-              <p className="ml-[2.5%] mt-[0.5%] font-medium text-white">
+              <p className="ml-[5%] mt-[0.5%] mb-[2%] font-medium text-white">
                 No Events Found
               </p>
             ) : (
               categoryEvents.map((event: events) => (
-                <div key={event._id} onClick={() => fetchEventInfo(event)}>
+                <div key={event._id} onClick={() => fetchEventInfo(event)} className="mt-3">
                   <FeaturedEvent
                     title={event.event_details.event_name}
                     details={formatUnixTime(event.event_details.start_time)}

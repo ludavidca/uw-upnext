@@ -23,42 +23,6 @@ export default function EventMain({ title, details, start_time, end_time, clubNa
           onClose();
         }
       };
-    // const [eventDetails, setEventDetails] = useState<events | null>(null);
-    // const [isLoading, setIsLoading] = useState(true);
-    // const [error, setError] = useState<string | null>(null);
-
-    // useEffect(() => {
-    //     const findSpecificIndex = async () => {
-    //         try {
-    //             const res = await fetch(`/api/findSpecificEvent?index=${index}`);
-    //             if (!res.ok) {
-    //                 const errorData = await res.json();
-    //                 throw new Error(`HTTP error! status: ${res.status}, message: ${errorData.error || "Unknown error"}`);
-    //             }
-    //             const data = await res.json();
-    //             setEventDetails(data.results);
-    //             console.log("Response data:", data.results);
-    //         } catch (err) {
-    //             console.error("Fetch error:", err);
-    //             setError(err instanceof Error ? err.message : String(err));
-    //         } finally {
-    //             setIsLoading(false);
-    //         }
-    //     };
-    //     findSpecificIndex();
-    // }, [index]);
-
-    // if (isLoading) {
-    //     return <div>Loading...</div>;
-    // }
-
-    // if (error) {
-    //     return <div>Error: {error}</div>;
-    // }
-
-    // if (!eventDetails) {
-    //     return <div>No event details found.</div>;
-    // }
 
     const mapsUrl = (inputString: string | null) => {
       if (inputString === null) {
@@ -85,7 +49,7 @@ export default function EventMain({ title, details, start_time, end_time, clubNa
                 height={1000}
                 width={1000}
                 alt="Event Image"
-                className="w-[85%] mx-auto mt-[50%]sm:mt-0 md:mx-0 rounded-3xl mb-5"
+                className="w-[85%] mx-auto mt-[70%] sm:mt-0 md:mx-0 rounded-3xl mb-5"
               />
               <div className="ml-[10%] sm:ml-0">
                 <a
@@ -163,6 +127,7 @@ export default function EventMain({ title, details, start_time, end_time, clubNa
                     alt="Pin Emoji"
                   />
                   {location}
+                  {!location && "University of Waterloo"}
                 </h2>
               </a>
             </div>
