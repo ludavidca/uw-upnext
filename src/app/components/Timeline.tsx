@@ -18,8 +18,8 @@ export default function Timeline({ events, onClick }: timelineProps) {
       <div className="mt-10"></div>
       <div className="container sm:mx-[5%] sm:border-l-4 sm:border-white">
         {timelineData.map((date, index) => (
-          <div className="transform -translate-x-[0.65%]">
-            <div key={index} >
+          <div className="transform -translate-x-[0.65%]" key={index}>
+            <div>
               <div className="flex items-center">
                 <Image
                   src={`timelinecircle.svg`}
