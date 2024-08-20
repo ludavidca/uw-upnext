@@ -2005,8 +2005,8 @@ for (const index in response) {
 
     }
 }
-
-return timeline
+    const timelineArray = Object.entries(timeline)
+    return timelineArray
 }
 
 console.log(CreateTimeline(response))

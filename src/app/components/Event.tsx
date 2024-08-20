@@ -12,16 +12,18 @@ interface EventProps {
 
 export default function Event({ title, details, clubName, description, imgSource }: EventProps) {
     return (
-      <div className="bg-purple-750 mx-10 mb-5 max-w-[100%] min-w-[60%] rounded-3xl font-bold event p-5 ">
-        <h2 className="text-xl mb-5 line-clamp-2 w-3/4 text-white">{title}</h2>
+      <div className="bg-purple-750 mx-10 mb-5 w-[100%] rounded-3xl font-bold event p-5 ">
         <div className="flex flex-col md:flex-row">
-          <div className="flex-grow md:pr-5">
-            <h2 className="mb-2 text-base font-medium text-white">{details}</h2>
-            <h2 className="mb-2 text-sm text-slate-200 font-medium">
+          <div className="w-1/3 md:pr-5">
+            <h2 className="text-2xl mb-3 line-clamp-2 text-white">{title}</h2>
+            <h2 className="mb-2 text-base font-medium text-gray-300">
+              {details}
+            </h2>
+            <h2 className="mb-2 text-sm text-yellow-500 font-medium">
               @{clubName}
             </h2>
           </div>
-          <p className="max-w-[35%] font-medium absolute ml-[10%] line-clamp-3 text-white">
+          <p className="w-1/2 mt-4 font-medium line-clamp-3 text-white">
             {description}
           </p>
           <Image
@@ -29,7 +31,7 @@ export default function Event({ title, details, clubName, description, imgSource
             alt="Event Image"
             height={100}
             width={100}
-            className="w-full md:w-auto md:max-w-xs md:ml-5 self-start -mt-12 rounded-2xl"
+            className="w-full md:w-auto md:max-w-xs md:ml-auto rounded-2xl"
           />
         </div>
       </div>

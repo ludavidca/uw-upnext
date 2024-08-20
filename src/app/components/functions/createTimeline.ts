@@ -17,6 +17,6 @@ export function CreateTimeline(response: events[]) {
       timeline[formattedDate] = [response[index]];
     }
   }
-
-  return timeline;
+      const timelineArray = Object.entries(timeline);
+      return timelineArray;
 }
