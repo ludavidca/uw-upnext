@@ -123,7 +123,7 @@ export default function SingleButtonPage() {
         onLogoClick={setSearchEvents}
       />
       {searchEvents.length > 0 && (
-        <div>
+        <div className="flex-row sm:flex-row-reverse">
           <div className="hidden sm:flex justify-center w-screen">
             <div className="w-2/3 items-center">
               {searchEvents.map((event: events) => (
@@ -158,7 +158,7 @@ export default function SingleButtonPage() {
             ))}
           </div>
           <button
-            className="py-2 bg-gray-300 rounded-3xl w-[94%] ml-[3%] sm:ml-0 mb-10"
+            className="sm:hidden py-2 bg-gray-300 rounded-3xl w-[94%] sm:w-[20%] ml-[3%] sm:ml-[20%] mb-10"
             style={{ color: "rgb(76,34,104)" }}
             onClick={() => {
               setSearchEvents([]);

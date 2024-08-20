@@ -44,6 +44,7 @@ export default function Navbar({onLogoClick, onSearch, setCategory}:NavbarProps)
       console.error("Fetch error:", err);
     } finally {
       setIsLoading(false);
+      setQuery("");
     }
   };
 
