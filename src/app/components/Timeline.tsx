@@ -8,9 +8,10 @@ import FeaturedEvent from "./FeaturedEvent";
 
 interface timelineProps {
   events: events[];
+  onClick: (event: events) => void;
 }
 
-export default function Timeline({ events }: timelineProps) {
+export default function Timeline({ events, onClick }: timelineProps) {
   const timelineData = CreateTimeline(events);
   return (
     <div>
@@ -18,7 +19,7 @@ export default function Timeline({ events }: timelineProps) {
       <div className="container sm:mx-[5%] sm:border-l-4 sm:border-white">
         {timelineData.map((date, index) => (
           <div className="transform -translate-x-[0.65%]">
-            <div key={index}>
+            <div key={index} >
               <div className="flex items-center">
                 <Image
                   src={`timelinecircle.svg`}
@@ -33,6 +34,7 @@ export default function Timeline({ events }: timelineProps) {
               </div>
               <div className="hidden sm:flex">
                 {date[1].map((event, index) => (
+                  <div className="w-full" onClick={() => onClick(event)}>
                   <Event
                     key={event.id}
                     title={event.event_details.event_name}
@@ -40,7 +42,9 @@ export default function Timeline({ events }: timelineProps) {
                     clubName={event.account}
                     description={event.event_details.event_description}
                     imgSource={event.url}
-                  />
+                    
+                  /></div>
+
                 ))}
               </div>
               <div className="w-full sm:hidden">

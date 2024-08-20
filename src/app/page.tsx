@@ -187,7 +187,7 @@ export default function SingleButtonPage() {
           <Categories onSelectCategory={setSelectedCategory} />
 
           <SectionHeading text="Upcoming Events" />
-          <Timeline events= {upcomingEvents}/>
+          <Timeline events= {upcomingEvents} onClick={fetchEventInfo}/>
         </div>
       )}
 
