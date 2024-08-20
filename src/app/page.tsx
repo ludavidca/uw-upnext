@@ -157,6 +157,17 @@ export default function SingleButtonPage() {
               </div>
             ))}
           </div>
+          <button
+            className="py-2 bg-gray-300 rounded-3xl w-[94%] ml-[3%] sm:ml-0 mb-10"
+            style={{ color: "rgb(76,34,104)" }}
+            onClick={() => {
+              setSearchEvents([]);
+              setSelectedCategory("main");
+              setIndex("");
+            }}
+          >
+            Back to Homepage
+          </button>
         </div>
       )}
       {selectedCategory === "main" && searchEvents.length === 0 && (
