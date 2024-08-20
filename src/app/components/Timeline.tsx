@@ -34,7 +34,7 @@ export default function Timeline({ events }: timelineProps) {
               <div className="hidden sm:flex">
                 {date[1].map((event, index) => (
                   <Event
-                    key={event.id}
+                    key={index}
                     title={event.event_details.event_name}
                     details={formatUnixTime(event.event_details.start_time)}
                     clubName={event.account}
@@ -44,8 +44,9 @@ export default function Timeline({ events }: timelineProps) {
                 ))}
               </div>
               <div className="w-full sm:hidden">
-                {date[1].map((event: events) => (
+                {date[1].map((event: events, index) => (
                   <FeaturedEvent
+                    key={index}
                     title={event.event_details.event_name}
                     details={formatUnixTime(event.event_details.start_time)}
                     clubName={event.account}
