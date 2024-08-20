@@ -5,8 +5,8 @@ export interface event_details {
   event_description: string;
   categories: string;
   start_time: number;
-  end_time: number;
-  location: string;
+  end_time: number | null;
+  location: string | null;
 }
 
 export interface events {
@@ -14,12 +14,13 @@ export interface events {
   account: string;
   date: string;
   caption: string;
+  accessibility_caption: string;
   hashtags: string;
   id: number;
   url: string;
   likes: number;
   display_photo: string;
   is_event: boolean;
-  embedded: Float64Array;
+  embedded: number[][];
   event_details: event_details;
 }

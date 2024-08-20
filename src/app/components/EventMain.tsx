@@ -3,15 +3,16 @@ import { useEffect, useState } from "react";
 import { events } from "./types/eventType";
 import { formatUnixTime } from "./functions/gettime";
 import Image from "next/image";
+import { isNull } from "util";
 
 interface EventProps {
   title: string;
   start_time: number;
-  end_time: number;
+  end_time: number | null;
   details: string;
   clubName: string;
   description: string;
-  location: string;
+  location: string | null;
   postUrl: string;
   onClose: () => void;
 }
@@ -59,7 +60,7 @@ export default function EventMain({ title, details, start_time, end_time, clubNa
     //     return <div>No event details found.</div>;
     // }
 
-    const mapsUrl = (inputString: string) => {
+    const mapsUrl = (inputString: string | null) => {
       if (inputString === null) {
         return "https://www.google.ca/maps/search/university+of+waterloo";
       }
@@ -142,7 +143,7 @@ export default function EventMain({ title, details, start_time, end_time, clubNa
               <p className="text-lg mb-5 text-white">
                 {formatUnixTime(start_time)}
                 {start_time && end_time ? " - " : ""}
-                {formatUnixTime(end_time)}
+                {end_time!==null && formatUnixTime(end_time)}
               </p>
               <hr className="w-[80%] mb-3"></hr>
               <p className="w-[80%] md:w-[80%] text-xs mb-8 line-clamp-6 text-white">
