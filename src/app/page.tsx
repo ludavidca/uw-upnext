@@ -212,7 +212,7 @@ export default function SingleButtonPage() {
           onClose={() => setShowEventMain(false)}
         />
       )}
-      <div className="px-[10%] py-[2%] text-xs font-light text-slate-500">
+      <div className="px-[10%] py-[2%] text-xs font-light mt-10 text-slate-500">
         <p>
           ⚠️ Legal Disclaimer: The events listed are curated by Language
           Learning Models (LLMs) based on Instagram posts and are subject to
