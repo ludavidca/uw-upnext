@@ -6,15 +6,11 @@ import Event from "./components/Event";
 import FeaturedEvent from "./components/FeaturedEvent";
 import Categories from "./components/Categories";
 import CategoryPage from "./components/CategoryPage";
-//import React from 'react';
 import EventCarousel from './components/EventCarousel';
-import internal from "stream";
-import { IntegerType } from "mongodb";
 import EventMain from "./components/EventMain";
 import { events } from "./components/types/eventType";
 import { formatUnixTime } from "./components/functions/gettime";
-import Image from "next/image";
-import { handleClientScriptLoad } from "next/script";
+import Timeline from "./components/Timeline"
 
 export default function SingleButtonPage() {
   const [selectedCategory, setSelectedCategory] = useState("main");
@@ -191,41 +187,7 @@ export default function SingleButtonPage() {
           <Categories onSelectCategory={setSelectedCategory} />
 
           <SectionHeading text="Upcoming Events" />
-          {/* Render this on screens wider than 640px */}
-          <div className="hidden sm:flex justify-center w-screen">
-            <div className="w-2/3 items-center">
-              {upcomingEvents.map((event: events) => (
-                <div key={event._id} onClick={() => fetchEventInfo(event)}>
-                  <Event
-                    key={index}
-                    title={event.event_details.event_name}
-                    details={formatUnixTime(event.event_details.start_time)}
-                    clubName={event.account}
-                    description={event.event_details.event_description}
-                    imgSource={event.url}
-                  />
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Render this on screens smaller than 640px */}
-          <div className="w-full sm:hidden">
-            {upcomingEvents.map((event: events) => (
-              <div
-                key={event._id}
-                onClick={() => fetchEventInfo(event)}
-                className="py-5"
-              >
-                <FeaturedEvent
-                  title={event.event_details.event_name}
-                  details={formatUnixTime(event.event_details.start_time)}
-                  clubName={event.account}
-                  imgSource={event.url}
-                />
-              </div>
-            ))}
-          </div>
+          <Timeline events= {upcomingEvents}/>
         </div>
       )}
 
