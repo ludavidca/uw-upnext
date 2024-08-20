@@ -60,7 +60,7 @@ export default function Navbar({onLogoClick, onSearch, setCategory}:NavbarProps)
   <input
     type="text"
     placeholder="Search Topics"
-    className="flex-grow p-3 pl-10 pr-10 rounded-full bg-transparent transition-transform transform gradient-searchbar w-72 sm:hover:w-96 sm:hover:scale-110 text-center"
+    className="flex-grow p-3 pl-10 pr-10 rounded-full bg-transparent transition-transform transform gradient-searchbar w-72 sm:hover:w-96 sm:hover:scale-110 text-center text-white"
     onChange={handleIndexChange}
     onKeyPress={handleKeyPress}
     value={query}
