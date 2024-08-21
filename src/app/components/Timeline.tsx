@@ -25,7 +25,7 @@ export default function Timeline({ events, onClick }: timelineProps) {
                   src={`timelinecircle.svg`}
                   alt={``}
                   width={20}
-                  height={20}   
+                  height={20}
                   className="w-0 sm:w-4 mb-3"
                 />
                 <p className="ml-5 sm:ml-5 mb-3 mt-7 sm:mt-0 font-medium text-xl text-white">
@@ -34,18 +34,19 @@ export default function Timeline({ events, onClick }: timelineProps) {
               </div>
               <div className="hidden sm:flex">
                 {date[1].map((event, index) => (
-                  <div className="w-full" onClick={() => onClick(event)}>
-                  <Event
+                  <div
+                    className="w-full"
+                    onClick={() => onClick(event)}
                     key={index}
-                    title={event.event_details.event_name}
-                    details={formatUnixTime(event.event_details.start_time)}
-                    clubName={event.account}
-                    description={event.event_details.event_description}
-                    imgSource={event.url}
-                    
-                  />
+                  >
+                    <Event
+                      title={event.event_details.event_name}
+                      details={formatUnixTime(event.event_details.start_time)}
+                      clubName={event.account}
+                      description={event.event_details.event_description}
+                      imgSource={event.url}
+                    />
                   </div>
-
                 ))}
               </div>
               <div className="w-full sm:hidden">
