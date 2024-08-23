@@ -18,7 +18,7 @@ function CategoryItem({
       className="flex hover:bg-purple-900 rounded-3xl"
       onClick={() => onSelectCategory(name)}
     >
-      <button className="flex items-center space-x-4 ml-5 sm:p-5">
+      <button className="flex items-center space-x-4 ml-5 sm:ml-0 sm:p-3">
         <Image
           src={`/categoryIcons/${lowName}.svg`}
           alt={`${name} icon`}
