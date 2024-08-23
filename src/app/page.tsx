@@ -168,7 +168,9 @@ export default function SingleButtonPage() {
       )}
       {selectedCategory === "main" && searchEvents.length === 0 && (
         <div>
-          <SectionHeading text="Popular Events" />
+          
+          <div className="  flex flex-row my-10 border-2 mx-[2.7%] rounded-3xl py-5 gradient_border "> 
+            <h1 className="text-4xl mt-6 mx-auto">Finding Events. <br></br> Made Better.</h1>
 
           <EventCarousel>
             {events.map((event: events) => (
@@ -182,6 +184,7 @@ export default function SingleButtonPage() {
               </div>
             ))}
           </EventCarousel>
+          </div>
 
           <SectionHeading text="Categories" />
           <Categories onSelectCategory={setSelectedCategory} />

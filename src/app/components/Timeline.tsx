@@ -49,12 +49,14 @@ export default function Timeline({ events, onClick }: timelineProps) {
               </div>
               <div className="w-full sm:hidden">
                 {date[1].map((event: events) => (
+                  <div className="" onClick={() => onClick(event)}>
                   <FeaturedEvent
                     title={event.event_details.event_name}
                     details={formatUnixTime(event.event_details.start_time)}
                     clubName={event.account}
                     imgSource={event.url}
-                  />
+
+                  /></div>
                 ))}
               </div>
             </div>

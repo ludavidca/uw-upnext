@@ -27,10 +27,10 @@ body {
       
       rgb(var(--background-middle-rgb)),
       rgb(var(--background-end-rgb)),
+      rgb(var(--background-end-rgb)),
       rgb(var(--background-end-rgb))
     )
-    no-repeat;
-    
+    no-repeat;    
 }
 
 @layer utilities {
@@ -55,6 +55,8 @@ body {
     #763BA5, 
     #724594  
   );
+
+  background: linear-gradient(to right, #5C3BDF80, #7B32B580, #763BA580, #C3626480);
 }
 
 /* Placeholder styles */
@@ -73,7 +75,9 @@ input::placeholder {
 
 .event {
   background-color: rgb(62, 43, 75);
+  background: linear-gradient(to right, #3F2A94, #4F2074, #623485, #74393A);
 }
+
 
 .eventMain {
   background: linear-gradient(
@@ -83,10 +87,12 @@ input::placeholder {
     #170E1C,
     #301541
   );
+  background: linear-gradient(to bottom, #3F2A94, #4F2074, #623485, #74393A);
 }
 
 .featuredevent {
   background-color:  rgb(62, 43, 75);
+  background: linear-gradient(to right, #3F2A94, #4F2074, #623485, #74393A);
 }
 
 .pinimage {
@@ -111,4 +117,18 @@ input::placeholder {
 @keyframes marquee {
   0% { transform: translateX(100%); }
   100% { transform: translateX(-100%); }
+}
+
+.gradient_border {
+  border-color: linear-gradient(to right, #5C3BDF80, #7B32B580, #763BA580, #C3626480) 1;
+  border-radius: 1.5rem;
+}
+
+.gradient {
+  background: linear-gradient(to right, #5C3BDF80, #7B32B580, #763BA580, #C3626480) 1;
+}
+
+body{
+  background: linear-gradient(to right, #5C3BDF80, #7B32B580, #763BA580, #C3626480) 1;
+
 }
