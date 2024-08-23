@@ -15,7 +15,7 @@ export default function Timeline({ events, onClick }: timelineProps) {
   const timelineData = CreateTimeline(events);
   return (
     <div>
-      <div className="mt-10"></div>
+      <div className="mt-5"></div>
       <div className="container sm:mx-[5%] sm:border-l-4 sm:border-white">
         {timelineData.map((date, index) => (
           <div className="transform -translate-x-[0.65%]" key={index}>
@@ -34,29 +34,33 @@ export default function Timeline({ events, onClick }: timelineProps) {
               </div>
               <div className="hidden sm:flex">
                 {date[1].map((event, index) => (
-                  <div className="w-full" onClick={() => onClick(event)}>
-                  <Event
-                    key={event.id}
-                    title={event.event_details.event_name}
-                    details={formatUnixTime(event.event_details.start_time)}
-                    clubName={event.account}
-                    description={event.event_details.event_description}
-                    imgSource={event.url}
-                    
-                  /></div>
-
+                  <div
+                    className="w-full"
+                    onClick={() => onClick(event)}
+                    key={index}
+                  >
+                    <Event
+                      title={event.event_details.event_name}
+                      details={formatUnixTime(event.event_details.start_time)}
+                      clubName={event.account}
+                      description={event.event_details.event_description}
+                      imgSource={event.url}
+                    />
+                  </div>
                 ))}
               </div>
               <div className="w-full sm:hidden">
-                {date[1].map((event: events) => (
-                  <div className="" onClick={() => onClick(event)}>
-                  <FeaturedEvent
-                    title={event.event_details.event_name}
-                    details={formatUnixTime(event.event_details.start_time)}
-                    clubName={event.account}
-                    imgSource={event.url}
 
-                  /></div>
+                {date[1].map((event: events, index) => (
+                  <div onClick={() => onClick(event)} key={index}>
+                    <FeaturedEvent
+                      title={event.event_details.event_name}
+                      details={formatUnixTime(event.event_details.start_time)}
+                      clubName={event.account}
+                      imgSource={event.url}
+                    />
+                  </div>
+
                 ))}
               </div>
             </div>
@@ -66,3 +70,4 @@ export default function Timeline({ events, onClick }: timelineProps) {
     </div>
   );
 }
+

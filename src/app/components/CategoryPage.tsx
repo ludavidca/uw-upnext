@@ -6,6 +6,7 @@ import { formatUnixTime } from "./functions/gettime";
 import { events } from "./types/eventType";
 import FeaturedEvent from "./FeaturedEvent";
 import EventMain from "./EventMain";
+import Timeline from "./Timeline";
 
 interface CategoryPageProps {
   name: string;
@@ -93,46 +94,16 @@ export default function CategoryPage({name, main, onSelectMain}: CategoryPagePro
         </div>
         <div className="ml-[5%] flex-col place-items-start">
           <SectionHeading text={`Upcoming ${name} Events`} />
-
-          <div className="hidden sm:block  w-[70%]">
+          <div className="hidden sm:block  w-[100%]">
             {noEvents ? (
               <p className="px-5 sm:px-10 py-3 pt-2 font-medium text-white">
                 No Events Found
               </p>
             ) : (
-              categoryEvents.map((event: events, index) => (
-                <div key={event._id} onClick={() => fetchEventInfo(event)}>
-                  <Event
-                    title={event.event_details.event_name}
-                    details={formatUnixTime(event.event_details.start_time)}
-                    clubName={event.account}
-                    description={event.event_details.event_description}
-                    imgSource={event.url}
-                  />
-                </div>
-              ))
+              <Timeline events={categoryEvents} onClick={fetchEventInfo} />
             )}
           </div>
 
-          {/* Render this on screens smaller than 640px */}
-          <div className="flex-col sm:hidden  w-full">
-            {noEvents ? (
-              <p className="ml-[5%] mt-[0.5%] mb-[2%] font-medium text-white">
-                No Events Found
-              </p>
-            ) : (
-              categoryEvents.map((event: events) => (
-                <div key={event._id} onClick={() => fetchEventInfo(event)} className="mt-3">
-                  <FeaturedEvent
-                    title={event.event_details.event_name}
-                    details={formatUnixTime(event.event_details.start_time)}
-                    clubName={event.account}
-                    imgSource={event.url}
-                  />
-                </div>
-              ))
-            )}
-          </div>
         </div>
         {showEventMain && selectedEvent && (
           <EventMain
