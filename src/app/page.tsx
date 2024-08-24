@@ -142,7 +142,8 @@ export default function SingleButtonPage() {
                     details={formatUnixTime(event.event_details.start_time)}
                     clubName={event.account}
                     description={event.event_details.event_description}
-                    imgSource={event.url}
+                    imgSource={event.display_photo}
+                    url={event.url}
                   />
                 </div>
               ))}
@@ -160,7 +161,8 @@ export default function SingleButtonPage() {
                   title={event.event_details.event_name}
                   details={formatUnixTime(event.event_details.start_time)}
                   clubName={event.account}
-                  imgSource={event.url}
+                  imgSource={event.display_photo}
+                  url={event.url}
                 />
               </div>
             ))}
@@ -180,52 +182,51 @@ export default function SingleButtonPage() {
       )}
       {selectedCategory === "main" && searchEvents.length === 0 && (
         <div>
-          
           {isSmallScreen ? (
-        // If screen size is less than 640px
-        <EventCarousel>
-          {events.map((event: events) => (
-            <div key={event._id} onClick={() => fetchEventInfo(event)}>
-              <FeaturedEvent
-                title={event.event_details.event_name}
-                details={formatUnixTime(event.event_details.start_time)}
-                clubName={event.account}
-                imgSource={event.url}
-              />
+            // If screen size is less than 640px
+            <EventCarousel>
+              {events.map((event: events) => (
+                <div key={event._id} onClick={() => fetchEventInfo(event)}>
+                  <FeaturedEvent
+                    title={event.event_details.event_name}
+                    details={formatUnixTime(event.event_details.start_time)}
+                    clubName={event.account}
+                    imgSource={event.display_photo}
+                    url={event.url}
+                  />
+                </div>
+              ))}
+            </EventCarousel>
+          ) : (
+            // If screen size is more than 640px
+            <div className="hidden sm:flex flex-row my-10 border-2 mx-[2.7%] rounded-3xl py-5 gradient_border">
+              <h1 className="text-4xl mt-6 mx-auto">
+                Finding Events. <br /> Made Better.
+              </h1>
+
+              <EventCarousel>
+                {events.map((event: events) => (
+                  <div key={event._id} onClick={() => fetchEventInfo(event)}>
+                    <FeaturedEvent
+                      title={event.event_details.event_name}
+                      details={formatUnixTime(event.event_details.start_time)}
+                      clubName={event.account}
+                      imgSource={event.display_photo}
+                      url={event.url}
+                    />
+                  </div>
+                ))}
+              </EventCarousel>
             </div>
-          ))}
-        </EventCarousel>
-      ) : (
-        // If screen size is more than 640px
-        <div className="hidden sm:flex flex-row my-10 border-2 mx-[2.7%] rounded-3xl py-5 gradient_border">
-          <h1 className="text-4xl mt-6 mx-auto">
-            Finding Events. <br /> Made Better.
-          </h1>
-
-          <EventCarousel>
-            {events.map((event: events) => (
-              <div key={event._id} onClick={() => fetchEventInfo(event)}>
-                <FeaturedEvent
-                  title={event.event_details.event_name}
-                  details={formatUnixTime(event.event_details.start_time)}
-                  clubName={event.account}
-                  imgSource={event.url}
-                />
-              </div>
-            ))}
-          </EventCarousel>
-        </div>
-      )}
-
-         
+          )}
 
           <SectionHeading text="Categories" />
           <div>
-          <Categories onSelectCategory={setSelectedCategory} />
+            <Categories onSelectCategory={setSelectedCategory} />
           </div>
 
           <SectionHeading text="Upcoming Events" />
-          <Timeline events= {upcomingEvents} onClick={fetchEventInfo}/>
+          <Timeline events={upcomingEvents} onClick={fetchEventInfo} />
         </div>
       )}
 
@@ -248,6 +249,7 @@ export default function SingleButtonPage() {
           end_time={selectedEvent.event_details.end_time}
           postUrl={selectedEvent.url}
           onClose={() => setShowEventMain(false)}
+          imgUrl={selectedEvent.display_photo}
         />
       )}
       <div className="px-[10%] py-[2%] text-xs font-light mt-10 text-slate-500">

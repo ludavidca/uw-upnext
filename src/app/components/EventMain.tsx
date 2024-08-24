@@ -14,10 +14,11 @@ interface EventProps {
   description: string;
   location: string | null;
   postUrl: string;
+  imgUrl: string;
   onClose: () => void;
 }
 
-export default function EventMain({ title, details, start_time, end_time, clubName, description, location, postUrl, onClose }: EventProps) {
+export default function EventMain({ title, details, start_time, end_time, clubName, description, location, postUrl, onClose, imgUrl }: EventProps) {
     const handleBackdropClick = (event: React.MouseEvent<HTMLDivElement>) => {
         if (event.target === event.currentTarget) {
           onClose();
@@ -44,16 +45,30 @@ export default function EventMain({ title, details, start_time, end_time, clubNa
             <div className="w-full md:w-1/2 my-8 ml-0 md:ml-10">
               {" "}
               {/* Side 1 */}
-              <Image
-                src={`https://www.instagram.com/p/${postUrl}/media/?size=l`}
-                height={1000}
-                width={1000}
-                alt="Event Image"
-                className="w-[85%] mx-auto mt-[100%] sm:mt-0 md:mx-0 rounded-3xl mb-5"
-              />
+              {clubName === "WUSA" ? (
+                <Image
+                  src={imgUrl}
+                  height={1000}
+                  width={1000}
+                  alt="Event Image"
+                  className="w-[85%] h-[65%] mx-auto mt-[100%] sm:mt-0 md:mx-0 rounded-3xl mb-5 object-cover"
+                />
+              ) : (
+                <Image
+                  src={`https://www.instagram.com/p/${postUrl}/media/?size=l`}
+                  height={1000}
+                  width={1000}
+                  alt="Event Image"
+                  className="w-[85%] mx-auto mt-[100%] sm:mt-0 md:mx-0 rounded-3xl mb-5"
+                />
+              )}
               <div className="ml-[10%] sm:ml-0">
                 <a
-                  href={`https://www.instagram.com/${clubName}`}
+                  href={
+                    clubName === "WUSA"
+                      ? `https://www.instagram.com/yourwusa`
+                      : `https://www.instagram.com/${clubName}`
+                  }
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -77,7 +92,11 @@ export default function EventMain({ title, details, start_time, end_time, clubNa
                 </div>
               </div>
               <a
-                href={`https://www.instagram.com/p/${postUrl}`}
+                href={
+                  clubName === "WUSA"
+                    ? `${imgUrl}`
+                    : `https://www.instagram.com/p/${postUrl}`
+                }
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -107,7 +126,7 @@ export default function EventMain({ title, details, start_time, end_time, clubNa
               <p className="text-lg mb-5 text-white">
                 {formatUnixTime(start_time)}
                 {start_time && end_time ? " - " : ""}
-                {end_time!==null && formatUnixTime(end_time)}
+                {end_time !== null && formatUnixTime(end_time)}
               </p>
               <hr className="w-[80%] mb-3"></hr>
               <p className="w-[80%] md:w-[80%] text-xs mb-8 line-clamp-6 text-white">

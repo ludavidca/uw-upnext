@@ -7,10 +7,11 @@ interface EventProps {
   clubName: string;
   description: string;
   imgSource: string;
+  url: string;
 }
 
 
-export default function Event({ title, details, clubName, description, imgSource }: EventProps) {
+export default function Event({ title, details, clubName, description, url, imgSource }: EventProps) {
     return (
       <div className="bg-purple-750 mx-10 mb-5 w-[90%] rounded-3xl font-bold event p-5 ">
         <div className="flex flex-col md:flex-row">
@@ -27,11 +28,11 @@ export default function Event({ title, details, clubName, description, imgSource
             {description}
           </p>
           <Image
-            src={`https://www.instagram.com/p/${imgSource}/media/?size=l`}
+            src={clubName === "WUSA"? `${imgSource}` : `https://www.instagram.com/p/${url}/media/?size=l`}
             alt="Event Image"
             height={100}
             width={100}
-            className="w-full md:w-auto md:max-w-xs md:ml-auto rounded-2xl"
+            className="w-full md:w-auto md:max-w-xs md:ml-auto rounded-2xl object-cover"
           />
         </div>
       </div>

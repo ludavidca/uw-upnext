@@ -116,6 +116,7 @@ export default function CategoryPage({name, main, onSelectMain}: CategoryPagePro
             end_time={selectedEvent.event_details.end_time}
             postUrl={selectedEvent.url}
             onClose={() => setShowEventMain(false)}
+            imgUrl={selectedEvent.display_photo}
           />
         )}
       </div>
