@@ -31,6 +31,11 @@ body {
       rgb(var(--background-end-rgb))
     )
     no-repeat;    
+
+
+    background: linear-gradient(180deg, rgba(34, 209, 253) -1.14%, rgba(39, 71, 117) -1.14%, rgba(39, 71, 117) -0.16%, rgba(35, 55, 82) 2.13%, rgba(33, 43, 57) 4.65%, rgba(29, 30, 37) 8.75%);
+
+    
 }
 
 @layer utilities {
