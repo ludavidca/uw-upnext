@@ -19,6 +19,18 @@ export default function SingleButtonPage() {
   const [events, setEvents] = useState<events[]>([]);
   const [categoryEvents, setCategoryEvents] = useState<events[]>([]);
   const [upcomingEvents, setUpcomingEvents] = useState<events[]>([]);
+  const [isSmallScreen, setIsSmallScreen] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsSmallScreen(window.innerWidth < 640);
+    };
+
+
+    handleResize();
+
+    window.addEventListener("resize", handleResize); }
+  )
   const handleIndexChange = (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     setIndex(e.target.value);
@@ -169,8 +181,26 @@ export default function SingleButtonPage() {
       {selectedCategory === "main" && searchEvents.length === 0 && (
         <div>
           
-          <div className="  flex flex-row my-10 border-2 mx-[2.7%] rounded-3xl py-5 gradient_border "> 
-            <h1 className="text-4xl mt-6 mx-auto">Finding Events. <br></br> Made Better.</h1>
+          {isSmallScreen ? (
+        // If screen size is less than 640px
+        <EventCarousel>
+          {events.map((event: events) => (
+            <div key={event._id} onClick={() => fetchEventInfo(event)}>
+              <FeaturedEvent
+                title={event.event_details.event_name}
+                details={formatUnixTime(event.event_details.start_time)}
+                clubName={event.account}
+                imgSource={event.url}
+              />
+            </div>
+          ))}
+        </EventCarousel>
+      ) : (
+        // If screen size is more than 640px
+        <div className="hidden sm:flex flex-row my-10 border-2 mx-[2.7%] rounded-3xl py-5 gradient_border">
+          <h1 className="text-4xl mt-6 mx-auto">
+            Finding Events. <br /> Made Better.
+          </h1>
 
           <EventCarousel>
             {events.map((event: events) => (
@@ -184,7 +214,10 @@ export default function SingleButtonPage() {
               </div>
             ))}
           </EventCarousel>
-          </div>
+        </div>
+      )}
+
+         
 
           <SectionHeading text="Categories" />
           <div>
