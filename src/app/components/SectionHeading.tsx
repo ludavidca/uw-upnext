@@ -6,7 +6,7 @@ interface SectionHeadingProps {
 
 export default function SectionHeading({ text }: SectionHeadingProps) {
     return (
-      <div className="px-5 sm:px-10 py-3 pt-10">
+      <div className="px-10 sm:pt-16 py-3">
         <h1 className="text-3xl font-semibold text-gray-100">{text}</h1>
       </div>
     );
