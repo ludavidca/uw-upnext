@@ -77,7 +77,7 @@ export default function EventCarousel({ children }: EventCarouselProps) {
   };
 
   return (
-    <div className="carousel-container sm:w-1/2 sm:mx-auto relative">
+    <div className="carousel-container sm:w-1/2 sm:mx-auto relative my-12">
       <Slider {...settings}>
         {children}
       </Slider>

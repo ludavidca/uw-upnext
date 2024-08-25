@@ -201,8 +201,8 @@ export default function SingleButtonPage() {
             </EventCarousel>
           ) : (
             // If screen size is more than 640px
-            <div className="hidden sm:flex flex-row my-10  mx-[2.7%] rounded-3xl py-5 gradient_border">
-              <h1 className="text-4xl mt-6 mx-auto">
+            <div className="hidden sm:flex flex-row mt-10 mx-[2.7%] rounded-3xl gradient_border">
+              <h1 className="text-4xl align-middle my-auto mt-6 mx-auto">
                 Finding Events. <br /> Made Better.
               </h1>
 
@@ -231,14 +231,14 @@ export default function SingleButtonPage() {
             <SectionHeading text="Upcoming Events" />
           </div>
           <div className="flex flex-row max-w-full">
-            <div className="w-[70%]">
+            <div className="w-full">
               <Timeline events={upcomingEvents} onClick={fetchEventInfo} />
             </div>
             <Calendar
               mode="single"
               selected={date}
               onSelect={setDate}
-              className="rounded-2xl border-2  hidden sm:flex h-[40%] gradient_border"
+              className="hidden h-[40%] gradient_border"
             />
           </div>
         </div>
