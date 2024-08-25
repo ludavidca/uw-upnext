@@ -31,7 +31,8 @@ export default function EventMain({ title, details, start_time, end_time, clubNa
       }
       const baseUrl = "https://www.google.ca/maps/search/";
       const encodedString = inputString.replace(/ /g, "+");
-      return baseUrl + encodedString;
+      const universitycoords = "/@43.4722893,-80.5474325,17z/";
+      return baseUrl + encodedString + universitycoords;
     };
 
 
@@ -94,7 +95,7 @@ export default function EventMain({ title, details, start_time, end_time, clubNa
               <a
                 href={
                   clubName === "WUSA"
-                    ? `${imgUrl}`
+                    ? `${postUrl}`
                     : `https://www.instagram.com/p/${postUrl}`
                 }
                 target="_blank"

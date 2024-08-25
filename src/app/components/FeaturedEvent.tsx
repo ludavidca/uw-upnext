@@ -14,21 +14,23 @@ export default function FeaturedEvent({ title, details, clubName, imgSource, url
     return (
       <div>
         <div className=" rounded-2xl flex mx-4 sm:mx-10 sm:p-0 featuredevent">
-          {clubName === "WUSA"
-                ? (<Image
-            src={imgSource}
-            alt="featured event image"
-            width={1000}
-            height={1000}
-            className="w-[35%] m-2 ml-3 rounded-2xl object-cover"
-          />) :
-          (<Image
-            src={`https://www.instagram.com/p/${url}/media/?size=l`}
-            alt="featured event image"
-            width={1000}
-            height={1000}
-            className="w-[35%] h-[100%] m-2 ml-3 rounded-2xl object-cover"
-          />)}
+          {clubName === "WUSA" ? (
+            <Image
+              src={imgSource}
+              alt="featured event image"
+              width={1000}
+              height={1000}
+              className="object-cover w-[35%] m-2 ml-3 rounded-2xl"
+            />
+          ) : (
+            <Image
+              src={`https://www.instagram.com/p/${url}/media/?size=l`}
+              alt="featured event image"
+              width={1000}
+              height={1000}
+              className="w-[35%] h-[100%] m-2 ml-3 rounded-2xl object-cover"
+            />
+          )}
           <div className="my-auto mx-4">
             <p className="text-lg font-medium line-clamp-2 text-white">
               {title}

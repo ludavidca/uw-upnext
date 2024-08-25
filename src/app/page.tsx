@@ -11,6 +11,7 @@ import EventMain from "./components/EventMain";
 import { events } from "./components/types/eventType";
 import { formatUnixTime } from "./components/functions/gettime";
 import Timeline from "./components/Timeline"
+import { Calendar } from "@/app/components/ui/calendar";
 
 export default function SingleButtonPage() {
   const [selectedCategory, setSelectedCategory] = useState("main");
@@ -20,6 +21,7 @@ export default function SingleButtonPage() {
   const [categoryEvents, setCategoryEvents] = useState<events[]>([]);
   const [upcomingEvents, setUpcomingEvents] = useState<events[]>([]);
   const [isSmallScreen, setIsSmallScreen] = useState(false);
+  const [date, setDate] = React.useState<Date | undefined>(new Date());
 
   useEffect(() => {
     const handleResize = () => {
@@ -224,10 +226,19 @@ export default function SingleButtonPage() {
           <div>
             <Categories onSelectCategory={setSelectedCategory} />
           </div>
-
           <SectionHeading text="Upcoming Events" />
-          <Timeline events={upcomingEvents} onClick={fetchEventInfo} />
-        </div>
+            <div className="flex flex-row max-w-full">
+            <div className="w-2/3">
+            <Timeline events={upcomingEvents} onClick={fetchEventInfo} />
+            </div>
+              <Calendar
+                mode="single"
+                selected={date}
+                onSelect={setDate}
+                className="rounded-2xl border hidden sm:flex h-[40%]"
+              />
+            </div>
+          </div>
       )}
 
       {selectedCategory !== "main" && searchEvents.length === 0 && (
