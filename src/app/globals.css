@@ -125,9 +125,29 @@ input::placeholder {
 }
 
 .gradient_border {
-  border-color: linear-gradient(to right, #5C3BDF80, #7B32B580, #763BA580, #C3626480) 1;
+  position: relative;
   border-radius: 1.5rem;
+  padding: 4px; /* Adjust based on desired border width */
 }
+
+.gradient_border::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: inherit;
+  padding: 4px; /* Should match the parent's padding */
+  background: linear-gradient(to right, #5C3BDF80, #7B32B580, #763BA580, #C3626480);
+  -webkit-mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
 
 .gradient {
   background: linear-gradient(to right, #5C3BDF80, #7B32B580, #763BA580, #C3626480) 1;
