@@ -13,14 +13,14 @@ export default function FeaturedEvent({ title, details, clubName, imgSource, url
     
     return (
       <div>
-        <div className=" rounded-2xl flex mx-4 sm:mx-10 sm:p-0 featuredevent">
+        <div className=" rounded-2xl flex mx-4 sm:mx-10 sm:p-0 featuredevent min-h-40">
           {clubName === "WUSA" ? (
             <Image
               src={imgSource}
               alt="featured event image"
               width={1000}
               height={1000}
-              className="object-cover w-[35%] m-2 ml-3 rounded-2xl"
+              className=" w-[35%] m-2 ml-3 rounded-2xl object-cover"
             />
           ) : (
             <Image
@@ -28,7 +28,7 @@ export default function FeaturedEvent({ title, details, clubName, imgSource, url
               alt="featured event image"
               width={1000}
               height={1000}
-              className="w-[35%] h-[100%] m-2 ml-3 rounded-2xl object-cover"
+              className="w-[35%]  m-2 ml-3 rounded-2xl object-cover"
             />
           )}
           <div className="my-auto mx-4">
