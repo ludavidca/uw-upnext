@@ -70,4 +70,3 @@ export default function Timeline({ events, onClick }: timelineProps) {
     </div>
   );
 }
-
