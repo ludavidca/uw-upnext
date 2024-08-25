@@ -13,7 +13,7 @@ export default function FeaturedEvent({ title, details, clubName, imgSource, url
     
     return (
       <div>
-        <div className=" rounded-2xl flex mx-4 sm:mx-10 sm:p-0 featuredevent min-h-40">
+        <div className=" rounded-2xl flex mx-4 sm:mx-10 sm:p-0 featuredevent min-h-36 m-4">
           {clubName === "WUSA" ? (
             <Image
               src={imgSource}
