@@ -11,7 +11,7 @@ import EventMain from "./components/EventMain";
 import { events } from "./components/types/eventType";
 import { formatUnixTime } from "./components/functions/gettime";
 import Timeline from "./components/Timeline"
-import { Calendar } from "@/app/components/ui/calendar";
+// import { Calendar } from "@/app/components/ui/calendar";
 
 export default function SingleButtonPage() {
   const [selectedCategory, setSelectedCategory] = useState("main");
@@ -202,7 +202,7 @@ export default function SingleButtonPage() {
           ) : (
             // If screen size is more than 640px
             <div className="hidden sm:flex flex-row  mx-[2.7%] rounded-3xl py-5 gradient_border justify-center items-center ">
-              <h1 className="text-4xl align-middle mx-auto">
+              <h1 className="text-4xl font-medium align-middle mx-auto">
                 Finding Events. <br /> Made Better.
               </h1>
 
@@ -234,12 +234,12 @@ export default function SingleButtonPage() {
             <div className="w-full">
               <Timeline events={upcomingEvents} onClick={fetchEventInfo} />
             </div>
-            <Calendar
+            {/* <Calendar
               mode="single"
               selected={date}
               onSelect={setDate}
               className="hidden h-[40%] gradient_border"
-            />
+            /> */}
           </div>
         </div>
       )}
