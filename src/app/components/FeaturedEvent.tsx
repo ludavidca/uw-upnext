@@ -7,13 +7,14 @@ interface EventProps {
     clubName: string;
     imgSource: string;
     url: string;
+    isMobile: boolean;
 }
 
-export default function FeaturedEvent({ title, details, clubName, imgSource, url}: EventProps) {
+export default function FeaturedEvent({ title, details, clubName, imgSource, url, isMobile}: EventProps) {
     
     return (
       <div>
-        <div className="rounded-2xl flex sm:mx-10 sm:p-0 featuredevent h-28 sm:h-36 m-4 w-full">
+        <div className="rounded-2xl flex sm:mx-10 sm:p-0 featuredevent h-28 sm:h-36 m-4 ${isMobile ? 'w-full' : 'border-l-2 w-[80%]'}">
           {clubName === "WUSA" ? (
             <Image
               src={imgSource}

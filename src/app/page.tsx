@@ -165,6 +165,7 @@ export default function SingleButtonPage() {
                   clubName={event.account}
                   imgSource={event.display_photo}
                   url={event.url}
+                  isMobile={true}
                 />
               </div>
             ))}
@@ -186,19 +187,23 @@ export default function SingleButtonPage() {
         <div>
           {isSmallScreen ? (
             // If screen size is less than 640px
-            <EventCarousel>
-              {events.map((event: events) => (
-                <div key={event._id} onClick={() => fetchEventInfo(event)}>
-                  <FeaturedEvent
-                    title={event.event_details.event_name}
-                    details={formatUnixTime(event.event_details.start_time)}
-                    clubName={event.account}
-                    imgSource={event.display_photo}
-                    url={event.url}
-                  />
-                </div>
-              ))}
-            </EventCarousel>
+            <div>
+              <SectionHeading text="Popular Events" />
+              <EventCarousel>
+                {events.map((event: events) => (
+                  <div key={event._id} onClick={() => fetchEventInfo(event)}>
+                    <FeaturedEvent
+                      title={event.event_details.event_name}
+                      details={formatUnixTime(event.event_details.start_time)}
+                      clubName={event.account}
+                      imgSource={event.display_photo}
+                      url={event.url}
+                      isMobile={false}
+                    />
+                  </div>
+                ))}
+              </EventCarousel>
+            </div>
           ) : (
             // If screen size is more than 640px
             <div className="hidden sm:flex flex-row  mx-[2.7%] rounded-3xl py-5 gradient_border justify-center items-center ">
@@ -215,6 +220,7 @@ export default function SingleButtonPage() {
                       clubName={event.account}
                       imgSource={event.display_photo}
                       url={event.url}
+                      isMobile={false}
                     />
                   </div>
                 ))}
@@ -230,8 +236,10 @@ export default function SingleButtonPage() {
           <div>
             <SectionHeading text="Upcoming Events" />
           </div>
-              <Timeline events={upcomingEvents} onClick={fetchEventInfo} />
-            {/* <Calendar
+          <div className="ml-[5%]">
+          <Timeline events={upcomingEvents} onClick={fetchEventInfo} />
+          </div>
+          {/* <Calendar
               mode="single"
               selected={date}
               onSelect={setDate}

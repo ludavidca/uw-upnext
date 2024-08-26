@@ -31,20 +31,27 @@ export default function EventMain({ title, details, start_time, end_time, clubNa
       }
       const baseUrl = "https://www.google.ca/maps/search/";
       const encodedString = inputString.replace(/ /g, "+");
-      const universitycoords = "/@43.4722893,-80.5474325,17z/";
+      const universitycoords = "/@43.4738936,-80.5445333,14.78z";
       return baseUrl + encodedString + universitycoords;
     };
 
 
     return (
       <div
-        className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 overflow-y-scroll"
+        className="flex bottom-0 fixed overflow-y-auto h-full inset-0 z-50 items-center justify-center bg-black bg-opacity-50  overscroll-none"
         onClick={handleBackdropClick}
       >
-        <div className="mx-auto  w-full sm:w-11/12 max-w-4xl rounded-[4rem] eventMain bg-white ">
-          <div className="flex flex-col items md:flex-row mx-auto">
+        <div className="mx-auto my-auto  w-full sm:w-11/12 max-w-4xl sm:rounded-[4rem] eventMain bg-white">
+          <div className="flex flex-col md:flex-row mx-auto sm:mt-0">
             <div className="w-full md:w-1/2 my-8 ml-0 md:ml-10">
-              {" "}
+              <div className="flex flex-col w-full">
+                <img
+                  className="mb-[2%] w-6 mr-16 inline sm:hidden self-end -translate-y-[-250%]"
+                  src="./crossbutton.svg"
+                  onClick={onClose}
+                ></img>
+              </div>
+
               {/* Side 1 */}
               {clubName === "WUSA" ? (
                 <Image
@@ -52,7 +59,7 @@ export default function EventMain({ title, details, start_time, end_time, clubNa
                   height={1000}
                   width={1000}
                   alt="Event Image"
-                  className="w-[85%] h-[65%] mx-auto mt-[100%] sm:mt-0 md:mx-0 rounded-3xl mb-5 object-cover"
+                  className="w-[85%] h-[65%] mx-auto sm:mt-0 md:mx-0 rounded-3xl mb-5 object-cover"
                 />
               ) : (
                 <Image
@@ -60,7 +67,7 @@ export default function EventMain({ title, details, start_time, end_time, clubNa
                   height={1000}
                   width={1000}
                   alt="Event Image"
-                  className="w-[85%] mx-auto mt-[100%] sm:mt-0 md:mx-0 rounded-3xl mb-5"
+                  className="w-[85%] mx-auto sm:mt-0 md:mx-0 rounded-3xl mb-5"
                 />
               )}
               <div className="ml-[10%] sm:ml-0">
@@ -101,12 +108,14 @@ export default function EventMain({ title, details, start_time, end_time, clubNa
                 target="_blank"
                 rel="noopener noreferrer"
               >
+                <div className="flex flex-col w-full">
                 <button
-                  className="px-4 py-2 bg-gray-300 rounded-3xl w-[90%] ml-[3%] sm:ml-0"
+                  className="px-4 py-2 bg-gray-300 rounded-3xl w-[85%] sm:w-[90%] ml-[3%] sm:ml-0 self-center"
                   style={{ color: "rgb(76,34,104)" }}
                 >
                   View Post
                 </button>
+                </div>
               </a>
             </div>
             <div className="flex-row w-full ml-[10%] md:w-1/2 my-8">
@@ -118,7 +127,7 @@ export default function EventMain({ title, details, start_time, end_time, clubNa
                   {title}{" "}
                 </p>
                 <img
-                  className="inline mb-[2%] ml-[10%]"
+                  className="mb-[2%] ml-[10%] hidden sm:flex"
                   src="./crossbutton.svg"
                   onClick={onClose}
                 ></img>{" "}
