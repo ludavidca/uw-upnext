@@ -15,8 +15,8 @@ export default function Timeline({ events, onClick }: timelineProps) {
   const timelineData = CreateTimeline(events);
   return (
     <div>
-      <div className="mt-5"></div>
-      <div className="container sm:mx-[5%] sm:border-l-4 sm:border-white">
+      <div className="sm:mt-5"></div>
+      <div className="sm:container mx-[5%] sm:border-l-4 sm:border-white">
         {timelineData.map((date, index) => (
           <div className="transform -translate-x-[4.2%]" key={index}>
             <div>

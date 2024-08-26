@@ -230,17 +230,13 @@ export default function SingleButtonPage() {
           <div>
             <SectionHeading text="Upcoming Events" />
           </div>
-          <div className="flex flex-row max-w-full">
-            <div className="w-full">
               <Timeline events={upcomingEvents} onClick={fetchEventInfo} />
-            </div>
             {/* <Calendar
               mode="single"
               selected={date}
               onSelect={setDate}
               className="hidden h-[40%] gradient_border"
             /> */}
-          </div>
         </div>
       )}
 
