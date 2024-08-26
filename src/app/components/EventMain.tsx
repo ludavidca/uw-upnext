@@ -38,7 +38,7 @@ export default function EventMain({ title, details, start_time, end_time, clubNa
 
     return (
       <div
-        className="flex bottom-0 fixed overflow-y-auto h-full inset-0 z-50 items-center justify-center bg-black bg-opacity-50  overscroll-none"
+        className="flex bottom-0 fixed overflow-y-auto h-full inset-0 z-50 items-center justify-center bg-black bg-opacity-50 overflow-x-hidden overscroll-none"
         onClick={handleBackdropClick}
       >
         <div className="mx-auto my-auto  w-full sm:w-11/12 max-w-4xl sm:rounded-[4rem] eventMain bg-white">

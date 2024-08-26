@@ -94,13 +94,13 @@ export default function CategoryPage({name, main, onSelectMain}: CategoryPagePro
         </div>
         <div className="ml-[5%] flex-col place-items-start">
           <SectionHeading text={`Upcoming ${name} Events`} />
-          <div className="hidden sm:block  w-[100%]">
+          <div className="sm:block  w-[100%]">
             {noEvents ? (
               <p className="px-5 sm:px-10 py-3 pt-2 font-medium text-white">
                 No Events Found
               </p>
             ) : (
-              <div className="ml-[5%]">
+              <div className="">
               <Timeline events={categoryEvents} onClick={fetchEventInfo} />
               </div>
             )}

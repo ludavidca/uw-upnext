@@ -236,9 +236,7 @@ export default function SingleButtonPage() {
           <div>
             <SectionHeading text="Upcoming Events" />
           </div>
-          <div className="ml-[5%]">
-          <Timeline events={upcomingEvents} onClick={fetchEventInfo} />
-          </div>
+            <Timeline events={upcomingEvents} onClick={fetchEventInfo} />
           {/* <Calendar
               mode="single"
               selected={date}

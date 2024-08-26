@@ -14,9 +14,8 @@ interface timelineProps {
 export default function Timeline({ events, onClick }: timelineProps) {
   const timelineData = CreateTimeline(events);
   return (
-    <div>
-      <div className="sm:mt-5"></div>
-      <div className="sm:container ml-20 sm:border-l-4 sm:border-white">
+
+      <div className="sm:container ml-5 sm:ml-20 sm:border-l-4 sm:border-white">
         {timelineData.map((date, index) => (
           <div className="transform -translate-x-[3.2%]" key={index}>
             <div>
@@ -68,6 +67,5 @@ export default function Timeline({ events, onClick }: timelineProps) {
           </div>
         ))}
       </div>
-    </div>
   );
 }
