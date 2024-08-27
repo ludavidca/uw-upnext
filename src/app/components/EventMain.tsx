@@ -26,7 +26,7 @@ export default function EventMain({ title, details, start_time, end_time, clubNa
       };
 
     const mapsUrl = (inputString: string | null) => {
-      if (inputString === null) {
+      if (inputString === null || inputString === "null") {
         return "https://www.google.ca/maps/search/university+of+waterloo";
       }
       const baseUrl = "https://www.google.ca/maps/search/";
@@ -67,7 +67,7 @@ export default function EventMain({ title, details, start_time, end_time, clubNa
                   height={1000}
                   width={1000}
                   alt="Event Image"
-                  className="w-[85%] mx-auto sm:mt-0 md:mx-0 rounded-3xl mb-5"
+                  className="w-[85%] h-[65%] mx-auto sm:mt-0 md:mx-0 rounded-3xl mb-5 object-cover"
                 />
               )}
               <div className="ml-[10%] sm:ml-0">
@@ -83,7 +83,7 @@ export default function EventMain({ title, details, start_time, end_time, clubNa
                   <div className="flex items-center">
                     <img
                       src="./uw_ux_logo.svg"
-                      className="inline w-10 h-8 ml-1 "
+                      className="inline w-10 h-8 sm:ml-4 "
                     ></img>
                     <p className="inline text-xl ml-2 text-white">
                       {" "}
@@ -91,13 +91,21 @@ export default function EventMain({ title, details, start_time, end_time, clubNa
                     </p>
                   </div>
                 </a>
-                <div className="mb-8 mt-2 flex items-center">
-                  <img
-                    src="./calendarImage.svg"
-                    className="inline ml-3 mr-2 w-6 h-6"
-                  ></img>
-                  <p className="inline text-white"> Add to Calendar </p>
-                </div>
+                <a
+                  href={mapsUrl(location)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <h2 className="sm:ml-5 mb-5 text-yellow-300 mt-2 underline underline-offset-4">
+                    <img
+                      src="./pinEmoji.svg"
+                      className="inline px-1 w-6 h-6"
+                      alt="Pin Emoji"
+                    />
+                    {location}
+                    {!location && "University of Waterloo"}
+                  </h2>
+                </a>
               </div>
               <a
                 href={
@@ -109,12 +117,12 @@ export default function EventMain({ title, details, start_time, end_time, clubNa
                 rel="noopener noreferrer"
               >
                 <div className="flex flex-col w-full">
-                <button
-                  className="px-4 py-2 bg-gray-300 rounded-3xl w-[85%] sm:w-[90%] ml-[3%] sm:ml-0 self-center"
-                  style={{ color: "rgb(76,34,104)" }}
-                >
-                  View Post
-                </button>
+                  <button
+                    className="px-4 py-2 bg-gray-300 rounded-3xl w-[85%] sm:w-[90%] ml-[3%] sm:ml-0 self-center"
+                    style={{ color: "rgb(76,34,104)" }}
+                  >
+                    View Post
+                  </button>
                 </div>
               </a>
             </div>
@@ -127,38 +135,29 @@ export default function EventMain({ title, details, start_time, end_time, clubNa
                   {title}{" "}
                 </p>
                 <img
-                  className="mb-[2%] ml-[10%] hidden sm:flex"
+                  className="ml-[10%] hidden sm:flex"
                   src="./crossbutton.svg"
                   onClick={onClose}
                 ></img>{" "}
               </div>
               <img className="w-full mb-3"></img>
-              <p className="text-lg mb-5 text-white">
+              <p className="text-lg mb-2 text-white">
                 {formatUnixTime(start_time)}
                 {start_time && end_time ? " - " : ""}
                 {end_time !== null && formatUnixTime(end_time)}
               </p>
+              <div className="flex items-center mb-3">
+                <img
+                  src="./calendarImage.svg"
+                  className="inline mr-2 w-6 h-6"
+                ></img>
+                <p className="inline text-white"> Add to Calendar </p>
+              </div>
               <hr className="w-[80%] mb-3"></hr>
               <p className="w-[80%] md:w-[80%] text-xs mb-8 line-clamp-6 text-white">
                 {" "}
                 {description}{" "}
               </p>
-              <a
-                href={mapsUrl(location)}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <img src="./map.svg" className="w-[80%] mb-2"></img>
-                <h2 className="mb-2 text-yellow-300 mt-2 underline underline-offset-4">
-                  <img
-                    src="./pinEmoji.svg"
-                    className="inline px-1 w-6 h-6"
-                    alt="Pin Emoji"
-                  />
-                  {location}
-                  {!location && "University of Waterloo"}
-                </h2>
-              </a>
             </div>
           </div>
         </div>

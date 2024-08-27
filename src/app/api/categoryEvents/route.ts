@@ -30,7 +30,7 @@ export async function GET(req: NextRequest) {
       );
     }
 
-    const query = { "event_details.categories": category };
+    const query = { "event_details.event_categories": { $in: [category] } };
     const events = await Events.find(query).toArray();
 
     if (events.length === 0) {

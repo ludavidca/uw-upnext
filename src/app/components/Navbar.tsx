@@ -51,36 +51,42 @@ export default function Navbar({onLogoClick, onSearch, setCategory}:NavbarProps)
   return (
     <div className="flex items-center justify-between p-3 bg-transparent">
       {/* Logo */}
-      <div className="items-center hidden sm:flex">
-        <img src="./logo.svg" alt="Logo" onClick={handleLogoClick} className="w-30 h-16 " />
+      <div className="items-center hidden sm:flex cursor-pointer">
+        <img
+          src="./logo.svg"
+          alt="Logo"
+          onClick={handleLogoClick}
+          className="m-5 w-30 h-16 "
+        />
       </div>
 
       {/* Search Bar */}
 
-       <div className="relative flex w-full sm:w-auto">
-  <input
-    type="text"
-    placeholder="Search Topics"
-    className="flex-grow p-3 pl-10 pr-10 rounded-full bg-transparent transition-transform transform gradient-searchbar w-72 sm:hover:w-96 sm:hover:scale-110 text-center text-white"
-    onChange={handleIndexChange}
-    onKeyPress={handleKeyPress}
-    value={query}
-  />
-  {/* Arrow Icon */}
-  <FaArrowRight
-    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-300 cursor-pointer sm:hidden"
-    onClick={vectordbSearch} 
-  />
-</div>
+      <div className="relative flex w-full sm:w-auto">
+        <input
+          type="text"
+          placeholder="Search Topics"
+          className="flex-grow p-3 pl-10 pr-10 rounded-full bg-transparent transition-transform transform gradient-searchbar w-72 sm:hover:w-96 sm:hover:scale-110 text-center text-white"
+          onChange={handleIndexChange}
+          onKeyPress={handleKeyPress}
+          value={query}
+        />
+        {/* Arrow Icon */}
+        <FaArrowRight
+          className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-300 cursor-pointer sm:hidden"
+          onClick={vectordbSearch}
+        />
+      </div>
       {/* CTA Buttons */}
-      <div className=" hidden sm:flex  items-center space-x-4">
+      <div className="w-[10%]"></div>
+      {/* <div className=" hidden sm:flex  items-center space-x-4">
         <button
           className="px-4 py-2 bg-gray-300 rounded-3xl"
           style={{ color: "rgb(133,0,205)" }}
         >
           Sign In
         </button>
-      </div>
+      </div> */}
     </div>
   );
 }

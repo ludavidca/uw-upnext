@@ -1,5 +1,8 @@
-<svg width="23" height="25" viewBox="0 0 23 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+<svg width="31" height="34" viewBox="0 0 31 34" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g style="mix-blend-mode:luminosity" opacity="0.99">
-<path d="M3 2.71509L20 22.1374M3 22.1374L20 2.71509" stroke="white" stroke-width="4.53333" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M5 5L26 28.9923M5 28.9923L26 5" stroke="black" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<g style="mix-blend-mode:luminosity" opacity="0.99">
+<path d="M5 5L15.5 16.9962L26 28.9923M5 28.9923L26 5" stroke="white" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
 </g>
 </svg>
