@@ -59,7 +59,7 @@ export default function EventMain({ title, details, start_time, end_time, clubNa
                   height={1000}
                   width={1000}
                   alt="Event Image"
-                  className="w-[85%] h-[65%] mx-auto sm:mt-0 md:mx-0 rounded-3xl mb-5 object-cover"
+                  className="w-[85%] mx-auto sm:mt-0 md:mx-0 rounded-3xl mb-5 object-cover"
                 />
               ) : (
                 <Image
@@ -67,7 +67,7 @@ export default function EventMain({ title, details, start_time, end_time, clubNa
                   height={1000}
                   width={1000}
                   alt="Event Image"
-                  className="w-[85%] h-[65%] mx-auto sm:mt-0 md:mx-0 rounded-3xl mb-5 object-cover"
+                  className="w-[85%] mx-auto sm:mt-0 md:mx-0 rounded-3xl mb-5 object-cover"
                 />
               )}
               <div className="ml-[10%] sm:ml-0">

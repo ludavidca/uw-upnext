@@ -135,7 +135,7 @@ export default function SingleButtonPage() {
       {searchEvents.length > 0 && (
         <div className="flex-row sm:flex-row-reverse">
           <div className="hidden sm:flex justify-center w-screen">
-            <div className="w-2/3 items-center">
+            <div className="w-[80%] items-center">
               {searchEvents.map((event: events) => (
                 <div key={event._id} onClick={() => fetchEventInfo(event)}>
                   <Event
