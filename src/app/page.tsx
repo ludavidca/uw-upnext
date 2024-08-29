@@ -207,7 +207,7 @@ export default function SingleButtonPage() {
           ) : (
             // If screen size is more than 640px
             <div className="hidden sm:flex flex-row  mx-[2.7%] rounded-3xl py-5 gradient_border justify-center items-center ">
-              <h1 className="text-4xl font-medium align-middle mx-auto">
+              <h1 className="text-4xl font-medium align-middle mx-auto text-white">
                 Finding Events. <br /> Made Better.
               </h1>
 
