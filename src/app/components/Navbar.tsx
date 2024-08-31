@@ -56,7 +56,7 @@ export default function Navbar({onLogoClick, onSearch, setCategory}:NavbarProps)
           src="./logo.svg"
           alt="Logo"
           onClick={handleLogoClick}
-          className="m-5 w-30 h-16 "
+          className="mx-5 mb-2 w-30 h-16 "
         />
       </div>
 

@@ -18,24 +18,22 @@
   }
 }
 
+
 body {
-  color: rgb(var(--foreground-rgb));
   min-height: 100vh;
-  background: linear-gradient(
-      to bottom,
-      rgb(var(--background-start-rgb)),
-      
-      rgb(var(--background-middle-rgb)),
-      rgb(var(--background-end-rgb)),
-      rgb(var(--background-end-rgb)),
-      rgb(var(--background-end-rgb))
-    )
-    no-repeat;    
-
-
-    background: linear-gradient(180deg, rgba(34, 209, 253) -1.14%, rgba(39, 71, 117) -1.14%, rgba(39, 71, 117) -0.16%, rgba(35, 55, 82) 2.13%, rgba(33, 43, 57) 4.65%, rgba(29, 30, 37) 8.75%);
-
-    
+  background-image: 
+    linear-gradient(180deg, #213460 0%, #1E2846 2.8%, #1A1A24 7.9%, #1A1A24 75%, #1A1A24 100%),
+    radial-gradient(50% 50% at 50% 48.86%, rgba(79, 67, 67, 0.00) 0%, rgba(0, 0, 0, 0.15) 100%),
+    linear-gradient(to bottom, transparent 2000px, #1A1A24 2000px);
+  background-size: 
+    100% 2000px,
+    100% 2000px,
+    100% 100%;
+  background-repeat: 
+    no-repeat,
+    no-repeat,
+    repeat-y;
+  background-position: top left;
 }
 
 @layer utilities {
@@ -151,9 +149,4 @@ input::placeholder {
 
 .gradient {
   background: linear-gradient(to right, #5C3BDF80, #7B32B580, #763BA580, #C3626480) 1;
-}
-
-body{
-  background: linear-gradient(to right, #5C3BDF80, #7B32B580, #763BA580, #C3626480) 1;
-
 }
