@@ -10,10 +10,22 @@ export function CreateTimeline(response: events[]) {
   // A Set to track unique events
   const seenEvents = new Set<string>();
 
+  // Get yesterday's date
+  const yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+  yesterday.setHours(0, 0, 0, 0); // Set to start of yesterday
+
   // Populate the timeline object
   for (const event of response) {
     const startTime = event.event_details.start_time;
     const dateTime = new Date(startTime * 1000);
+    dateTime.setHours(0, 0, 0, 0); // Set time to midnight for comparison
+
+    // Skip events that occurred before or on yesterday
+    if (dateTime <= yesterday) {
+      continue;
+    }
+
     const formattedDate = dateTime.toDateString(); // e.g., "Mon Aug 26 2024"
 
     // Create a unique key based on title and start time
@@ -38,4 +50,4 @@ export function CreateTimeline(response: events[]) {
   });
 
   return timelineArray;
-}
+};

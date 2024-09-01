@@ -41,7 +41,7 @@ export default function EventMain({ title, details, start_time, end_time, clubNa
      const extractTimeArray = function (
        dateinUnix: number
      ): [number, number, number, number, number] {
-       const date = new Date(dateinUnix * 1000);
+       const date = new Date(dateinUnix * 1000 - 3600000);
        return [
          date.getFullYear(),
          date.getMonth() + 1,
@@ -121,10 +121,15 @@ export default function EventMain({ title, details, start_time, end_time, clubNa
 
     return (
       <div
-        className="flex bottom-0 fixed overflow-y-auto h-full inset-0 z-50 items-center justify-center py-10 bg-black bg-opacity-50 overflow-x-hidden overscroll-none"
+        className="flex bottom-0 fixed overflow-y-auto h-full inset-0 z-50 items-center justify-center sm:py-10 bg-black bg-opacity-50 overflow-x-hidden overscroll-none"
         onClick={handleBackdropClick}
       >
         <div className="mx-auto my-auto  w-full sm:w-11/12 max-w-4xl sm:rounded-[4rem] eventMain bg-white">
+          <img
+            className="relative mr-[5%] hidden sm:flex float-end z-20 -translate-y-[-150%]"
+            src="./crossbutton.svg"
+            onClick={onClose}
+          ></img>{" "}
           <div className="flex flex-col md:flex-row mx-auto my-5">
             <div className="w-full h-fit md:w-1/2 my-8 ml-0 md:ml-10">
               <div className="flex flex-col w-full">
@@ -134,7 +139,6 @@ export default function EventMain({ title, details, start_time, end_time, clubNa
                   onClick={onClose}
                 ></img>
               </div>
-
               {/* Side 1 */}
               {clubName === "WUSA" ? (
                 <Image
@@ -186,7 +190,8 @@ export default function EventMain({ title, details, start_time, end_time, clubNa
                       alt="Pin Emoji"
                     />
                     {location !== "null" && location}
-                    {!location || location === "null" && "University of Waterloo"}
+                    {!location ||
+                      (location === "null" && "University of Waterloo")}
                   </h2>
                 </a>
               </div>
@@ -213,31 +218,31 @@ export default function EventMain({ title, details, start_time, end_time, clubNa
               {" "}
               {/* Side 2 */}
               <div className="flex flex-row">
-                <p className="text-3xl mb-1 inline max-w-[70%] text-white">
+                <p className="text-3xl mb-1 inline max-w-[100%] text-white">
                   {" "}
                   {title}{" "}
                 </p>
-                <img
-                  className="ml-[10%] hidden sm:flex"
-                  src="./crossbutton.svg"
-                  onClick={onClose}
-                ></img>{" "}
               </div>
               <img className="w-full mb-3"></img>
               <p className="text-lg mb-2 text-white">
                 {formatUnixTime(start_time)}
-                {start_time && end_time && end_time>start_time ? " - " : ""}
-                {end_time !== null && end_time>start_time && formatUnixTime(end_time)}
+                {start_time && end_time && end_time > start_time ? " - " : ""}
+                {end_time !== null &&
+                  end_time > start_time &&
+                  formatUnixTime(end_time)}
               </p>
               <div className="flex items-center mb-3">
                 <img
                   src="./calendarImage.svg"
                   className="inline mr-2 w-6 h-6"
                 ></img>
-                <button onClick={handleDownload} className="inline text-white"> Add to Calendar </button>
+                <button onClick={handleDownload} className="inline text-white">
+                  {" "}
+                  Add to Calendar{" "}
+                </button>
               </div>
-              <hr className="w-[80%] mb-3"></hr>
-              <p className="w-[80%] md:w-[80%] text-xs mb-8 text-white overflow-hidden">
+              <hr className="w-[100%] mb-3"></hr>
+              <p className="w-full h-[60%] text-base mb-8 text-white overflow-y-scroll hide-scrollbar">
                 {" "}
                 {description}{" "}
               </p>

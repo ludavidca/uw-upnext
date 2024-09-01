@@ -24,7 +24,7 @@ export default function Event({ title, details, clubName, description, url, imgS
               @{clubName}
             </h2>
           </div>
-          <p className="w-1/2 mt-4 font-medium line-clamp-3 text-white">
+          <p className="w-1/2 h-flex flex justify-center items-center font-medium line-clamp-3 text-white">
             {description}
           </p>
           <Image

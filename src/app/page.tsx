@@ -190,18 +190,36 @@ export default function SingleButtonPage() {
             <div>
               <SectionHeading text="Popular Events" />
               <EventCarousel>
-                {events.map((event: events) => (
-                  <div key={event._id} onClick={() => fetchEventInfo(event)}>
-                    <FeaturedEvent
-                      title={event.event_details.event_name}
-                      details={formatUnixTime(event.event_details.start_time)}
-                      clubName={event.account}
-                      imgSource={event.display_photo}
-                      url={event.url}
-                      isMobile={false}
-                    />
-                  </div>
-                ))}
+                {events
+                  .filter((event: events) => {
+                    const eventDate = new Date(
+                      event.event_details.start_time * 1000
+                    );
+                    const today = new Date();
+                    today.setHours(0, 0, 0, 0); // Set time to midnight
+                    return eventDate >= today;
+                  })
+                  .filter(
+                    (event, index, self) =>
+                      index ===
+                      self.findIndex(
+                        (e) =>
+                          e.event_details.event_name ===
+                          event.event_details.event_name
+                      )
+                  ) // Filter out duplicate titles
+                  .map((event: events) => (
+                    <div key={event._id} onClick={() => fetchEventInfo(event)}>
+                      <FeaturedEvent
+                        title={event.event_details.event_name}
+                        details={formatUnixTime(event.event_details.start_time)}
+                        clubName={event.account}
+                        imgSource={event.display_photo}
+                        url={event.url}
+                        isMobile={false}
+                      />
+                    </div>
+                  ))}
               </EventCarousel>
             </div>
           ) : (
@@ -212,18 +230,36 @@ export default function SingleButtonPage() {
               </h1>
 
               <EventCarousel>
-                {events.map((event: events) => (
-                  <div key={event._id} onClick={() => fetchEventInfo(event)}>
-                    <FeaturedEvent
-                      title={event.event_details.event_name}
-                      details={formatUnixTime(event.event_details.start_time)}
-                      clubName={event.account}
-                      imgSource={event.display_photo}
-                      url={event.url}
-                      isMobile={false}
-                    />
-                  </div>
-                ))}
+                {events
+                  .filter((event: events) => {
+                    const eventDate = new Date(
+                      event.event_details.start_time * 1000
+                    );
+                    const today = new Date();
+                    today.setHours(0, 0, 0, 0); // Set time to midnight
+                    return eventDate >= today;
+                  })
+                  .filter(
+                    (event, index, self) =>
+                      index ===
+                      self.findIndex(
+                        (e) =>
+                          e.event_details.event_name ===
+                          event.event_details.event_name
+                      )
+                  ) // Filter out duplicate titles
+                  .map((event: events) => (
+                    <div key={event._id} onClick={() => fetchEventInfo(event)}>
+                      <FeaturedEvent
+                        title={event.event_details.event_name}
+                        details={formatUnixTime(event.event_details.start_time)}
+                        clubName={event.account}
+                        imgSource={event.display_photo}
+                        url={event.url}
+                        isMobile={false}
+                      />
+                    </div>
+                  ))}
               </EventCarousel>
             </div>
           )}
@@ -236,7 +272,7 @@ export default function SingleButtonPage() {
           <div>
             <SectionHeading text="Upcoming Events" />
           </div>
-            <Timeline events={upcomingEvents} onClick={fetchEventInfo} />
+          <Timeline events={upcomingEvents} onClick={fetchEventInfo} />
           {/* <Calendar
               mode="single"
               selected={date}

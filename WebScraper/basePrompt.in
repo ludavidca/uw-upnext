@@ -10,8 +10,8 @@ Output {
  “is_event”: true,
  “event_name”: “Techplus Bonfire End of Term”,
  "event_description": "Our Bonfire End of Term event with CSC, WiCS, and Tech+. Food is provided",
- "categories": "TECH",
- “start_time”: 2024-07-23T18:00:00+00:00,
- “end_time”: 2024-07-23T21:00:00+00:00,
+ "categories": ["TECH"],
+ “start_time”: "2024-07-23T18:00:00+00:00",
+ “end_time”: "2024-07-23T21:00:00+00:00",
  “location”: “Columbia Lake, Fire Pit 1”.
 }
