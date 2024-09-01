@@ -100,7 +100,7 @@ export default function CategoryPage({name, main, onSelectMain}: CategoryPagePro
                 No Events Found
               </p>
             ) : (
-              <div className="sm:w-[90%]">
+              <div className="overflow-x-hidden">
               <Timeline events={categoryEvents} onClick={fetchEventInfo} />
               </div>
             )}
