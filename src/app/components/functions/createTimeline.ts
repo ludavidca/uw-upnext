@@ -42,7 +42,6 @@ export function CreateTimeline(response: events[]) {
     }
   }
 
-  // Convert timeline object to array and sort by date
   const timelineArray = Object.entries(timeline).sort(([dateA], [dateB]) => {
     const dateAObj = new Date(dateA);
     const dateBObj = new Date(dateB);

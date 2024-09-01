@@ -39,6 +39,7 @@ export default function CategoryPage({name, main, onSelectMain}: CategoryPagePro
           }
           setNoEvents(false);
           const data = await res.json();
+          console.log(data)
           setCategoryEvents(data.results)
         } catch (err) {
           setNoEvents(true);

@@ -146,7 +146,7 @@ export default function EventMain({ title, details, start_time, end_time, clubNa
                   height={1000}
                   width={1000}
                   alt="Event Image"
-                  className="w-[85%] mx-auto sm:mt-0 md:mx-0 rounded-3xl mb-5 object-cover"
+                  className="w-[80%] sm:w-[85%] mx-auto sm:mt-0 md:mx-0 rounded-3xl mb-5 object-cover"
                 />
               ) : (
                 <Image
@@ -154,7 +154,7 @@ export default function EventMain({ title, details, start_time, end_time, clubNa
                   height={1000}
                   width={1000}
                   alt="Event Image"
-                  className="w-full h-2/3 mx-auto sm:mt-0 md:mx-0 rounded-3xl mb-5 object-cover"
+                  className="w-[80%] sm:w-full h-2/3 mx-auto sm:mt-0 md:mx-0 rounded-3xl mb-5 object-cover"
                 />
               )}
               <div className="ml-[10%] sm:ml-0">
@@ -206,7 +206,7 @@ export default function EventMain({ title, details, start_time, end_time, clubNa
               >
                 <div className="flex flex-col w-full">
                   <button
-                    className="px-4 py-2 bg-gray-300 rounded-3xl w-[85%] sm:w-[90%] ml-[3%] sm:ml-0 self-center"
+                    className="px-4 py-2 bg-gray-300 rounded-3xl w-[80%] sm:w-[90%] self-center"
                     style={{ color: "rgb(76,34,104)" }}
                   >
                     View Post
@@ -218,7 +218,7 @@ export default function EventMain({ title, details, start_time, end_time, clubNa
               {" "}
               {/* Side 2 */}
               <div className="flex flex-row">
-                <p className="text-3xl mb-1 inline max-w-[100%] text-white">
+                <p className="text-3xl mb-1 inline w-[80%] sm:max-w-[100%] text-white">
                   {" "}
                   {title}{" "}
                 </p>

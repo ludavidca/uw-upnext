@@ -61,6 +61,16 @@ export default function SingleButtonPage() {
   };
 
     useEffect(() => {
+      const handleResize = () => {
+        setIsSmallScreen(window.innerWidth < 640);
+      };
+
+      handleResize();
+
+      window.addEventListener("resize", handleResize);
+    });
+
+    useEffect(() => {
     const findUpcomingEvents = async () => {
       try {
         const res = await fetch(`/api/upcomingEvents`);
