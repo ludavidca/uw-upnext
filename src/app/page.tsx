@@ -11,6 +11,7 @@ import EventMain from "./components/EventMain";
 import { events } from "./components/types/eventType";
 import { formatUnixTime } from "./components/functions/gettime";
 import Timeline from "./components/Timeline"
+import { usePathname, useSearchParams } from "next/navigation";
 // import { Calendar } from "@/app/components/ui/calendar";
 
 export default function SingleButtonPage() {
@@ -22,6 +23,29 @@ export default function SingleButtonPage() {
   const [upcomingEvents, setUpcomingEvents] = useState<events[]>([]);
   const [isSmallScreen, setIsSmallScreen] = useState(false);
   const [date, setDate] = React.useState<Date | undefined>(new Date());
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+useEffect(() => {
+  const handleRouteChange = () => {
+    const url = pathname + searchParams.toString();
+    window.history.pushState(null, "", url);
+  };
+
+  const handlePopState = () => {
+    window.history.pushState(null, "", window.location.href);
+  };
+
+  // Call handleRouteChange initially and whenever pathname or searchParams change
+  handleRouteChange();
+
+  window.addEventListener("popstate", handlePopState);
+
+  return () => {
+    window.removeEventListener("popstate", handlePopState);
+  };
+}, [pathname, searchParams]);
+
 
   useEffect(() => {
     const handleResize = () => {
