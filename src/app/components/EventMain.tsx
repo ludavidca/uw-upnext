@@ -135,7 +135,7 @@ export default function EventMain({ title, details, start_time, end_time, clubNa
               <div className="flex flex-col w-full">
                 <img
                   className="mb-[2%] w-6 mr-16 inline sm:hidden self-end -translate-y-[-250%]"
-                  src="./crossbutton.svg"
+                  src="./crossbuttonMobile.svg"
                   onClick={onClose}
                 ></img>
               </div>
@@ -241,8 +241,8 @@ export default function EventMain({ title, details, start_time, end_time, clubNa
                   Add to Calendar{" "}
                 </button>
               </div>
-              <hr className="w-[100%] mb-3"></hr>
-              <p className="w-full h-[60%] text-base mb-8 text-white overflow-y-scroll hide-scrollbar">
+              <hr className="w-[80%] sm:w-[100%] mb-3"></hr>
+              <p className="w-[80%] sm:w-full h-[60%] text-base mb-8 text-white overflow-y-scroll hide-scrollbar">
                 {" "}
                 {description}{" "}
               </p>
