@@ -108,9 +108,11 @@ input::placeholder {
 }
 
 
-.carousel-container .slick-slide {
-  opacity: 0.5; /* Faded opacity for non-centered slides */
-  transition: opacity 0.5s ease;
+@media (min-width: 640px) { 
+  .carousel-container .slick-slide {
+    opacity: 0.5; /* Faded opacity for non-centered slides */
+    transition: opacity 0.5s ease;
+  }
 }
 
 .carousel-container .slick-center {

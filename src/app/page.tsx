@@ -157,7 +157,7 @@ export default function SingleButtonPage() {
               <div
                 key={event._id}
                 onClick={() => fetchEventInfo(event)}
-                className="py-5"
+                className="py-1"
               >
                 <FeaturedEvent
                   title={event.event_details.event_name}
