@@ -19,6 +19,8 @@ from pymongo.server_api import ServerApi
 import random
 import requests
 
+load_dotenv()
+
 webpage = requests.get("https://wusa.ca/events/")
 jsonscript =str(webpage.content)
 isolatedinformation=jsonscript.split('<script type="application/ld+json">')[1].split("</script>")[0][4:-4].encode("utf16", errors="surrogatepass").decode("utf16").encode().decode('unicode_escape')
@@ -76,7 +78,6 @@ def generate_embedding(input_texts: List[str], model_api_string: str) -> List[Li
 
 insertObjectIds = []
 
-load_dotenv()
 uri = os.getenv('DATABASE_URI')
 client = MongoClient(uri, server_api=ServerApi('1'))
 db = client['Instagram']
@@ -166,7 +167,6 @@ def main():
 if __name__ == "__main__":
     postsDf = main()
 
-load_dotenv()
 togetherAPI = os.getenv('TOGETHER_API')
 client = Together(api_key=togetherAPI)
 
@@ -195,7 +195,6 @@ for index, row in postsDf.iterrows():
     is_event = check_string(response.choices[0].message.content)
     postsDf.at[index, "is_event"] = is_event
 
-load_dotenv()
 togetherAPI = os.getenv('TOGETHER_API')
 client = Together(api_key=togetherAPI)
 
@@ -282,7 +281,6 @@ for index, row in postsDf.iterrows():
     else: print(index, "no event detected")
 
 
-load_dotenv()
 uri = os.getenv('DATABASE_URI')
 client = MongoClient(uri, server_api=ServerApi('1'))
 db = client['Instagram']
