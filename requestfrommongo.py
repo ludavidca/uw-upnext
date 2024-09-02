@@ -10,7 +10,6 @@ from datetime import datetime
 def download_future_events_to_json(output_file):
     # Get current Unix timestamp
     current_timestamp = int(time.time())
-    print(current_timestamp)
 
     # Connect to MongoDB
     load_dotenv()
