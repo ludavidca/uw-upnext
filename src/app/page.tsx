@@ -25,40 +25,7 @@ export default function SingleButtonPage() {
 
   const [showEventMain, setShowEventMain] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState<events | null>(null);
-  const [searchEvents, setSearchEvents] = useState<events[]>([]);;
-
-  function getImage(url: string) {
-    const thumbnail:string = `https://www.instagram.com/p/${url}/?size=l`;
-    return thumbnail
-  }
-
-  const fetchEventInfo = (event: events) => {
-    console.log(event);
-    setSelectedEvent(event);
-    setShowEventMain(true);
-  };
-
-  const findSpecificEvents = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setIsLoading(true);
-    try {
-      const res = await fetch(`/api/findEvents?index=${index}`);
-      if (!res.ok) {
-        const errorData = await res.json();
-        throw new Error(
-          `HTTP error! status: ${res.status}, message: ${errorData.error || "Unknown error"}`
-        );
-      }
-      const data = await res.json();
-      console.log("Response data:", data);
-      // Handle the successful response here (e.g., update state with the fetched data)
-    } catch (err) {
-      console.error("Fetch error:", err);
-      // Handle the error here (e.g., show an error message to the user)
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const [searchEvents, setSearchEvents] = useState<events[]>([]);
 
     useEffect(() => {
       const handleResize = () => {
@@ -73,15 +40,9 @@ export default function SingleButtonPage() {
     useEffect(() => {
     const findUpcomingEvents = async () => {
       try {
-        const res = await fetch(`/api/upcomingEvents`);
-        if (!res.ok) {
-          const errorData = await res.json();
-          throw new Error(
-            `HTTP error! status: ${res.status}, message: ${errorData.error || "Unknown error"}`
-          );
-        }
+        const res = await fetch(`events.json`);
         const data = await res.json();
-        setUpcomingEvents(data.results);
+        setUpcomingEvents(data);
         console.log(data);
       } catch (err) {
         console.error("Fetch error:", err);
@@ -95,15 +56,19 @@ export default function SingleButtonPage() {
 
     const findFeaturedEvents = async () => {
       try {
-        const res = await fetch(`/api/featuredEvents`);
-        if (!res.ok) {
-          const errorData = await res.json();
-          throw new Error(
-            `HTTP error! status: ${res.status}, message: ${errorData.error || "Unknown error"}`
-          );
-        }
+        const res = await fetch(`events.json`);
         const data = await res.json();
-        setEvents(data.results);
+        for (let i = 0; i < data.length - 1; i++) {
+            for (let j = 0; j < data.length - 1 - i; j++) {
+                if (data[j].likes < data[j + 1].likes) {
+                    // Swap the items if the current item has fewer likes than the next item
+                    let temp = data[j];
+                    data[j] = data[j + 1];
+                    data[j + 1] = temp;
+                }
+            }
+        }
+        setEvents(data);
         console.log(data);
       } catch (err) {
         console.error("Fetch error:", err);
@@ -113,14 +78,22 @@ export default function SingleButtonPage() {
       }
     };
 
-    
     findFeaturedEvents();
-    
 
   },
   []);
 
-  
+  function getImage(url: string) {
+    const thumbnail: string = `https://www.instagram.com/p/${url}/?size=l`;
+    return thumbnail;
+  }
+
+  const fetchEventInfo = (event: events) => {
+    console.log(event);
+    setSelectedEvent(event);
+    setShowEventMain(true);
+  };
+
   return (
     <div>
       <Navbar
@@ -314,3 +287,87 @@ export default function SingleButtonPage() {
     </div>
   );
 }
+
+  // const findSpecificEvents = async (e: FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
+  //   setIsLoading(true);
+  //   try {
+  //     const res = await fetch(`/api/findEvents?index=${index}`);
+  //     if (!res.ok) {
+  //       const errorData = await res.json();
+  //       throw new Error(
+  //         `HTTP error! status: ${res.status}, message: ${errorData.error || "Unknown error"}`
+  //       );
+  //     }
+  //     const data = await res.json();
+  //     console.log("Response data:", data);
+  //     // Handle the successful response here (e.g., update state with the fetched data)
+  //   } catch (err) {
+  //     console.error("Fetch error:", err);
+  //     // Handle the error here (e.g., show an error message to the user)
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
+
+  //   useEffect(() => {
+  //     const handleResize = () => {
+  //       setIsSmallScreen(window.innerWidth < 640);
+  //     };
+
+  //     handleResize();
+
+  //     window.addEventListener("resize", handleResize);
+  //   });
+
+    
+
+  //   useEffect(() => {
+  //   const findUpcomingEvents = async () => {
+  //     try {
+  //       const res = await fetch(`/api/upcomingEvents`);
+  //       if (!res.ok) {
+  //         const errorData = await res.json();
+  //         throw new Error(
+  //           `HTTP error! status: ${res.status}, message: ${errorData.error || "Unknown error"}`
+  //         );
+  //       }
+  //       const data = await res.json();
+  //       setUpcomingEvents(data.results);
+  //       console.log(data);
+  //     } catch (err) {
+  //       console.error("Fetch error:", err);
+  //       // Handle the error here (e.g., show an error message to the user)
+  //     } finally {
+  //       setIsLoading(false);
+  //     }
+  //   };
+
+  //   findUpcomingEvents();
+
+  //   const findFeaturedEvents = async () => {
+  //     try {
+  //       const res = await fetch(`/api/featuredEvents`);
+  //       if (!res.ok) {
+  //         const errorData = await res.json();
+  //         throw new Error(
+  //           `HTTP error! status: ${res.status}, message: ${errorData.error || "Unknown error"}`
+  //         );
+  //       }
+  //       const data = await res.json();
+  //       setEvents(data.results);
+  //       console.log(data);
+  //     } catch (err) {
+  //       console.error("Fetch error:", err);
+  //       // Handle the error here (e.g., show an error message to the user)
+  //     } finally {
+  //       setIsLoading(false);
+  //     }
+  //   };
+
+    
+  //   findFeaturedEvents();
+    
+
+  // },
+  // []);

@@ -28,19 +28,39 @@ export default function CategoryPage({name, main, onSelectMain}: CategoryPagePro
       setShowEventMain(true);
     };
 
+    const filterEventsByCategory = (events: events[], category: string) => {
+      return events.filter((event) => {
+        // Check if event and event.category exist before using includes
+        if (
+          event &&
+          event.event_details.event_categories &&
+          Array.isArray(event.event_details.event_categories)
+        ) {
+          return event.event_details.event_categories.includes(category);
+        } else if (
+          event &&
+          event.event_details.event_categories &&
+          typeof event.event_details.event_categories === "string"
+        ) {
+          return event.event_details.event_categories === category;
+        }
+        return false; // Return false if event or category is undefined or not in expected format
+      });
+    };
+
     useEffect(()=>{
       const findSpecificEvent = async () => {
         try {
-          const res = await fetch(
-            `/api/categoryEvents?category=${allCapsCategory}`
-          );
-          if (!res.ok) {
-            throw new Error(`HTTP error! status: ${res.status}`);
-          }
-          setNoEvents(false);
+          const res = await fetch(`events.json`);
           const data = await res.json();
-          console.log(data)
-          setCategoryEvents(data.results)
+          const filteredData = filterEventsByCategory(data, allCapsCategory);
+          setCategoryEvents(filteredData);
+          console.log(filteredData)
+          if (filteredData.length === 0) {
+            setNoEvents(true);
+          } else {
+            setNoEvents(false);
+          }
         } catch (err) {
           setNoEvents(true);
           console.error("Fetch error:", err);
