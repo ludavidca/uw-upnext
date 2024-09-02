@@ -16,6 +16,91 @@ from enum import Enum, auto
 import re
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
+import random
+import requests
+
+webpage = requests.get("https://wusa.ca/events/")
+jsonscript =str(webpage.content)
+isolatedinformation=jsonscript.split('<script type="application/ld+json">')[1].split("</script>")[0][4:-4].encode("utf16", errors="surrogatepass").decode("utf16").encode().decode('unicode_escape')
+
+json = json.loads(isolatedinformation.replace('&lt;p&gt;',"").replace("[&hellip;]&lt;/p&gt;\\\\n",""))
+
+wusaDf ={}
+postscolumns = ['account','date','caption',"display_photo",'event_details']
+wusaDf = pd.DataFrame(columns = postscolumns)
+
+import time
+
+time_now = int(time.time())
+for event in json:
+    if int(datetime.fromisoformat(event["startDate"]).timestamp()) >= time_now:
+        try: 
+            location = event["location"]["address"]["streetAddress"]
+        except Exception as err:
+            print(str(err))
+            location = None
+        
+        new_row = pd.DataFrame({
+                "account": ["WUSA"],
+                "date": [time_now],
+                "caption": str(event["description"])+" [For More Information, Click View Post] ",
+                "display_photo": event["image"],
+                "url": [event['url']],
+                "likes": [0],
+                "event_details": [{
+                    "is_event": True,
+                    "event_name": event["name"],
+                    "event_description": str(event["description"])+" ... ",
+                    "categories": ["Social"],
+                    "start_time": int(datetime.fromisoformat(event["startDate"]).timestamp()),
+                    "end_time": int(datetime.fromisoformat(event["endDate"]).timestamp()),
+                    "location": location,
+                }]
+        })
+
+        wusaDf = pd.concat([wusaDf, new_row])
+
+together_api_key = os.getenv('TOGETHER_API')
+
+
+#code for embedding
+embedding_model_string = 'WhereIsAI/UAE-Large-V1' # model API string from Together.
+
+def generate_embedding(input_texts: List[str], model_api_string: str) -> List[List[float]]:
+  together_client = Together(api_key=together_api_key)
+  outputs = together_client.embeddings.create(
+      input=input_texts,
+      model=model_api_string,
+  )
+  return [x.embedding for x in outputs.data]
+
+insertObjectIds = []
+
+load_dotenv()
+uri = os.getenv('DATABASE_URI')
+client = MongoClient(uri, server_api=ServerApi('1'))
+db = client['Instagram']
+collection = db["Events"]
+
+# Remove all documents with these IDs
+result = collection.delete_many({'account': "WUSA"})
+
+# Print the number of documents deleted
+print(f"Documents removed: {result.deleted_count}")
+
+for index, row in wusaDf.iterrows():
+    info = f'"id": "{int(index)}"|* "account": "{row["account"]}"|* "date": "{row["date"]}"|* "caption": "{row["caption"]}"|*'
+    embbededtext = ',\n'.join(x for x in info.replace('\n','\\n').split('|*')) 
+
+    row_dict = {}
+    for column in wusaDf.columns.tolist():
+        row_dict[column] = row[column]
+    row_dict["embedded"] = generate_embedding([embbededtext], embedding_model_string)  
+    result = collection.insert_one(row_dict)
+    print(f"Inserted document ID: {result.inserted_id}")
+    insertObjectIds.append(result.inserted_id)
+    time.sleep(1)
+
 
 def scrape_handle(L, handle, cutoffdate):
     max_retries = 3
@@ -46,14 +131,15 @@ def scrape_handle(L, handle, cutoffdate):
             logging.error(f"Error scraping {handle} (attempt {retry_count}/{max_retries}): {str(e)}")
             if retry_count < max_retries:
                 logging.info(f"Retrying {handle}...")
-                time.sleep(10)  # Wait for 5 seconds before retrying
+                time.sleep(random.randrange(300, 400))  # Wait for 5 seconds before retrying
             else:
                 logging.error(f"Max retries reached for {handle}. Moving to next handle.")
     return []
 
 def scrape_instagram():
-    cutoffdate = datetime.datetime.today() - datetime.timedelta(days=1)
-    handles = ['uwengsoc','uwcsa','uw_ux','uwblueprint','uwaterlooeng','uwaterloottc','uwaterloodsc','uwaterloopm','uwmcc','gdscwaterloo','uwsmileclub','socratica.info','wataiteam','uwawscloud','techplusuw','itshera.co','uwstartups','electriummobility','uwhiphop','uwaterloo_ksa','uw_aviation','uwaterloopm','uwmcc','uwmsa','gdscwaterloo','waterloo_ultimate','uwcheeseclub','uwstreetdance','uwmidsun','watolink_uw','uwaterlooeng','uwpokerclub','uwaterloocycling','uwaterloobsa','uw_phys_club','uw.gsa','uwcsclub','uwfintech','uwaterloosc','uwactsciclub','uwstatsclub']
+    cutoffdate = datetime.datetime.today() - datetime.timedelta(days=30)
+    handles = ['uwengsoc','uwcsa','uw_ux','uwblueprint','uwaterlooeng','uwaterloottc','uwaterloodsc','uwaterloopm','uwmcc','gdscwaterloo','uwsmileclub','socratica.info','yourwusa','wataiteam','uwawscloud','techplusuw','itshera.co','uwstartups','electriummobility','uwhiphop','uwaterloo_ksa','uw_aviation','uwaterloopm','uwmcc','uwmsa','gdscwaterloo','waterloo_ultimate','uwcheeseclub','uwstreetdance','uwmidsun','watolink_uw','uwaterlooeng','uwpokerclub','uwaterloocycling','uwaterloobsa','uw_phys_club','uw.gsa','uwcsclub','uwfintech','uwaterloosc','uwactsciclub','uwstatsclub','waterloo.frosh','wat.street','waterlooblockchain','waterloo.ai','uw_watsam','uwrealitylabs','uwafow','uwmuaythai','uw.farmsa','uw_bmsa','uwtsa','uwmariokart','uwhiphop','uw.movie.watchers','uwbeautyclub','uwteaclub','uw_urc','uw.dhamaka']
+    random.shuffle(handles)
     postsDf = pd.DataFrame()
 
     L = instaloader.Instaloader()
@@ -63,8 +149,7 @@ def scrape_instagram():
         handle_data = scrape_handle(L, handle, cutoffdate)
         if handle_data:
             postsDf = pd.concat([postsDf, pd.DataFrame(handle_data)], ignore_index=True)
-        time.sleep(1)  # Delay between handles to avoid rate limiting
-
+        time.sleep(random.randrange(12000/len(handles),18000/len(handles),18000))  # Delay between handles to avoid rate limiting
     return postsDf
 
 def main():
