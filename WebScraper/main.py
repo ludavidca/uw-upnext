@@ -33,7 +33,7 @@ import time
 
 time_now = int(time.time())
 for event in json:
-    if int(datetime.fromisoformat(event["startDate"]).timestamp()) >= time_now:
+    if int(datetime.datetime.fromisoformat(event["startDate"]).timestamp()) >= time_now:
         try: 
             location = event["location"]["address"]["streetAddress"]
         except Exception as err:
@@ -52,8 +52,8 @@ for event in json:
                     "event_name": event["name"],
                     "event_description": str(event["description"])+" ... ",
                     "categories": ["Social"],
-                    "start_time": int(datetime.fromisoformat(event["startDate"]).timestamp()),
-                    "end_time": int(datetime.fromisoformat(event["endDate"]).timestamp()),
+                    "start_time": int(datetime.datetime.fromisoformat(event["startDate"]).timestamp()),
+                    "end_time": int(datetime.datetime.fromisoformat(event["endDate"]).timestamp()),
                     "location": location,
                 }]
         })
