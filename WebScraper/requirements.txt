@@ -1,0 +1,7 @@
+instaloader==4.9.5
+pandas==2.0.3
+python-dotenv==1.0.0
+pydantic==1.10.7
+pymongo==4.10.1
+requests==2.31.0
+together==1.3.0
