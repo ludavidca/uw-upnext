@@ -2,10 +2,8 @@ import os
 from dotenv import load_dotenv
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
-import pandas as pd
-import time
 import json
-from datetime import datetime
+import time
 
 def download_future_events_to_json(output_file):
     # Get current Unix timestamp
@@ -19,7 +17,7 @@ def download_future_events_to_json(output_file):
     collection = db["Events"]
 
     # Query for future events
-    query = {"events_details.start_time": {"$gte": int(current_timestamp/1000)}}
+    query = {}
     future_events = list(collection.find(query))
 
     # Convert ObjectId to string for JSON serialization
@@ -44,6 +42,11 @@ output_file = "events.json"  # Name of the output JSON file
 
 future_events = download_future_events_to_json(output_file)
 
-# You can process the events further if needed
+# Process the events further
 for event in future_events:
-    print(f"Event ID: {event['_id']}, Start Time: {event['events_details']['start_time']}")
+    event_id = event.get('_id', 'No ID')
+    event_details = event.get('events_details', {})
+    start_time = event_details.get('start_time', 'No start time')
+    
+    print(f"Event ID: {event_id}, Start Time: {start_time}")
+
