@@ -62,8 +62,8 @@ export async function GET(req: NextRequest) {
         $vectorSearch: {
           queryVector: query_emb,
           path: "embedded",
-          numCandidates: 100,
-          limit: 3,
+          numCandidates: 200,
+          limit: 6,
           index: "vector_index",
         },
       },

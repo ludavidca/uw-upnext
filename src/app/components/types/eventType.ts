@@ -3,7 +3,7 @@ export interface event_details {
   is_event: boolean;
   event_name: string;
   event_description: string;
-  categories: string;
+  event_categories: string[];
   start_time: number;
   end_time: number | null;
   location: string | null;
