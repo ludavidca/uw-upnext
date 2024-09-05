@@ -32,22 +32,24 @@ export default function Timeline({ events, onClick }: TimelineProps) {
               </p>
             </div>
             <div className="hidden sm:flex flex-col">
-              {eventsForDate.map((event, index) => (
-                <div
-                  className="w-full"
-                  onClick={() => onClick(event)}
-                  key={index}
-                >
-                  <Event
-                    title={event.event_details.event_name}
-                    details={formatUnixTime(event.event_details.start_time)}
-                    clubName={event.account}
-                    description={event.event_details.event_description}
-                    imgSource={event.display_photo}
-                    url={event.url}
-                  />
-                </div>
-              ))}
+              {eventsForDate
+                .sort((a, b) => a.event_details.start_time - b.event_details.start_time )
+                .map((event, index) => (
+                  <div
+                    className="w-full"
+                    onClick={() => onClick(event)}
+                    key={index}
+                  >
+                    <Event
+                      title={event.event_details.event_name}
+                      details={formatUnixTime(event.event_details.start_time)}
+                      clubName={event.account}
+                      description={event.event_details.event_description}
+                      imgSource={event.display_photo}
+                      url={event.url}
+                    />
+                  </div>
+                ))}
             </div>
             <div className="w-full sm:hidden">
               {eventsForDate.map((event: events, index) => (
