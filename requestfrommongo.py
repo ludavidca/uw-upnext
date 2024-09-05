@@ -38,7 +38,7 @@ def download_future_events_to_json(output_file):
     return future_events
 
 # Usage
-output_file = "events.json"  # Name of the output JSON file
+output_file = "public/events.json"  # Name of the output JSON file
 
 future_events = download_future_events_to_json(output_file)
 
