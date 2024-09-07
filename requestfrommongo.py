@@ -28,10 +28,6 @@ def download_future_events_to_json(output_file):
     with open(output_file, 'w') as f:
         json.dump(future_events, f, indent=2)
 
-    # Print summary
-    print(f"Downloaded {len(future_events)} events")
-    print(f"Data saved to {output_file}")
-
     # Close the MongoDB connection
     client.close()
 

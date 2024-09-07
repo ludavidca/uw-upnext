@@ -1,6 +1,8 @@
+import instaloader
 import pandas as pd
 import datetime 
 import time
+import logging
 from requests.exceptions import RequestException
 from typing import List
 import json
@@ -18,8 +20,7 @@ import random
 import requests
 
 load_dotenv()
-togetherAPI = os.getenv('TOGETHER_API')
-#Updating WUSA Events
+'''
 webpage = requests.get("https://wusa.ca/events/")
 jsonscript =str(webpage.content)
 isolatedinformation=jsonscript.split('<script type="application/ld+json">')[1].split("</script>")[0][4:-4].encode("utf16", errors="surrogatepass").decode("utf16").encode().decode('unicode_escape')
@@ -99,14 +100,83 @@ for index, row in wusaDf.iterrows():
     result = collection.insert_one(row_dict)
     print(f"Inserted document ID: {result.inserted_id}")
     insertObjectIds.append(result.inserted_id)
-    time.sleep(0.5)
+    time.sleep(1)
+'''
 
-#Validating if it is an event
-load_dotenv()
+def scrape_handle(L, handle, cutoffdate):
+    max_retries = 3
+    retry_count = 0
+    posts_data = []
+
+    while retry_count < max_retries:
+        try:
+            profile = instaloader.Profile.from_username(L.context, handle)
+            for post in profile.get_posts():
+                if post.date > cutoffdate:
+                    photo_caption = post.accessibility_caption if post.accessibility_caption is not None else ""
+                    caption = post.caption if post.caption is not None else ""
+                    posts_data.append({
+                        'url': post.shortcode,
+                        'likes': post.likes,
+                        'display_photo': post.url,
+                        'account': handle.replace('\"','\\\"'),
+                        'date': post.date,
+                        'caption': caption.replace("\n",""),
+                        'accessibility_caption': photo_caption.replace("\n",""),
+                    })
+                else:
+                    break
+            return posts_data
+        except (instaloader.exceptions.InstaloaderException, RequestException) as e:
+            retry_count += 1
+            logging.error(f"Error scraping {handle} (attempt {retry_count}/{max_retries}): {str(e)}")
+            if retry_count < max_retries:
+                logging.info(f"Retrying {handle}...")
+                sleeptime = random.randrange(300, 400)
+                print(sleeptime)
+                time.sleep(sleeptime)  # Wait for 5 seconds before retrying
+            else:
+                logging.error(f"Max retries reached for {handle}. Moving to next handle.")
+    return []
+
+def scrape_instagram():
+    cutoffdate = datetime.datetime.today() - datetime.timedelta(days=30)
+    handles = ['uwengsoc','uwcsa','uw_ux','uwblueprint','uwaterlooeng','uwaterloottc','uwaterloodsc','uwaterloopm','uwmcc','gdscwaterloo','uwsmileclub','socratica.info','yourwusa','wataiteam','uwawscloud','techplusuw','itshera.co','uwstartups','electriummobility','uwhiphop','uwaterloo_ksa','uw_aviation','uwaterloopm','uwmcc','uwmsa','gdscwaterloo','waterloo_ultimate','uwcheeseclub','uwstreetdance','uwmidsun','watolink_uw','uwaterlooeng','uwpokerclub','uwaterloocycling','uwaterloobsa','uw_phys_club','uw.gsa','uwcsclub','uwfintech','uwaterloosc','uwactsciclub','uwstatsclub','waterloo.frosh','wat.street','waterlooblockchain','waterloo.ai','uw_watsam','uwrealitylabs','uwafow','uwmuaythai','uw.farmsa','uw_bmsa','uwtsa','uwmariokart','uwhiphop','uw.movie.watchers','uwbeautyclub','uwteaclub','uw_urc','uw.dhamaka']
+    random.shuffle(handles)
+    postsDf = pd.DataFrame()
+
+    L = instaloader.Instaloader()
+    
+    for handle in handles:
+        logging.info(f"Scraping {handle}")
+        handle_data = scrape_handle(L, handle, cutoffdate)
+        if handle_data:
+            postsDf = pd.concat([postsDf, pd.DataFrame(handle_data)], ignore_index=True)
+        sleep_time = random.randint(int(12000/len(handles)), int(18000/len(handles)))
+        print(sleep_time)
+        time.sleep(sleep_time)  # Delay between handles to avoid rate limiting
+    
+    return postsDf
+
+def main():
+    logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+    
+    try:
+        result = scrape_instagram()
+        print(result)
+        logging.info("Scraping completed successfully.")
+        return result
+    except Exception as e:
+        logging.error(f"An unexpected error occurred: {str(e)}")
+
+if __name__ == "__main__":
+    postsDf = main()
+
+print(postsDf, "scraped everything")
+
 togetherAPI = os.getenv('TOGETHER_API')
 client = Together(api_key=togetherAPI)
 
-postsDf = pd.read_csv("WebScraper\Data\instagram_raw.csv").replace('"','', regex=True)
 postsDf["is_event"] = pd.NA
 postsDf["processed_json"]=pd.NA
 
@@ -132,13 +202,14 @@ for index, row in postsDf.iterrows():
     is_event = check_string(response.choices[0].message.content)
     postsDf.at[index, "is_event"] = is_event
 
-
-#Functions to Aid in LLM JSON data extraction
-
-
+togetherAPI = os.getenv('TOGETHER_API')
 client = Together(api_key=togetherAPI)
 
-basePrompt = open("WebScraper/Data/basePrompt.in","r", encoding = "utf-8").read()
+basePrompt = open("C:/Users/david/Desktop/uw-upnext/WebScraper/basePrompt.in","r", encoding = "utf-8").read()
+
+postsDf = pd.read_csv("C:/Users/david/Desktop/uw-upnext/WebScraper/preliminaryProcessedInformation.csv")
+
+basePrompt = open("basePrompt.in","r", encoding = "utf-8").read()
 
 def remove_emojis(text):
     # Unicode ranges for emojis
@@ -169,7 +240,7 @@ class Event(BaseModel):
     is_event: bool = Field(description="Whether the post contains an event")
     event_name: str = Field(description="The Name of the Event")
     event_description: str = Field(description='Concise 20 word summary of the event without time or location')
-    event_categories: list[str] = Field(description='Categorize the Event into at least one or more of the following: TECH, DESIGN, SOCIAL, MUSIC, CULTURE, SPORTS, NETWORK, GAMING')
+    event_categories: list[str] = Field(description='Categorize the Event into one of the following: TECH, DESIGN, SOCIAL, MUSIC, CULTURE, SPORTS, NETWORK, GAMING')
     start_time: str = Field(description="The Start time of Event in the format: yyyy-mm-ddTHH:MM:SS+00:00")
     end_time: str = Field(description="The End time of Event in the format: yyyy-mm-ddTHH:MM:SS+00:00")
     location: str = Field(description= "The location of event")
@@ -200,7 +271,10 @@ def extract_details_with_error_handling(inputJson, index):
             print(str(err))
             return {'is_event': False, 'event_name': None, 'start_time': None, 'end_time': None, 'location': None}
 
+postsDf = pd.read_csv("preliminaryProcessedInformation.csv")
+
 postsDf["event_details"] = pd.NA
+
 
 for index, row in postsDf.iterrows():
     if postsDf.at[index, "is_event"]== True:
@@ -213,22 +287,13 @@ for index, row in postsDf.iterrows():
             postsDf.at[index, "event_details"] = event_details
     else: print(index, "no event detected")
 
-#RAG Processing
-import os
-from dotenv import load_dotenv
-from pymongo.mongo_client import MongoClient
-from pymongo.server_api import ServerApi
-import pandas as pd
 
-load_dotenv()
 uri = os.getenv('DATABASE_URI')
 client = MongoClient(uri, server_api=ServerApi('1'))
 db = client['Instagram']
 collection = db["Events"]
 
-#time conversion and edit formats
-from datetime import datetime
-import time
+
 
 postsDf.reset_index(drop=True)
 postsDf = postsDf.fillna(value="None")
@@ -237,12 +302,13 @@ postsDf.drop(postsDf.columns[postsDf.columns.str.contains(
 
 for index, row in postsDf.iterrows():
     if row["is_event"] == True:
-      row_dict = row["event_details"]
+      row_dict = {}
+      row_dict = eval(row["event_details"])
       try:
-        conStart = datetime.fromisoformat(row_dict["start_time"])
+        conStart = datetime.datetime.fromisoformat(row_dict["start_time"])
         unixStart = time.mktime(conStart.timetuple())
         try:
-          conEnd = datetime.fromisoformat(row_dict["end_time"])
+          conEnd = datetime.datetime.fromisoformat(row_dict["end_time"])
           unixEnd = time.mktime(conEnd.timetuple())
         except:
           conEnd = None
@@ -255,10 +321,7 @@ for index, row in postsDf.iterrows():
       postsDf.at[index, "event_details"] = row_dict
       print(unixStart,unixEnd)
 
-from typing import List
-from together import Together
-import json
-import time
+
 
 together_api_key = os.getenv('TOGETHER_API')
 
@@ -285,45 +348,3 @@ for index, row in postsDf.iterrows():
       result = collection.insert_one(row_dict)
       print(f"Inserted document ID: {result.inserted_id}")
       time.sleep(1)
-
-#Updating Events.json
-
-import os
-from dotenv import load_dotenv
-from pymongo.mongo_client import MongoClient
-from pymongo.server_api import ServerApi
-import json
-import time
-
-def download_future_events_to_json(output_file):
-    # Get current Unix timestamp
-    current_timestamp = int(time.time())
-
-    # Connect to MongoDB
-    load_dotenv()
-    uri = os.getenv('DATABASE_URI')
-    client = MongoClient(uri, server_api=ServerApi('1'))
-    db = client['Instagram']
-    collection = db["Events"]
-
-    # Query for future events
-    query = {}
-    future_events = list(collection.find(query))
-
-    # Convert ObjectId to string for JSON serialization
-    for event in future_events:
-        event['_id'] = str(event['_id'])
-
-    # Write to JSON file
-    with open(output_file, 'w') as f:
-        json.dump(future_events, f, indent=2)
-
-    # Close the MongoDB connection
-    client.close()
-
-    return future_events
-
-# Usage
-output_file = "public/events.json"  # Name of the output JSON file
-
-future_events = download_future_events_to_json(output_file)
