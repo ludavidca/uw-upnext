@@ -6,6 +6,8 @@ import logging
 import random
 from requests.exceptions import RequestException
 
+numDaysFromLastScrape = 1
+
 def scrape_handle(L, handle, cutoffdate):
     max_retries = 3
     retry_count = 0
@@ -41,7 +43,7 @@ def scrape_handle(L, handle, cutoffdate):
     return []
 
 def scrape_instagram():
-    cutoffdate = datetime.datetime.today() - datetime.timedelta(days=1)
+    cutoffdate = datetime.datetime.today() - datetime.timedelta(days=numDaysFromLastScrape)
     handles = ['uwengsoc','uwcsa','uw_ux','uwblueprint','uwaterlooeng','uwaterloottc','uwaterloodsc','uwaterloopm','uwmcc','gdscwaterloo','uwsmileclub','socratica.info','yourwusa','wataiteam','uwawscloud','techplusuw','itshera.co','uwstartups','electriummobility','uwhiphop','uwaterloo_ksa','uw_aviation','uwaterloopm','uwmcc','uwmsa','gdscwaterloo','waterloo_ultimate','uwcheeseclub','uwstreetdance','uwmidsun','watolink_uw','uwaterlooeng','uwpokerclub','uwaterloocycling','uwaterloobsa','uw_phys_club','uw.gsa','uwcsclub','uwfintech','uwaterloosc','uwactsciclub','uwstatsclub','waterloo.frosh','wat.street','waterlooblockchain','waterloo.ai','uw_watsam','uwrealitylabs','uwafow','uwmuaythai','uw.farmsa','uw_bmsa','uwtsa','uwmariokart','uwhiphop','uw.movie.watchers','uwbeautyclub','uwteaclub','uw_urc','uw.dhamaka']
     random.shuffle(handles)
     postsDf = pd.DataFrame()
