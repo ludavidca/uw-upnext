@@ -18,7 +18,7 @@ export default function SingleButtonPage() {
   const [index, setIndex] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [events, setEvents] = useState<events[]>([]);
-  const [categoryEvents, setCategoryEvents] = useState<events[]>([]);
+  const [nonWusaEvents, setnonWusaEvents] = useState<events[]>([]);
   const [upcomingEvents, setUpcomingEvents] = useState<events[]>([]);
   const [isSmallScreen, setIsSmallScreen] = useState(false);
   const [date, setDate] = React.useState<Date | undefined>(new Date());
@@ -26,6 +26,7 @@ export default function SingleButtonPage() {
   const [showEventMain, setShowEventMain] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState<events | null>(null);
   const [searchEvents, setSearchEvents] = useState<events[]>([]);
+
 
     useEffect(() => {
       const handleResize = () => {
@@ -43,7 +44,6 @@ export default function SingleButtonPage() {
         const res = await fetch(`events.json`);
         const data = await res.json();
         setUpcomingEvents(data);
-        console.log(data);
       } catch (err) {
         console.error("Fetch error:", err);
         // Handle the error here (e.g., show an error message to the user)
@@ -70,6 +70,11 @@ export default function SingleButtonPage() {
         }
         setEvents(data);
         console.log(data);
+        const nonWUSAdata = data.filter(
+          (item: events) => item.account !== "WUSA"
+        );
+        setnonWusaEvents(nonWUSAdata);
+        console.log( "test");
       } catch (err) {
         console.error("Fetch error:", err);
         // Handle the error here (e.g., show an error message to the user)
@@ -241,7 +246,7 @@ export default function SingleButtonPage() {
           <div>
             <SectionHeading text="Upcoming Events" />
           </div>
-          <Timeline events={upcomingEvents} onClick={fetchEventInfo} />
+          <Timeline events={nonWusaEvents} onClick={fetchEventInfo} />
           {/* <Calendar
               mode="single"
               selected={date}

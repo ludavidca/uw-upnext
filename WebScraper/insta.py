@@ -3,10 +3,10 @@ import pandas as pd
 import datetime 
 import time
 import logging
-import random
 from requests.exceptions import RequestException
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
-numDaysFromLastScrape = 1
+dayssincescrape = 3
 
 def scrape_handle(L, handle, cutoffdate):
     max_retries = 3
@@ -37,32 +37,46 @@ def scrape_handle(L, handle, cutoffdate):
             logging.error(f"Error scraping {handle} (attempt {retry_count}/{max_retries}): {str(e)}")
             if retry_count < max_retries:
                 logging.info(f"Retrying {handle}...")
-                time.sleep(random.randrange(300, 400))  # Wait for a few minutes before retrying
+                time.sleep(10)  # Wait for 10 seconds before retrying
             else:
                 logging.error(f"Max retries reached for {handle}. Moving to next handle.")
     return []
 
-def scrape_instagram():
-    cutoffdate = datetime.datetime.today() - datetime.timedelta(days=numDaysFromLastScrape)
-    handles = ['uwengsoc','uwcsa','uw_ux','uwblueprint','uwaterlooeng','uwaterloottc','uwaterloodsc','uwaterloopm','uwmcc','gdscwaterloo','uwsmileclub','socratica.info','yourwusa','wataiteam','uwawscloud','techplusuw','itshera.co','uwstartups','electriummobility','uwhiphop','uwaterloo_ksa','uw_aviation','uwaterloopm','uwmcc','uwmsa','gdscwaterloo','waterloo_ultimate','uwcheeseclub','uwstreetdance','uwmidsun','watolink_uw','uwaterlooeng','uwpokerclub','uwaterloocycling','uwaterloobsa','uw_phys_club','uw.gsa','uwcsclub','uwfintech','uwaterloosc','uwactsciclub','uwstatsclub','waterloo.frosh','wat.street','waterlooblockchain','waterloo.ai','uw_watsam','uwrealitylabs','uwafow','uwmuaythai','uw.farmsa','uw_bmsa','uwtsa','uwmariokart','uwhiphop','uw.movie.watchers','uwbeautyclub','uwteaclub','uw_urc','uw.dhamaka']
-    random.shuffle(handles)
+def scrape_instagram(handles, cutoffdate):
+    L = instaloader.Instaloader()
     postsDf = pd.DataFrame()
 
-    L = instaloader.Instaloader()
-    
-    for handle in handles:
-        logging.info(f"Scraping {handle}")
-        handle_data = scrape_handle(L, handle, cutoffdate)
-        if handle_data:
-            postsDf = pd.concat([postsDf, pd.DataFrame(handle_data)], ignore_index=True)
-        time.sleep(4)  # Delay between handles to avoid rate limiting
+    # Use ThreadPoolExecutor to parallelize the scraping
+    with ThreadPoolExecutor(max_workers=5) as executor:
+        # Start the load operations and mark each future with its handle
+        future_to_handle = {executor.submit(scrape_handle, L, handle, cutoffdate): handle for handle in handles}
+        for future in as_completed(future_to_handle):
+            handle = future_to_handle[future]
+            try:
+                handle_data = future.result()
+                if handle_data:
+                    postsDf = pd.concat([postsDf, pd.DataFrame(handle_data)], ignore_index=True)
+            except Exception as e:
+                logging.error(f"Error processing handle {handle}: {e}")
+            time.sleep(1)  # Small delay to prevent rate limiting
+
     return postsDf
 
 def main():
     logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
-    
+
+    cutoffdate = datetime.datetime.today() - datetime.timedelta(days=dayssincescrape)
+    handles = ['uwengsoc', 'uwcsa', 'uw_ux', 'uwblueprint', 'uwaterlooeng', 'uwaterloottc', 
+               'uwaterloodsc', 'uwaterloopm', 'uwmcc', 'gdscwaterloo', 'uwsmileclub', 
+               'socratica.info', 'wataiteam', 'uwawscloud', 'techplusuw', 'itshera.co', 
+               'uwstartups', 'electriummobility', 'uwhiphop', 'uwaterloo_ksa', 'uw_aviation', 
+               'uwaterloopm', 'uwmcc', 'uwmsa', 'gdscwaterloo', 'waterloo_ultimate', 
+               'uwcheeseclub', 'uwstreetdance', 'uwmidsun', 'watolink_uw', 'uwaterlooeng', 
+               'uwpokerclub', 'uwaterloocycling', 'uwaterloobsa', 'uw_phys_club', 'uw.gsa', 
+               'uwcsclub', 'uwfintech', 'uwaterloosc', 'uwactsciclub', 'uwstatsclub']
+
     try:
-        result = scrape_instagram()
+        result = scrape_instagram(handles, cutoffdate)
         print(result)
         logging.info("Scraping completed successfully.")
         return result
