@@ -66,14 +66,14 @@ def main():
     logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
     cutoffdate = datetime.datetime.today() - datetime.timedelta(days=dayssincescrape)
-    handles = ['uwengsoc', 'uwcsa', 'uw_ux', 'uwblueprint', 'uwaterlooeng', 'uwaterloottc', 
-               'uwaterloodsc', 'uwaterloopm', 'uwmcc', 'gdscwaterloo', 'uwsmileclub', 
-               'socratica.info', 'wataiteam', 'uwawscloud', 'techplusuw', 'itshera.co', 
-               'uwstartups', 'electriummobility', 'uwhiphop', 'uwaterloo_ksa', 'uw_aviation', 
-               'uwaterloopm', 'uwmcc', 'uwmsa', 'gdscwaterloo', 'waterloo_ultimate', 
-               'uwcheeseclub', 'uwstreetdance', 'uwmidsun', 'watolink_uw', 'uwaterlooeng', 
-               'uwpokerclub', 'uwaterloocycling', 'uwaterloobsa', 'uw_phys_club', 'uw.gsa', 
-               'uwcsclub', 'uwfintech', 'uwaterloosc', 'uwactsciclub', 'uwstatsclub']
+    handles = ['uwengsoc','uwcsa','uw_ux','uwblueprint','uwaterlooeng','uwaterloottc','uwaterloodsc',
+               'uwaterloopm','uwmcc','gdscwaterloo','uwsmileclub','socratica.info','yourwusa','wataiteam',
+               'uwawscloud','techplusuw','itshera.co','uwstartups','electriummobility','uwhiphop','uwaterloo_ksa',
+               'uw_aviation','uwaterloopm','uwmcc','uwmsa','gdscwaterloo','waterloo_ultimate','uwcheeseclub','uwstreetdance',
+               'uwmidsun','watolink_uw','uwaterlooeng','uwpokerclub','uwaterloocycling','uwaterloobsa','uw_phys_club','uw.gsa',
+               'uwcsclub','uwfintech','uwaterloosc','uwactsciclub','uwstatsclub','waterloo.frosh','wat.street','waterlooblockchain',
+               'waterloo.ai','uw_watsam','uwrealitylabs','uwafow','uwmuaythai','uw.farmsa','uw_bmsa','uwtsa','uwmariokart','uwhiphop',
+               'uw.movie.watchers','uwbeautyclub','uwteaclub','uw_urc','uw.dhamaka']
 
     try:
         result = scrape_instagram(handles, cutoffdate)
