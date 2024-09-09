@@ -11,6 +11,7 @@ import EventMain from "./components/EventMain";
 import { events } from "./components/types/eventType";
 import { formatUnixTime } from "./components/functions/gettime";
 import Timeline from "./components/Timeline"
+import { Switch } from "@/components/ui/switch";
 // import { Calendar } from "@/app/components/ui/calendar";
 
 export default function SingleButtonPage() {
@@ -22,23 +23,14 @@ export default function SingleButtonPage() {
   const [upcomingEvents, setUpcomingEvents] = useState<events[]>([]);
   const [isSmallScreen, setIsSmallScreen] = useState(false);
   const [date, setDate] = React.useState<Date | undefined>(new Date());
+  const [filterPastEvents, setFilterPastEvents] = useState<boolean>(false);
+  const [filterWUSA, setfilterWUSA] = useState<boolean>(false);
 
   const [showEventMain, setShowEventMain] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState<events | null>(null);
   const [searchEvents, setSearchEvents] = useState<events[]>([]);
 
-
-    useEffect(() => {
-      const handleResize = () => {
-        setIsSmallScreen(window.innerWidth < 640);
-      };
-
-      handleResize();
-
-      window.addEventListener("resize", handleResize);
-    });
-
-    useEffect(() => {
+  useEffect(() => {
     const findUpcomingEvents = async () => {
       try {
         const res = await fetch(`events.json`);
@@ -59,22 +51,17 @@ export default function SingleButtonPage() {
         const res = await fetch(`events.json`);
         const data = await res.json();
         for (let i = 0; i < data.length - 1; i++) {
-            for (let j = 0; j < data.length - 1 - i; j++) {
-                if (data[j].likes < data[j + 1].likes) {
-                    // Swap the items if the current item has fewer likes than the next item
-                    let temp = data[j];
-                    data[j] = data[j + 1];
-                    data[j + 1] = temp;
-                }
+          for (let j = 0; j < data.length - 1 - i; j++) {
+            if (data[j].likes < data[j + 1].likes) {
+              // Swap the items if the current item has fewer likes than the next item
+              let temp = data[j];
+              data[j] = data[j + 1];
+              data[j + 1] = temp;
             }
+          }
         }
         setEvents(data);
         console.log(data);
-        const nonWUSAdata = data.filter(
-          (item: events) => item.account !== "WUSA"
-        );
-        setnonWusaEvents(nonWUSAdata);
-        console.log( "test");
       } catch (err) {
         console.error("Fetch error:", err);
         // Handle the error here (e.g., show an error message to the user)
@@ -84,9 +71,42 @@ export default function SingleButtonPage() {
     };
 
     findFeaturedEvents();
+  }, []);
 
-  },
-  []);
+
+
+    useEffect(() => {
+      const fetchAndFilterEvents = async () => {
+        try {
+          const res = await fetch("events.json");
+          let data = await res.json();
+
+          const unixTimeAtMidnight = Math.floor(
+            new Date().setHours(0, 0, 0, 0) / 1000
+          );
+
+          if (!filterPastEvents) {
+            data = data.filter(
+              (item: events) => item.event_details.start_time > unixTimeAtMidnight
+            );
+          }
+
+          if (!filterWUSA) {
+            data = data.filter((item: events) => item.account !== "WUSA");
+          }
+
+          setUpcomingEvents(data);
+        } catch (err) {
+          console.error("Fetch error:", err);
+          // Handle the error here (e.g., show an error message to the user)
+        } finally {
+          setIsLoading(false);
+        }
+      };
+
+      fetchAndFilterEvents();
+    }, [filterPastEvents, filterWUSA]);
+
 
   function getImage(url: string) {
     const thumbnail: string = `https://www.instagram.com/p/${url}/?size=l`;
@@ -99,12 +119,15 @@ export default function SingleButtonPage() {
     setShowEventMain(true);
   };
 
+
   return (
     <div>
       <Navbar
         setCategory={setSelectedCategory}
         onSearch={setSearchEvents}
         onLogoClick={setSearchEvents}
+        toggleState={filterPastEvents}
+        onToggle={() => setFilterPastEvents(!filterPastEvents)}
       />
       {searchEvents.length > 0 && (
         <div className="flex-row sm:flex-row-reverse">
@@ -243,10 +266,19 @@ export default function SingleButtonPage() {
             <Categories onSelectCategory={setSelectedCategory} />
           </div>
 
-          <div>
+          <div className="flex flex-row justify-between items-center w-full">
             <SectionHeading text="Upcoming Events" />
+            <div className="hidden sm:flex flex-row items-center pr-[3%]">
+              <Switch
+                defaultChecked={false}
+                checked={filterWUSA}
+                onCheckedChange={() => setfilterWUSA(!filterWUSA)}
+              />
+              <p className="text-white text-md ml-3">WUSA Events</p>
+            </div>
           </div>
-          <Timeline events={nonWusaEvents} onClick={fetchEventInfo} />
+
+          <Timeline events={upcomingEvents} onClick={fetchEventInfo} />
           {/* <Calendar
               mode="single"
               selected={date}
@@ -258,9 +290,11 @@ export default function SingleButtonPage() {
 
       {selectedCategory !== "main" && searchEvents.length === 0 && (
         <CategoryPage
+          key={`${selectedCategory}-${filterPastEvents}`}
           name={selectedCategory}
           main="main"
           onSelectMain={setSelectedCategory}
+          showPast={filterPastEvents}
         />
       )}
 

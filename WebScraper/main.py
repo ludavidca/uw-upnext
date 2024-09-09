@@ -19,87 +19,87 @@ import requests
 
 load_dotenv()
 togetherAPI = os.getenv('TOGETHER_API')
-#Updating WUSA Events
-webpage = requests.get("https://wusa.ca/events/")
-jsonscript =str(webpage.content)
-isolatedinformation=jsonscript.split('<script type="application/ld+json">')[1].split("</script>")[0][4:-4].encode("utf16", errors="surrogatepass").decode("utf16").encode().decode('unicode_escape')
+# #Updating WUSA Events
+# webpage = requests.get("https://wusa.ca/events/")
+# jsonscript =str(webpage.content)
+# isolatedinformation=jsonscript.split('<script type="application/ld+json">')[1].split("</script>")[0][4:-4].encode("utf16", errors="surrogatepass").decode("utf16").encode().decode('unicode_escape')
 
-json = json.loads(isolatedinformation.replace('&lt;p&gt;',"").replace("[&hellip;]&lt;/p&gt;\\\\n",""))
+# json = json.loads(isolatedinformation.replace('&lt;p&gt;',"").replace("[&hellip;]&lt;/p&gt;\\\\n",""))
 
-wusaDf ={}
-postscolumns = ['account','date','caption',"display_photo",'event_details']
-wusaDf = pd.DataFrame(columns = postscolumns)
+# wusaDf ={}
+# postscolumns = ['account','date','caption',"display_photo",'event_details']
+# wusaDf = pd.DataFrame(columns = postscolumns)
 
-import time
+# import time
 
-time_now = int(time.time())
-for event in json:
-    if int(datetime.datetime.fromisoformat(event["startDate"]).timestamp()) >= time_now:
-        try: 
-            location = event["location"]["address"]["streetAddress"]
-        except Exception as err:
-            print(str(err))
-            location = None
+# time_now = int(time.time())
+# for event in json:
+#     if int(datetime.datetime.fromisoformat(event["startDate"]).timestamp()) >= time_now:
+#         try: 
+#             location = event["location"]["address"]["streetAddress"]
+#         except Exception as err:
+#             print(str(err))
+#             location = None
         
-        new_row = pd.DataFrame({
-                "account": ["WUSA"],
-                "date": [time_now],
-                "caption": str(event["description"])+" [For More Information, Click View Post] ",
-                "display_photo": event["image"],
-                "url": [event['url']],
-                "likes": [0],
-                "event_details": [{
-                    "is_event": True,
-                    "event_name": event["name"],
-                    "event_description": str(event["description"])+" ... ",
-                    "categories": ["Social"],
-                    "start_time": int(datetime.datetime.fromisoformat(event["startDate"]).timestamp()),
-                    "end_time": int(datetime.datetime.fromisoformat(event["endDate"]).timestamp()),
-                    "location": location,
-                }]
-        })
+#         new_row = pd.DataFrame({
+#                 "account": ["WUSA"],
+#                 "date": [time_now],
+#                 "caption": str(event["description"])+" [For More Information, Click View Post] ",
+#                 "display_photo": event["image"],
+#                 "url": [event['url']],
+#                 "likes": [0],
+#                 "event_details": [{
+#                     "is_event": True,
+#                     "event_name": event["name"],
+#                     "event_description": str(event["description"])+" ... ",
+#                     "categories": ["Social"],
+#                     "start_time": int(datetime.datetime.fromisoformat(event["startDate"]).timestamp()),
+#                     "end_time": int(datetime.datetime.fromisoformat(event["endDate"]).timestamp()),
+#                     "location": location,
+#                 }]
+#         })
 
-        wusaDf = pd.concat([wusaDf, new_row])
+#         wusaDf = pd.concat([wusaDf, new_row])
 
-together_api_key = os.getenv('TOGETHER_API')
+# together_api_key = os.getenv('TOGETHER_API')
 
 
-#code for embedding
-embedding_model_string = 'WhereIsAI/UAE-Large-V1' # model API string from Together.
+# #code for embedding
+# embedding_model_string = 'WhereIsAI/UAE-Large-V1' # model API string from Together.
 
-def generate_embedding(input_texts: List[str], model_api_string: str) -> List[List[float]]:
-  together_client = Together(api_key=together_api_key)
-  outputs = together_client.embeddings.create(
-      input=input_texts,
-      model=model_api_string,
-  )
-  return [x.embedding for x in outputs.data]
+# def generate_embedding(input_texts: List[str], model_api_string: str) -> List[List[float]]:
+#   together_client = Together(api_key=together_api_key)
+#   outputs = together_client.embeddings.create(
+#       input=input_texts,
+#       model=model_api_string,
+#   )
+#   return [x.embedding for x in outputs.data]
 
-insertObjectIds = []
+# insertObjectIds = []
 
-uri = os.getenv('DATABASE_URI')
-client = MongoClient(uri, server_api=ServerApi('1'))
-db = client['Instagram']
-collection = db["Events"]
+# uri = os.getenv('DATABASE_URI')
+# client = MongoClient(uri, server_api=ServerApi('1'))
+# db = client['Instagram']
+# collection = db["Events"]
 
-# Remove all documents with these IDs
-result = collection.delete_many({'account': "WUSA"})
+# # Remove all documents with these IDs
+# result = collection.delete_many({'account': "WUSA"})
 
-# Print the number of documents deleted
-print(f"Documents removed: {result.deleted_count}")
+# # Print the number of documents deleted
+# print(f"Documents removed: {result.deleted_count}")
 
-for index, row in wusaDf.iterrows():
-    info = f'"id": "{int(index)}"|* "account": "{row["account"]}"|* "date": "{row["date"]}"|* "caption": "{row["caption"]}"|*'
-    embbededtext = ',\n'.join(x for x in info.replace('\n','\\n').split('|*')) 
+# for index, row in wusaDf.iterrows():
+#     info = f'"id": "{int(index)}"|* "account": "{row["account"]}"|* "date": "{row["date"]}"|* "caption": "{row["caption"]}"|*'
+#     embbededtext = ',\n'.join(x for x in info.replace('\n','\\n').split('|*')) 
 
-    row_dict = {}
-    for column in wusaDf.columns.tolist():
-        row_dict[column] = row[column]
-    row_dict["embedded"] = generate_embedding([embbededtext], embedding_model_string)  
-    result = collection.insert_one(row_dict)
-    print(f"Inserted document ID: {result.inserted_id}")
-    insertObjectIds.append(result.inserted_id)
-    time.sleep(0.5)
+#     row_dict = {}
+#     for column in wusaDf.columns.tolist():
+#         row_dict[column] = row[column]
+#     row_dict["embedded"] = generate_embedding([embbededtext], embedding_model_string)  
+#     result = collection.insert_one(row_dict)
+#     print(f"Inserted document ID: {result.inserted_id}")
+#     insertObjectIds.append(result.inserted_id)
+#     time.sleep(0.5)
 
 #Validating if it is an event
 load_dotenv()
@@ -125,7 +125,7 @@ for index, row in postsDf.iterrows():
     postsDf.at[index, "processed_json"] = currentjson
     response = client.chat.completions.create(
         model="meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo",
-        messages=[{"role": "user", "content": f'Does the following instagram post contain a club event with a specified time. RETURN Yes or No: {currentjson}'}],
+        messages=[{"role": "user", "content": f'Does the following instagram post contain a club event with a specified time. RETURN Yes or No only: {currentjson}'}],
         max_tokens=2
     )
     print(response.choices[0].message.content)

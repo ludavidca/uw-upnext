@@ -2,14 +2,18 @@ import React, { useState, KeyboardEvent } from "react";
 import { FaArrowRight } from "react-icons/fa"; // Import an arrow icon from react-icons
 import { events } from "./types/eventType";
 import { Dispatch, SetStateAction } from "react";
+import { Switch } from "@/components/ui/switch";
+
 
 interface NavbarProps {
   onLogoClick: Dispatch<SetStateAction<events[]>>;
   onSearch: (results: events[]) => void;
-  setCategory: (main: string)=> void;
+  setCategory: (main: string) => void;
+  onToggle: (setTimeMachine: boolean) => void;
+  toggleState: boolean;
 }
 
-export default function Navbar({onLogoClick, onSearch, setCategory}:NavbarProps) {
+export default function Navbar({onLogoClick, onSearch, setCategory, onToggle, toggleState}:NavbarProps) {
   const [query, setQuery] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -78,7 +82,15 @@ export default function Navbar({onLogoClick, onSearch, setCategory}:NavbarProps)
         />
       </div>
       {/* CTA Buttons */}
-      <div className="sm:w-[10%]"></div>
+      <div className="sm:w-[10%] hidden sm:flex">
+        <div className="flex flex-row gap-4">
+          <Switch
+            checked={toggleState}
+            onCheckedChange={onToggle}
+          />
+          <p className="text-center text-white">Past Events</p>
+        </div>
+      </div>
       {/* <div className=" hidden sm:flex  items-center space-x-4">
         <button
           className="px-4 py-2 bg-gray-300 rounded-3xl"
