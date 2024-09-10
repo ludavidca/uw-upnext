@@ -277,7 +277,24 @@ export default function SingleButtonPage() {
               <p className="text-white text-md ml-3">WUSA Events</p>
             </div>
           </div>
-
+          <div className="flex sm:hidden flex-row w-full gap-x-5 items-center px-[4%] pb-8">
+            <div className="flex flex-row">
+              <Switch
+                defaultChecked={false}
+                checked={filterWUSA}
+                onCheckedChange={() => setfilterWUSA(!filterWUSA)}
+              />
+              <p className="text-white text-md ml-3">WUSA Events</p>
+            </div>
+            <div className="flex flex-row">
+              <Switch
+                defaultChecked={false}
+                checked={filterPastEvents}
+                onCheckedChange={() => setFilterPastEvents(!filterPastEvents)}
+              />
+              <p className="text-white text-md ml-3">Past Events</p>
+            </div>
+          </div>
           <Timeline events={upcomingEvents} onClick={fetchEventInfo} />
           {/* <Calendar
               mode="single"
@@ -295,6 +312,7 @@ export default function SingleButtonPage() {
           main="main"
           onSelectMain={setSelectedCategory}
           showPast={filterPastEvents}
+          onToggle={()=>setFilterPastEvents(!filterPastEvents)}
         />
       )}
 

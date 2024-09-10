@@ -7,12 +7,14 @@ import { events } from "./types/eventType";
 import FeaturedEvent from "./FeaturedEvent";
 import EventMain from "./EventMain";
 import Timeline from "./Timeline";
+import { Switch } from "@/components/ui/switch";
 
 interface CategoryPageProps {
   name: string;
   main: string;
   onSelectMain: (main: string) => void;
   showPast: boolean;
+  onToggle: (setTimeMachine: boolean) => void;
 }
 
 export default function CategoryPage({
@@ -20,6 +22,7 @@ export default function CategoryPage({
   main,
   onSelectMain,
   showPast,
+  onToggle
 }: CategoryPageProps) {
   const [categoryEvents, setCategoryEvents] = useState<events[]>([]);
   const [noEvents, setNoEvents] = useState<boolean | null>(null);
@@ -36,10 +39,12 @@ export default function CategoryPage({
 
   const filterEventsByCategory = (events: events[], category: string) => {
     const unixTimeAtMidnight = Math.floor(
-            new Date().setHours(0, 0, 0, 0) / 1000
-          );
+      new Date().setHours(0, 0, 0, 0) / 1000
+    );
     if (!showPast) {
-      events = events.filter((item)=> (item.event_details.start_time >= unixTimeAtMidnight))
+      events = events.filter(
+        (item) => item.event_details.start_time >= unixTimeAtMidnight
+      );
     }
     return events.filter((event) => {
       // Check if event and event.category exist before using includes
@@ -126,6 +131,16 @@ export default function CategoryPage({
       </div>
       <div className="ml-[5%] flex-col place-items-start">
         <SectionHeading text={`Upcoming ${name} Events`} />
+        <div className="flex sm:hidden flex-row w-full justify-between items-center px-[4%] pb-8">
+          <div className="flex flex-row">
+            <Switch
+              defaultChecked={false}
+              checked={showPast}
+              onCheckedChange={onToggle}
+            />
+            <p className="text-white text-md ml-3">Past Events</p>
+          </div>
+        </div>
         <div className="sm:block  w-[100%]">
           {noEvents ? (
             <p className="px-5 sm:px-10 py-3 pt-2 font-medium text-white">
