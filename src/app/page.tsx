@@ -31,6 +31,16 @@ export default function SingleButtonPage() {
   const [searchEvents, setSearchEvents] = useState<events[]>([]);
 
   useEffect(() => {
+    const handleResize = () => {
+      setIsSmallScreen(window.innerWidth < 640);
+    };
+
+    handleResize();
+
+    window.addEventListener("resize", handleResize);
+  });
+  
+  useEffect(() => {
     const findUpcomingEvents = async () => {
       try {
         const res = await fetch(`events.json`);

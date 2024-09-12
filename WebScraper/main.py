@@ -240,10 +240,10 @@ for index, row in postsDf.iterrows():
       row_dict = row["event_details"]
       try:
         conStart = datetime.fromisoformat(row_dict["start_time"])
-        unixStart = time.mktime(conStart.timetuple()) +7200 
+        unixStart = time.mktime(conStart.timetuple()) + 7200 
         try:
           conEnd = datetime.fromisoformat(row_dict["end_time"])
-          unixEnd = time.mktime(conEnd.timetuple()) +7200 
+          unixEnd = time.mktime(conEnd.timetuple()) + 7200 
         except:
           unixEnd = None
         row_dict["start_time"]=unixStart
