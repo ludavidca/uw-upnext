@@ -131,6 +131,15 @@ export default function CategoryPage({
       </div>
       <div className="ml-[5%] flex-col place-items-start">
         <SectionHeading text={`Upcoming ${name} Events`} />
+        <div className="hidden sm:flex flex-row float-end pr-[5%]">
+          <Switch
+            defaultChecked={false}
+            checked={showPast}
+            onCheckedChange={onToggle}
+          />
+          <p className="text-white text-md ml-3">Past Events</p>
+        </div>
+        
         <div className="flex sm:hidden flex-row w-full justify-between items-center px-[4%] pb-8">
           <div className="flex flex-row">
             <Switch

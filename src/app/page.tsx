@@ -136,8 +136,6 @@ export default function SingleButtonPage() {
         setCategory={setSelectedCategory}
         onSearch={setSearchEvents}
         onLogoClick={setSearchEvents}
-        toggleState={filterPastEvents}
-        onToggle={() => setFilterPastEvents(!filterPastEvents)}
       />
       {searchEvents.length > 0 && (
         <div className="flex-row sm:flex-row-reverse">
@@ -276,15 +274,25 @@ export default function SingleButtonPage() {
             <Categories onSelectCategory={setSelectedCategory} />
           </div>
 
-          <div className="flex flex-row justify-between items-center w-full">
+          <div className="flex flex-row justify-between items-end w-full">
             <SectionHeading text="Upcoming Events" />
-            <div className="hidden sm:flex flex-row items-center pr-[3%]">
-              <Switch
-                defaultChecked={false}
-                checked={filterWUSA}
-                onCheckedChange={() => setfilterWUSA(!filterWUSA)}
-              />
-              <p className="text-white text-md ml-3">WUSA Events</p>
+            <div className="flex flex-col items-left pr-[5%] gap-y-3">
+              <div className="hidden sm:flex flex-row">
+                <Switch
+                  defaultChecked={false}
+                  checked={filterPastEvents}
+                  onCheckedChange={() => setFilterPastEvents(!filterPastEvents)}
+                />
+                <p className="text-white text-md ml-3">Past Events</p>
+              </div>
+              <div className="hidden sm:flex flex-row">
+                <Switch
+                  defaultChecked={false}
+                  checked={filterWUSA}
+                  onCheckedChange={() => setfilterWUSA(!filterWUSA)}
+                />
+                <p className="text-white text-md ml-3">WUSA Events</p>
+              </div>
             </div>
           </div>
           <div className="flex sm:hidden flex-row w-full gap-x-5 items-center px-[4%] pb-8">
@@ -322,7 +330,7 @@ export default function SingleButtonPage() {
           main="main"
           onSelectMain={setSelectedCategory}
           showPast={filterPastEvents}
-          onToggle={()=>setFilterPastEvents(!filterPastEvents)}
+          onToggle={() => setFilterPastEvents(!filterPastEvents)}
         />
       )}
 
