@@ -80,7 +80,7 @@ export default function Navbar({onLogoClick, onSearch, setCategory}:NavbarProps)
         />
       </div>
       {/* CTA Buttons */}
-      <div className="w-[10%]"></div>
+      <div className="w-[10%] hidden sm:flex"></div>
       {/* <div className=" hidden sm:flex  items-center space-x-4">
         <button
           className="px-4 py-2 bg-gray-300 rounded-3xl"

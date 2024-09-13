@@ -30,8 +30,6 @@ wusaDf ={}
 postscolumns = ['account','date','caption',"display_photo",'event_details']
 wusaDf = pd.DataFrame(columns = postscolumns)
 
-import time
-
 time_now = int(time.time())
 for event in json:
     if int(datetime.datetime.fromisoformat(event["startDate"]).timestamp()) >= time_now:
@@ -262,17 +260,6 @@ import time
 
 together_api_key = os.getenv('TOGETHER_API')
 
-
-#code for embedding
-embedding_model_string = 'WhereIsAI/UAE-Large-V1' # model API string from Together.
-
-def generate_embedding(input_texts: List[str], model_api_string: str) -> List[List[float]]:
-  together_client = Together(api_key=together_api_key)
-  outputs = together_client.embeddings.create(
-      input=input_texts,
-      model=model_api_string,
-  )
-  return [x.embedding for x in outputs.data]
 
 for index, row in postsDf.iterrows():
     if row["is_event"] == True:
