@@ -17,9 +17,11 @@ from pymongo.server_api import ServerApi
 import random
 import requests
 
+basePrompt = open("./Data/basePrompt.in","r", encoding = "utf-8").read()
+
 load_dotenv()
 togetherAPI = os.getenv('TOGETHER_API')
-# #Updating WUSA Events
+#Updating WUSA Events
 webpage = requests.get("https://wusa.ca/events/")
 jsonscript =str(webpage.content)
 isolatedinformation=jsonscript.split('<script type="application/ld+json">')[1].split("</script>")[0][4:-4].encode("utf16", errors="surrogatepass").decode("utf16").encode().decode('unicode_escape')
@@ -29,6 +31,8 @@ json = json.loads(isolatedinformation.replace('&lt;p&gt;',"").replace("[&hellip;
 wusaDf ={}
 postscolumns = ['account','date','caption',"display_photo",'event_details']
 wusaDf = pd.DataFrame(columns = postscolumns)
+
+import time
 
 time_now = int(time.time())
 for event in json:
@@ -90,9 +94,9 @@ for index, row in wusaDf.iterrows():
     info = f'"id": "{int(index)}"|* "account": "{row["account"]}"|* "date": "{row["date"]}"|* "caption": "{row["caption"]}"|*'
     embbededtext = ',\n'.join(x for x in info.replace('\n','\\n').split('|*')) 
 
-    row_dict = {}
-    for column in wusaDf.columns.tolist():
-        row_dict[column] = row[column]
+row_dict = {}
+for column in wusaDf.columns.tolist():
+    row_dict[column] = row[column]
     row_dict["embedded"] = generate_embedding([embbededtext], embedding_model_string)  
     result = collection.insert_one(row_dict)
     print(f"Inserted document ID: {result.inserted_id}")
@@ -136,7 +140,6 @@ for index, row in postsDf.iterrows():
 
 client = Together(api_key=togetherAPI)
 
-basePrompt = open("WebScraper/Data/basePrompt.in","r", encoding = "utf-8").read()
 
 def remove_emojis(text):
     # Unicode ranges for emojis
@@ -238,10 +241,10 @@ for index, row in postsDf.iterrows():
       row_dict = row["event_details"]
       try:
         conStart = datetime.fromisoformat(row_dict["start_time"])
-        unixStart = time.mktime(conStart.timetuple()) + 7200 
+        unixStart = time.mktime(conStart.timetuple()) + 7200
         try:
           conEnd = datetime.fromisoformat(row_dict["end_time"])
-          unixEnd = time.mktime(conEnd.timetuple()) + 7200 
+          unixEnd = time.mktime(conEnd.timetuple()) + 7200
         except:
           unixEnd = None
         row_dict["start_time"]=unixStart
@@ -260,6 +263,17 @@ import time
 
 together_api_key = os.getenv('TOGETHER_API')
 
+
+#code for embedding
+embedding_model_string = 'WhereIsAI/UAE-Large-V1' # model API string from Together.
+
+def generate_embedding(input_texts: List[str], model_api_string: str) -> List[List[float]]:
+  together_client = Together(api_key=together_api_key)
+  outputs = together_client.embeddings.create(
+      input=input_texts,
+      model=model_api_string,
+  )
+  return [x.embedding for x in outputs.data]
 
 for index, row in postsDf.iterrows():
     if row["is_event"] == True:
@@ -311,6 +325,6 @@ def download_future_events_to_json(output_file):
     return future_events
 
 # Usage
-output_file = "public/events.json"  # Name of the output JSON file
+output_file = "../public/events.json"  # Name of the output JSON file
 
 future_events = download_future_events_to_json(output_file)
