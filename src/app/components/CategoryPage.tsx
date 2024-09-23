@@ -22,7 +22,7 @@ export default function CategoryPage({
   main,
   onSelectMain,
   showPast,
-  onToggle
+  onToggle,
 }: CategoryPageProps) {
   const [categoryEvents, setCategoryEvents] = useState<events[]>([]);
   const [noEvents, setNoEvents] = useState<boolean | null>(null);
@@ -93,7 +93,7 @@ export default function CategoryPage({
         <div className="w-full sm:w-[30%] flex-col space-y-2 my-[5%] sm:my-0">
           <div className="flex items-center space-x-2">
             <Image
-              src={`/categoryIcons/${lowName}.svg`}
+              src={`/InstagramImages/${url}.svg`}
               alt={`Image of E7`}
               width={40}
               height={40}
@@ -139,7 +139,7 @@ export default function CategoryPage({
           />
           <p className="text-white text-md ml-3">Past Events</p>
         </div>
-        
+
         <div className="flex sm:hidden flex-row w-full justify-between items-center px-[4%] pb-8">
           <div className="flex flex-row">
             <Switch
