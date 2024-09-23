@@ -1,5 +1,7 @@
 // src/app/components/Event.tsx
+import { ErrorProps } from "next/error";
 import Image from "next/image";
+import { useState } from "react";
 
 interface EventProps {
   title: string;
@@ -14,9 +16,8 @@ interface EventProps {
 export default function Event({ title, details, clubName, description, url, imgSource }: EventProps) {
     const [error, setError] = useState(false);
 
-    const handleError = (error) => {
+    const handleError = (error: any) => {
       console.error("Image loading failed:", {
-        src,
         error: error.message,
         type: error.type,
         // Log additional properties of the error object
