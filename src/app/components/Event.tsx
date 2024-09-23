@@ -12,6 +12,19 @@ interface EventProps {
 
 
 export default function Event({ title, details, clubName, description, url, imgSource }: EventProps) {
+    const [error, setError] = useState(false);
+
+    const handleError = (error) => {
+      console.error("Image loading failed:", {
+        src,
+        error: error.message,
+        type: error.type,
+        // Log additional properties of the error object
+        errorDetails: JSON.stringify(error, Object.getOwnPropertyNames(error)),
+      });
+      setError(true);
+    };
+
     return (
       <div className="bg-purple-750 mx-10 mb-5 w-[90%] rounded-3xl font-bold event p-5 cursor-pointer">
         <div className="flex flex-col md:flex-row">
@@ -37,6 +50,7 @@ export default function Event({ title, details, clubName, description, url, imgS
             height={100}
             width={100}
             className="w-full md:w-auto md:max-w-xs md:ml-auto rounded-2xl object-cover"
+            onError={handleError}
           />
         </div>
       </div>
