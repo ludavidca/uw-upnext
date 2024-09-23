@@ -42,3 +42,5 @@ export default function Event({ title, details, clubName, description, url, imgS
       </div>
     );
 }
+
+//unknown errors
