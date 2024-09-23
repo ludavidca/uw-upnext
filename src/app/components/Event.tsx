@@ -49,7 +49,7 @@ export default function Event({
         </p>
         <Image
           src={
-            clubName === "WUSA" ? `${imgSource}` : `/InstagramImages/${url}.pdf`
+            clubName === "WUSA" ? `${imgSource}` : `/InstagramImages/${url}.jpg`
           }
           alt="Event Image"
           height={100}

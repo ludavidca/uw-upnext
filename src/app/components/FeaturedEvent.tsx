@@ -31,7 +31,7 @@ export default function FeaturedEvent({
           />
         ) : (
           <Image
-            src={`/InstagramImages/${url}.pdf`}
+            src={`/InstagramImages/${url}.jpg`}
             alt="featured event image"
             width={1000}
             height={1000}
