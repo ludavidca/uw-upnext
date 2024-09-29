@@ -156,7 +156,7 @@ export default function CategoryPage({
               No Events Found
             </p>
           ) : (
-            <div className="overflow-x-hidden">
+            <div className="overflow-x-hidden w-[120%]">
               <Timeline events={categoryEvents} onClick={fetchEventInfo} />
             </div>
           )}
