@@ -14,8 +14,9 @@ from enum import Enum, auto
 import re
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
-import random
 import requests
+from bs4 import BeautifulSoup
+from urllib.parse import urlparse
 
 basePrompt = open("./Data/basePrompt.in","r", encoding = "utf-8").read()
 
@@ -203,6 +204,45 @@ def extract_details_with_error_handling(inputJson, index):
 
 postsDf["event_details"] = pd.NA
 
+postsDf = pd.read_csv("instagram_raw.csv").replace('"','', regex=True)
+
+
+def download_instagram_image(url, folder_path):
+    # Send a GET request to the Instagram post URL
+    response = requests.get(url)
+    
+    if response.status_code == 200:
+        # Parse the HTML content
+        soup = BeautifulSoup(response.text, 'html.parser')
+        
+        # Find the image URL (this may change if Instagram updates their HTML structure)
+        image_url = soup.find('meta', property='og:image')['content']
+        
+        if image_url:
+            # Download the image
+            image_response = requests.get(image_url)
+            
+            if image_response.status_code == 200:
+                # Create the folder if it doesn't exist
+                os.makedirs(folder_path, exist_ok=True)
+                
+                # Generate a filename from the URL
+                filename = os.path.basename(urlparse(image_url).path)
+                file_path = os.path.join(folder_path, filename)
+                
+                # Save the image
+                with open(file_path, 'wb') as file:
+                    file.write(image_response.content)
+                
+                print(f"Image saved successfully: {file_path}")
+            else:
+                print("Failed to download the image.")
+        else:
+            print("Could not find the image URL in the Instagram post.")
+    else:
+        print("Failed to access the Instagram post.")
+
+
 for index, row in postsDf.iterrows():
     if postsDf.at[index, "is_event"]== True:
         event_details = return_event_details(str(postsDf.at[index, "processed_json"]))
@@ -212,6 +252,11 @@ for index, row in postsDf.iterrows():
             postsDf.at[index, "event_details"] = None
         else:
             postsDf.at[index, "event_details"] = event_details
+            imageurl = row["display_photo"]
+            postID = row["url"]
+            filepath = f'./public/InstagramImages/{postID}'
+            download_instagram_image(imageurl, postID)
+            break
     else: print(index, "no event detected")
 
 #RAG Processing
@@ -256,11 +301,6 @@ for index, row in postsDf.iterrows():
       postsDf.at[index, "event_details"] = row_dict
       print(unixStart,unixEnd)
 
-from typing import List
-from together import Together
-import json
-import time
-
 together_api_key = os.getenv('TOGETHER_API')
 
 
@@ -288,13 +328,6 @@ for index, row in postsDf.iterrows():
       time.sleep(1)
 
 #Updating Events.json
-
-import os
-from dotenv import load_dotenv
-from pymongo.mongo_client import MongoClient
-from pymongo.server_api import ServerApi
-import json
-import time
 
 def download_future_events_to_json(output_file):
     # Get current Unix timestamp
