@@ -12,13 +12,13 @@ import json
 import pandas as pd
 from enum import Enum, auto
 import re
-from pymongo.mongo_client import MongoClient
+from pymongo import MongoClient, errors
 from pymongo.server_api import ServerApi
 import requests
 from bs4 import BeautifulSoup
 from urllib.parse import urlparse
 
-basePrompt = open("./Data/basePrompt.in","r", encoding = "utf-8").read()
+basePrompt = open("WebScraper/Data/basePrompt.in","r", encoding = "utf-8").read()
 
 load_dotenv()
 togetherAPI = os.getenv('TOGETHER_API')
@@ -27,7 +27,7 @@ webpage = requests.get("https://wusa.ca/events/")
 jsonscript =str(webpage.content)
 isolatedinformation=jsonscript.split('<script type="application/ld+json">')[1].split("</script>")[0][4:-4].encode("utf16", errors="surrogatepass").decode("utf16").encode().decode('unicode_escape')
 
-json = json.loads(isolatedinformation.replace('&lt;p&gt;',"").replace("[&hellip;]&lt;/p&gt;\\\\n",""))
+WUSAjson = json.loads(isolatedinformation.replace('&lt;p&gt;',"").replace("[&hellip;]&lt;/p&gt;\\\\n",""))
 
 wusaDf ={}
 postscolumns = ['account','date','caption',"display_photo",'event_details']
@@ -36,33 +36,34 @@ wusaDf = pd.DataFrame(columns = postscolumns)
 import time
 
 time_now = int(time.time())
-for event in json:
+for event in WUSAjson:
     if int(datetime.datetime.fromisoformat(event["startDate"]).timestamp()) >= time_now:
         try: 
             location = event["location"]["address"]["streetAddress"]
         except Exception as err:
             print(str(err))
             location = None
-        
-        new_row = pd.DataFrame({
-                "account": ["WUSA"],
-                "date": [time_now],
-                "caption": str(event["description"])+" [For More Information, Click View Post] ",
-                "display_photo": event["image"],
-                "url": [event['url']],
-                "likes": [0],
-                "event_details": [{
-                    "is_event": True,
-                    "event_name": event["name"],
-                    "event_description": str(event["description"])+" ... ",
-                    "categories": ["Social"],
-                    "start_time": int(datetime.datetime.fromisoformat(event["startDate"]).timestamp()),
-                    "end_time": int(datetime.datetime.fromisoformat(event["endDate"]).timestamp()),
-                    "location": location,
-                }]
-        })
-
-        wusaDf = pd.concat([wusaDf, new_row])
+        try:
+            new_row = pd.DataFrame({
+                    "account": ["WUSA"],
+                    "date": [time_now],
+                    "caption": str(event["description"])+" [For More Information, Click View Post] ",
+                    "display_photo": event["image"],
+                    "url": [event['url']],
+                    "likes": [0],
+                    "event_details": [{
+                        "is_event": True,
+                        "event_name": event["name"],
+                        "event_description": str(event["description"])+" ... ",
+                        "categories": ["Social"],
+                        "start_time": int(datetime.datetime.fromisoformat(event["startDate"]).timestamp()),
+                        "end_time": int(datetime.datetime.fromisoformat(event["endDate"]).timestamp()),
+                        "location": location,
+                    }]
+            })
+            wusaDf = pd.concat([wusaDf, new_row])
+        except:
+            print("failed row")
 
 together_api_key = os.getenv('TOGETHER_API')
 
@@ -80,29 +81,52 @@ def generate_embedding(input_texts: List[str], model_api_string: str) -> List[Li
 
 insertObjectIds = []
 
+# Set up MongoDB client
 uri = os.getenv('DATABASE_URI')
 client = MongoClient(uri, server_api=ServerApi('1'))
 db = client['Instagram']
 collection = db["Events"]
 
-# Remove all documents with these IDs
-result = collection.delete_many({'account': "WUSA"})
+# Remove all documents with 'account': "WUSA"
+try:
+    result = collection.delete_many({'account': "WUSA"})
+    print(f"Documents removed: {result.deleted_count}")
+except errors.PyMongoError as e:
+    print(f"Error deleting documents: {e}")
 
-# Print the number of documents deleted
-print(f"Documents removed: {result.deleted_count}")
+# Check and remove '_id' column if present
+if '_id' in wusaDf.columns:
+    print("DataFrame contains an '_id' column. It will be removed to prevent duplication.")
+    wusaDf = wusaDf.drop(columns=['_id'])
 
 for index, row in wusaDf.iterrows():
+    # Construct the info string
     info = f'"id": "{int(index)}"|* "account": "{row["account"]}"|* "date": "{row["date"]}"|* "caption": "{row["caption"]}"|*'
-    embbededtext = ',\n'.join(x for x in info.replace('\n','\\n').split('|*')) 
+    embeddedtext = ',\n'.join(x for x in info.replace('\n','\\n').split('|*')) 
 
-row_dict = {}
-for column in wusaDf.columns.tolist():
-    row_dict[column] = row[column]
-    row_dict["embedded"] = generate_embedding([embbededtext], embedding_model_string)  
-    result = collection.insert_one(row_dict)
-    print(f"Inserted document ID: {result.inserted_id}")
-    insertObjectIds.append(result.inserted_id)
-    time.sleep(0.5)
+    # Create the document dictionary
+    row_dict = {column: row[column] for column in wusaDf.columns.tolist()}
+    
+    # Add the embedded field
+    row_dict["embedded"] = generate_embedding([embeddedtext], embedding_model_string)
+    
+    # Remove '_id' if present to let MongoDB generate it
+    row_dict.pop('_id', None)
+    
+    try:
+        result = collection.insert_one(row_dict)
+        print(f"Inserted document ID: {result.inserted_id}")
+        insertObjectIds.append(result.inserted_id)
+    except errors.DuplicateKeyError as e:
+        print(f"DuplicateKeyError: {e}. Document skipped.")
+    except errors.PyMongoError as e:
+        print(f"An error occurred: {e}. Document skipped.")
+    
+    time.sleep(0.5)  # Adjust or remove delay as needed
+
+# Optionally, print all inserted ObjectIds
+print(f"All inserted document IDs: {insertObjectIds}")
+
 
 #Validating if it is an event
 load_dotenv()
@@ -203,9 +227,6 @@ def extract_details_with_error_handling(inputJson, index):
             return {'is_event': False, 'event_name': None, 'start_time': None, 'end_time': None, 'location': None}
 
 postsDf["event_details"] = pd.NA
-
-postsDf = pd.read_csv("instagram_raw.csv").replace('"','', regex=True)
-
 
 def download_instagram_image(url, folder_path):
     # Send a GET request to the Instagram post URL
