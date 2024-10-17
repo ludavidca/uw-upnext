@@ -93,7 +93,7 @@ export default function CategoryPage({
         <div className="w-full sm:w-[30%] flex-col space-y-2 my-[5%] sm:my-0">
           <div className="flex items-center space-x-2">
             <Image
-              src={`/categoryImages/${lowName}.svg`}
+              src={`/categoryIcons/${lowName}.svg`}
               alt={`Image of E7`}
               width={40}
               height={40}
