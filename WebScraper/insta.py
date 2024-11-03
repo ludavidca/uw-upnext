@@ -6,7 +6,7 @@ import logging
 from requests.exceptions import RequestException
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-dayssincescrape = 3
+dayssincescrape = 30
 
 def scrape_handle(L, handle, cutoffdate):
     max_retries = 3
