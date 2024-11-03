@@ -150,7 +150,7 @@ export default function EventMain({ title, details, start_time, end_time, clubNa
                 />
               ) : (
                 <Image
-                  src={`https://www.instagram.com/p/${postUrl}/media/?size=l`}
+                  src={`/InstagramImages/${postUrl}.jpg`}
                   height={1000}
                   width={1000}
                   alt="Event Image"

@@ -16,13 +16,12 @@ def download_future_events_to_json(output_file):
     db = client['Instagram']
     collection = db["Events"]
 
-    # Query for future events
-    query = {}
-    future_events = list(collection.find(query))
+    future_events = list(collection.find({}))
 
     # Convert ObjectId to string for JSON serialization
     for event in future_events:
         event['_id'] = str(event['_id'])
+        event['embedded'] = ""
 
     # Write to JSON file
     with open(output_file, 'w') as f:
