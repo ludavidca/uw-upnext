@@ -6,7 +6,7 @@ import logging
 from requests.exceptions import RequestException
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-dayssincescrape = 30
+dayssincescrape = 365
 
 def scrape_handle(L, handle, cutoffdate):
     max_retries = 3
@@ -30,7 +30,7 @@ def scrape_handle(L, handle, cutoffdate):
                         'accessibility_caption': photo_caption.replace("\n",""),
                     })
                 else:
-                    break
+                    pass
             return posts_data
         except (instaloader.exceptions.InstaloaderException, RequestException) as e:
             retry_count += 1
@@ -66,6 +66,7 @@ def main():
     logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
     cutoffdate = datetime.datetime.today() - datetime.timedelta(days=dayssincescrape)
+    #left_interval = datetime.datetime.today() - datetime.timedelta(days=cutoff_days)
     handles = ['uwengsoc','uwcsa','uw_ux','uwblueprint','uwaterlooeng','uwaterloottc','uwaterloodsc',
                'uwaterloopm','uwmcc','gdscwaterloo','uwsmileclub','socratica.info','yourwusa','wataiteam',
                'uwawscloud','techplusuw','itshera.co','uwstartups','electriummobility','uwhiphop','uwaterloo_ksa',
@@ -87,4 +88,5 @@ if __name__ == "__main__":
     postsDf = main()
 
 postsDf.reset_index(drop=True) 
-postsDf.to_csv("WebScraper\Data\instagram_raw.csv")
+postsDf.to_csv("/Users/madhavmalik/VSC Projects/uw-upnext/uw-upnext/WebScraper/Data/instagram_raw.csv")
+
