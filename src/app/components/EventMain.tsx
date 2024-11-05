@@ -41,7 +41,7 @@ export default function EventMain({ title, details, start_time, end_time, clubNa
      const extractTimeArray = function (
        dateinUnix: number
      ): [number, number, number, number, number] {
-       const date = new Date(dateinUnix * 1000 - 7200000);
+       const date = new Date(dateinUnix * 1000);
        return [
          date.getFullYear(),
          date.getMonth() + 1,

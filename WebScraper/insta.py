@@ -6,7 +6,7 @@ import logging
 from requests.exceptions import RequestException
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-dayssincescrape = 365
+dayssincescrape = 1
 
 def scrape_handle(L, handle, cutoffdate):
     max_retries = 3
@@ -69,7 +69,7 @@ def main():
     #left_interval = datetime.datetime.today() - datetime.timedelta(days=cutoff_days)
     handles = ['uwengsoc','uwcsa','uw_ux','uwblueprint','uwaterlooeng','uwaterloottc','uwaterloodsc',
                'uwaterloopm','uwmcc','gdscwaterloo','uwsmileclub','socratica.info','yourwusa','wataiteam',
-               'uwawscloud','techplusuw','itshera.co','uwstartups','electriummobility','uwhiphop','uwaterloo_ksa',
+               'uwawscloud','techplusuw','itshera.co','uwstartups','electriummobility','uwhiphop',
                'uw_aviation','uwaterloopm','uwmcc','uwmsa','gdscwaterloo','waterloo_ultimate','uwcheeseclub','uwstreetdance',
                'uwmidsun','watolink_uw','uwaterlooeng','uwpokerclub','uwaterloocycling','uwaterloobsa','uw_phys_club','uw.gsa',
                'uwcsclub','uwfintech','uwaterloosc','uwactsciclub','uwstatsclub','waterloo.frosh','wat.street','waterlooblockchain',

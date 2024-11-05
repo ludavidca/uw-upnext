@@ -1,5 +1,5 @@
 export function formatUnixTime(unixTime: number) {
-  const date = new Date(unixTime * 1000 - 7200000);
+  const date = new Date(unixTime * 1000);
 
   const months = [
     "Jan",
