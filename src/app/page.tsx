@@ -131,7 +131,7 @@ export default function SingleButtonPage() {
 
 
   return (
-    <div>
+    <div className="overflow-x-hidden">
       <Navbar
         setCategory={setSelectedCategory}
         onSearch={setSearchEvents}

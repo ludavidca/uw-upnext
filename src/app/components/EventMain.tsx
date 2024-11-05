@@ -21,11 +21,12 @@ interface EventProps {
 }
 
 export default function EventMain({ title, details, start_time, end_time, clubName, description, location, postUrl, onClose, imgUrl }: EventProps) {
-    const handleBackdropClick = (event: React.MouseEvent<HTMLDivElement>) => {
+  const handleBackdropClick = (event: React.MouseEvent<HTMLDivElement>) => {
         if (event.target === event.currentTarget) {
           onClose();
         }
       };
+    
 
     const mapsUrl = (inputString: string | null) => {
       if (inputString === null || inputString === "null") {
@@ -189,9 +190,9 @@ export default function EventMain({ title, details, start_time, end_time, clubNa
                       className="inline px-1 w-6 h-6"
                       alt="Pin Emoji"
                     />
-                    {location !== "null" && location}
-                    {!location ||
-                      (location === "null" && "University of Waterloo")}
+                    {location !== "null" && location !== null && location !== ""
+                      ? location
+                      : "University of Waterloo"}
                   </h2>
                 </a>
               </div>

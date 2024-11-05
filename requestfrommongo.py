@@ -4,6 +4,9 @@ from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
 import json
 import time
+from collections import Counter 
+
+url_array = []
 
 def download_future_events_to_json(output_file):
     # Get current Unix timestamp
@@ -22,7 +25,7 @@ def download_future_events_to_json(output_file):
     for event in future_events:
         event['_id'] = str(event['_id'])
         event['embedded'] = ""
-
+        url_array.append(event['url'])
     # Write to JSON file
     with open(output_file, 'w') as f:
         json.dump(future_events, f, indent=2)
@@ -37,11 +40,5 @@ output_file = "public/events.json"  # Name of the output JSON file
 
 future_events = download_future_events_to_json(output_file)
 
-# Process the events further
-for event in future_events:
-    event_id = event.get('_id', 'No ID')
-    event_details = event.get('events_details', {})
-    start_time = event_details.get('start_time', 'No start time')
-    
-    print(f"Event ID: {event_id}, Start Time: {start_time}")
-
+url_dict = Counter(url_array)
+print({x for x, count in url_dict.items() if count > 1})
