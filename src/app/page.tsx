@@ -24,7 +24,7 @@ export default function SingleButtonPage() {
   const [isSmallScreen, setIsSmallScreen] = useState(false);
   const [date, setDate] = React.useState<Date | undefined>(new Date());
   const [filterPastEvents, setFilterPastEvents] = useState<boolean>(false);
-  const [filterWUSA, setfilterWUSA] = useState<boolean>(false);
+  const [filterWUSA, setfilterWUSA] = useState<boolean>(true);
 
   const [showEventMain, setShowEventMain] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState<events | null>(null);
