@@ -23,7 +23,7 @@ export default function SingleButtonPage() {
   const [upcomingEvents, setUpcomingEvents] = useState<events[]>([]);
   const [isSmallScreen, setIsSmallScreen] = useState(false);
   const [date, setDate] = React.useState<Date | undefined>(new Date());
-  const [filterPastEvents, setFilterPastEvents] = useState<boolean>(false);
+  const [filterPastEvents, setFilterPastEvents] = useState<boolean>(true);
   const [filterWUSA, setfilterWUSA] = useState<boolean>(false);
 
   const [showEventMain, setShowEventMain] = useState(false);
@@ -71,7 +71,6 @@ export default function SingleButtonPage() {
           }
         }
         setEvents(data);
-        console.log(data);
       } catch (err) {
         console.error("Fetch error:", err);
         // Handle the error here (e.g., show an error message to the user)
@@ -196,14 +195,14 @@ export default function SingleButtonPage() {
               <SectionHeading text="Popular Events" />
               <EventCarousel>
                 {events
-                  .filter((event: events) => {
-                    const eventDate = new Date(
-                      event.event_details.start_time * 1000
-                    );
-                    const today = new Date();
-                    today.setHours(0, 0, 0, 0); // Set time to midnight
-                    return eventDate >= today;
-                  })
+                  // .filter((event: events) => {
+                  //   const eventDate = new Date(
+                  //     event.event_details.start_time * 1000
+                  //   );
+                  //   const today = new Date();
+                  //   today.setHours(0, 0, 0, 0); // Set time to midnight
+                  //   return eventDate >= today;
+                  // })
                   .filter(
                     (event, index, self) =>
                       index ===
@@ -236,14 +235,14 @@ export default function SingleButtonPage() {
 
               <EventCarousel>
                 {events
-                  .filter((event: events) => {
-                    const eventDate = new Date(
-                      event.event_details.start_time * 1000
-                    );
-                    const today = new Date();
-                    today.setHours(0, 0, 0, 0); // Set time to midnight
-                    return eventDate >= today;
-                  })
+                  // .filter((event: events) => {
+                  //   const eventDate = new Date(
+                  //     event.event_details.start_time * 1000
+                  //   );
+                  //   const today = new Date();
+                  //   today.setHours(0, 0, 0, 0); // Set time to midnight
+                  //   return eventDate >= today;
+                  // })
                   .filter(
                     (event, index, self) =>
                       index ===
@@ -253,6 +252,7 @@ export default function SingleButtonPage() {
                           event.event_details.event_name
                       )
                   ) // Filter out duplicate titles
+
                   .map((event: events) => (
                     <div key={event._id} onClick={() => fetchEventInfo(event)}>
                       <FeaturedEvent

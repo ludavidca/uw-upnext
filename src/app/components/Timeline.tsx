@@ -33,7 +33,6 @@ export default function Timeline({ events, onClick }: TimelineProps) {
             </div>
             <div className="hidden sm:flex flex-col">
               {eventsForDate
-                .sort((a, b) => a.event_details.start_time - b.event_details.start_time )
                 .map((event, index) => (
                   <div
                     className="w-full"

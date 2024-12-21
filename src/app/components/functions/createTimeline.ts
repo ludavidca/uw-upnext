@@ -34,7 +34,7 @@ export function CreateTimeline(response: events[]) {
   const timelineArray = Object.entries(timeline).sort(([dateA], [dateB]) => {
     const dateAObj = new Date(dateA);
     const dateBObj = new Date(dateB);
-    return dateAObj.getTime() - dateBObj.getTime();
+    return dateBObj.getTime() - dateAObj.getTime();
   });
 
   return timelineArray;
