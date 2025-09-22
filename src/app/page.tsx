@@ -45,7 +45,7 @@ export default function SingleButtonPage() {
       try {
         const res = await fetch(`events.json`);
         const data = await res.json();
-        setUpcomingEvents(data);
+        setUpcomingEvents(data.slice(0, 100));
       } catch (err) {
         console.error("Fetch error:", err);
         // Handle the error here (e.g., show an error message to the user)
@@ -70,7 +70,7 @@ export default function SingleButtonPage() {
             }
           }
         }
-        setEvents(data);
+        setEvents(data.slice(0, 100));
       } catch (err) {
         console.error("Fetch error:", err);
         // Handle the error here (e.g., show an error message to the user)
@@ -104,7 +104,7 @@ export default function SingleButtonPage() {
             data = data.filter((item: events) => item.account !== "WUSA");
           }
 
-          setUpcomingEvents(data);
+          setUpcomingEvents(data.slice(0, 100));
         } catch (err) {
           console.error("Fetch error:", err);
           // Handle the error here (e.g., show an error message to the user)

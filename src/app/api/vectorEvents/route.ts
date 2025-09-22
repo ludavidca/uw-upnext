@@ -31,7 +31,7 @@ export async function GET(req: NextRequest) {
     });
 
     const embResponse = await togetherclient.embeddings.create({
-      model: "WhereIsAI/UAE-Large-V1",
+      model: "BAAI/bge-large-en-v1.5",
       input: inputText,
     });
 
@@ -60,16 +60,16 @@ export async function GET(req: NextRequest) {
     const agg = [
       {
         $vectorSearch: {
-          queryVector: query_emb,
-          path: "embedded",
-          numCandidates: 200,
-          limit: 6,
           index: "vector_index",
+          path: "embedded",
+          queryVector: query_emb,
+          numCandidates: 100,
+          limit: 6,
         },
       },
     ];
     const result = await events.aggregate(agg).toArray();
-
+    console.log(result, query_emb);
     return NextResponse.json({ status: 200, results: result });
   } catch (err) {
     console.error(err);

@@ -69,7 +69,7 @@ together_api_key = os.getenv('TOGETHER_API')
 
 
 #code for embedding
-embedding_model_string = 'WhereIsAI/UAE-Large-V1' # model API string from Together.
+embedding_model_string = 'BAAI/bge-large-en-v1.5' # model API string from Together.
 
 def generate_embedding(input_texts: List[str], model_api_string: str) -> List[List[float]]:
   together_client = Together(api_key=together_api_key)
@@ -326,7 +326,7 @@ together_api_key = os.getenv('TOGETHER_API')
 
 
 #code for embedding
-embedding_model_string = 'WhereIsAI/UAE-Large-V1' # model API string from Together.
+embedding_model_string = 'BAAI/bge-large-en-v1.5' # model API string from Together.
 
 def generate_embedding(input_texts: List[str], model_api_string: str) -> List[List[float]]:
   together_client = Together(api_key=together_api_key)
