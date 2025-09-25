@@ -47,19 +47,19 @@ export default function Event({
         <p className="w-1/2 h-flex flex justify-center items-center font-medium line-clamp-3 text-white">
           {description}
         </p>
-        <Image
-          src={
-            clubName === "WUSA" ? `${imgSource}` : `/InstagramImages/${url}.jpg`
-          }
-          alt="Event Image"
-          height={100}
-          width={100}
-          className="w-full md:w-auto md:max-w-xs md:ml-auto rounded-2xl object-cover"
-          onError={handleError}
-        />
+        <div className="w-[120px] h-[120px] rounded-2xl overflow-hidden flex-shrink-0 flex justify-center items-center md:ml-auto">
+          <Image
+            src={
+              clubName === "WUSA" ? `${imgSource}` : `/InstagramImages/${url}.jpg`
+            }
+            alt="Event Image"
+            width={120}
+            height={120}
+            className="w-full h-full object-cover"
+            onError={handleError}
+          />
+        </div>
       </div>
     </div>
   );
 }
-
-//unknown errors

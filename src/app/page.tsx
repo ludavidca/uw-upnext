@@ -16,7 +16,7 @@ import { Switch } from "@/components/ui/switch";
 
 export default function SingleButtonPage() {
   const upcomingRef = React.useRef<HTMLDivElement>(null);
-  const EVENTS_PER_PAGE = 20;
+  const EVENTS_PER_PAGE = 10;
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedCategory, setSelectedCategory] = useState("main");
   const [index, setIndex] = useState("");

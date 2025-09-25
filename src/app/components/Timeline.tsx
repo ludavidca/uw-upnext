@@ -20,6 +20,8 @@ const Timeline: React.FC<TimelineProps> = ({ events, onClick, eventsPerPage = 20
   const [currentPage, setCurrentPage] = useState(1);
   const timelineRef = useRef<HTMLDivElement>(null);
   const totalPages = Math.max(1, Math.ceil(events.length / eventsPerPage));
+  const [inputValue, setInputValue] = useState(currentPage.toString());
+
   useEffect(() => {
     if (scrollOnPageChange && timelineRef.current) {
       const y = timelineRef.current.getBoundingClientRect().top + window.scrollY - scrollOffset;
@@ -29,12 +31,15 @@ const Timeline: React.FC<TimelineProps> = ({ events, onClick, eventsPerPage = 20
 
   // Paginate events
   const paginatedEvents = events.slice((currentPage - 1) * eventsPerPage, currentPage * eventsPerPage);
-  const timelineData = CreateTimeline(paginatedEvents);
+  const timelineData = CreateTimeline(paginatedEvents);  useEffect(() => {
+    setInputValue(currentPage.toString());
+  }, [currentPage]);
 
   return (
-    <div ref={timelineRef} className="sm:container ml-5 sm:ml-20 sm:border-l-4 sm:border-gray-200">
+    <div ref={timelineRef} className="sm:flex flex-col">
+    <div className="flex flex-col ml-5 sm:ml-20 sm:border-l-4 sm:border-gray-200">
       {timelineData.map(([date, eventsForDate], index) => (
-        <div className="transform -translate-x-[3.2%]" key={index}>
+        <div className="transform -translate-x-[0.56%]" key={index}>
           <div>
             <div className="flex items-center">
               <Image
@@ -79,7 +84,10 @@ const Timeline: React.FC<TimelineProps> = ({ events, onClick, eventsPerPage = 20
           </div>
         </div>
       ))}
+      </div>
+      
       {/* Pagination Controls */}
+      <div className="flex flex-col items-center">
       <div className="flex justify-center items-center gap-4 py-4">
         <button
           className="p-2 bg-gray-200 rounded disabled:opacity-50"
@@ -92,17 +100,16 @@ const Timeline: React.FC<TimelineProps> = ({ events, onClick, eventsPerPage = 20
         <span className="text-white flex items-center gap-2">
           Page
           <input
-            type="number"
-            min={1}
-            max={totalPages}
-            value={currentPage}
-            onChange={e => {
-              let val = Number(e.target.value);
+            type="text"
+            value={inputValue}
+            onChange={e => setInputValue(e.target.value)}
+            onBlur={() =>{
+              let val = Number(inputValue);
               if (isNaN(val) || val < 1) val = 1;
               if (val > totalPages) val = totalPages;
-              setCurrentPage(val);
+              setCurrentPage(val); 
             }}
-            className="w-12 px-2 py-1 rounded bg-gray-100 text-black border border-gray-300 focus:outline-none"
+            className="w-12 px-2 py-1 rounded bg-transparent text-white border-2 border-gray-300 focus:outline-none"
             style={{ textAlign: "center" }}
           />
           of {totalPages}
@@ -117,6 +124,8 @@ const Timeline: React.FC<TimelineProps> = ({ events, onClick, eventsPerPage = 20
         </button>
       </div>
     </div>
+        </div>
+
   );
 };
 
