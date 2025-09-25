@@ -131,7 +131,7 @@ export default function CategoryPage({
       </div>
       <div className="ml-[5%] flex-col place-items-start">
         <SectionHeading text={`Upcoming ${name} Events`} />
-        <div className="hidden sm:flex flex-row float-end pr-[5%]">
+        <div className="hidden sm:flex flex-row float-end pr-0 sm:pr-[5%]">
           <Switch
             defaultChecked={false}
             checked={showPast}
@@ -156,7 +156,7 @@ export default function CategoryPage({
               No Events Found
             </p>
           ) : (
-            <div className="overflow-x-hidden w-[120%]">
+            <div className="overflow-x-hidden pr-[5%] w-full">
               <Timeline events={categoryEvents} onClick={fetchEventInfo} />
             </div>
           )}

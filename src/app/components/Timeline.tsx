@@ -37,7 +37,7 @@ const Timeline: React.FC<TimelineProps> = ({ events, onClick, eventsPerPage = 20
 
   return (
     <div ref={timelineRef} className="sm:flex flex-col">
-    <div className="flex flex-col ml-5 sm:ml-20 sm:border-l-4 sm:border-gray-200">
+    <div className="flex flex-col ml-0 sm:ml-20 sm:border-l-4 sm:border-gray-200">
       {timelineData.map(([date, eventsForDate], index) => (
         <div className="transform -translate-x-[0.56%]" key={index}>
           <div>
