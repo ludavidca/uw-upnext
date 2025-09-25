@@ -15,11 +15,14 @@ import { Switch } from "@/components/ui/switch";
 // import { Calendar } from "@/app/components/ui/calendar";
 
 export default function SingleButtonPage() {
+  const upcomingRef = React.useRef<HTMLDivElement>(null);
+  const EVENTS_PER_PAGE = 20;
+  const [currentPage, setCurrentPage] = useState(1);
   const [selectedCategory, setSelectedCategory] = useState("main");
   const [index, setIndex] = useState("");
   const [isLoading, setIsLoading] = useState(true);
-  const [events, setEvents] = useState<events[]>([]);
-  const [nonWusaEvents, setnonWusaEvents] = useState<events[]>([]);
+  const [allEvents, setAllEvents] = useState<events[]>([]); // Raw events data
+  const [events, setEvents] = useState<events[]>([]); // Featured events
   const [upcomingEvents, setUpcomingEvents] = useState<events[]>([]);
   const [isSmallScreen, setIsSmallScreen] = useState(false);
   const [date, setDate] = React.useState<Date | undefined>(new Date());
@@ -34,87 +37,55 @@ export default function SingleButtonPage() {
     const handleResize = () => {
       setIsSmallScreen(window.innerWidth < 640);
     };
-
     handleResize();
-
     window.addEventListener("resize", handleResize);
-  });
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
   
   useEffect(() => {
-    const findUpcomingEvents = async () => {
+    const fetchEvents = async () => {
       try {
-        const res = await fetch(`events.json`);
+        const res = await fetch("events.json");
         const data = await res.json();
-        setUpcomingEvents(data.slice(0, 100));
+        const sortedEvents = [...data].sort((a, b) => b.event_details.start_time - a.event_details.start_time);
+        console.log(sortedEvents);
+        setAllEvents(sortedEvents);
       } catch (err) {
         console.error("Fetch error:", err);
-        // Handle the error here (e.g., show an error message to the user)
       } finally {
         setIsLoading(false);
       }
     };
-
-    findUpcomingEvents();
-
-    const findFeaturedEvents = async () => {
-      try {
-        const res = await fetch(`events.json`);
-        const data = await res.json();
-        for (let i = 0; i < data.length - 1; i++) {
-          for (let j = 0; j < data.length - 1 - i; j++) {
-            if (data[j].likes < data[j + 1].likes) {
-              // Swap the items if the current item has fewer likes than the next item
-              let temp = data[j];
-              data[j] = data[j + 1];
-              data[j + 1] = temp;
-            }
-          }
-        }
-        setEvents(data.slice(0, 100));
-      } catch (err) {
-        console.error("Fetch error:", err);
-        // Handle the error here (e.g., show an error message to the user)
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    findFeaturedEvents();
+    fetchEvents();
   }, []);
 
+  useEffect(() => {
+    if (!allEvents || allEvents.length === 0) return;
+    const sortedEvents = [...allEvents].sort((a, b) => b.likes - a.likes);
+    setEvents(sortedEvents.slice(0, 100));
+  }, [allEvents]);
 
+  useEffect(() => {
+    if (!allEvents || allEvents.length === 0) return;
+    let data = [...allEvents];
+    const unixTimeAtMidnight = Math.floor(new Date().setHours(0, 0, 0, 0) / 1000);
+    if (!filterPastEvents) {
+      data = data.filter((item: events) => item.event_details.start_time > unixTimeAtMidnight);
+    }
+    if (!filterWUSA) {
+      data = data.filter((item: events) => item.account !== "WUSA");
+    }
+    setUpcomingEvents(data);
+    setCurrentPage(1); // Reset to first page on filter change
+  }, [allEvents, filterPastEvents, filterWUSA]);
 
-    useEffect(() => {
-      const fetchAndFilterEvents = async () => {
-        try {
-          const res = await fetch("events.json");
-          let data = await res.json();
-
-          const unixTimeAtMidnight = Math.floor(
-            new Date().setHours(0, 0, 0, 0) / 1000
-          );
-
-          if (!filterPastEvents) {
-            data = data.filter(
-              (item: events) => item.event_details.start_time > unixTimeAtMidnight
-            );
-          }
-
-          if (!filterWUSA) {
-            data = data.filter((item: events) => item.account !== "WUSA");
-          }
-
-          setUpcomingEvents(data.slice(0, 100));
-        } catch (err) {
-          console.error("Fetch error:", err);
-          // Handle the error here (e.g., show an error message to the user)
-        } finally {
-          setIsLoading(false);
-        }
-      };
-
-      fetchAndFilterEvents();
-    }, [filterPastEvents, filterWUSA]);
+  // Scroll to Upcoming Events section on page change
+  useEffect(() => {
+    if (upcomingRef.current) {
+      const y = upcomingRef.current.getBoundingClientRect().top + window.scrollY - 80; // Offset for navbar
+      window.scrollTo({ top: y, behavior: "smooth" });
+    }
+  }, [currentPage]);
 
 
   function getImage(url: string) {
@@ -274,7 +245,7 @@ export default function SingleButtonPage() {
             <Categories onSelectCategory={setSelectedCategory} />
           </div>
 
-          <div className="flex flex-row justify-between items-end w-full">
+          <div className="flex flex-row justify-between items-end w-full" ref={upcomingRef}>
             <SectionHeading text="Upcoming Events" />
             <div className="flex flex-col items-left pr-[5%] gap-y-3">
               <div className="hidden sm:flex flex-row">
@@ -313,7 +284,14 @@ export default function SingleButtonPage() {
               <p className="text-white text-md ml-3">Past Events</p>
             </div>
           </div>
-          <Timeline events={upcomingEvents} onClick={fetchEventInfo} />
+          {/* Timeline with built-in pagination */}
+          <Timeline
+            events={upcomingEvents}
+            onClick={fetchEventInfo}
+            eventsPerPage={EVENTS_PER_PAGE}
+            scrollOnPageChange={true}
+            scrollOffset={80}
+          />
           {/* <Calendar
               mode="single"
               selected={date}
@@ -362,87 +340,3 @@ export default function SingleButtonPage() {
     </div>
   );
 }
-
-  // const findSpecificEvents = async (e: FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault();
-  //   setIsLoading(true);
-  //   try {
-  //     const res = await fetch(`/api/findEvents?index=${index}`);
-  //     if (!res.ok) {
-  //       const errorData = await res.json();
-  //       throw new Error(
-  //         `HTTP error! status: ${res.status}, message: ${errorData.error || "Unknown error"}`
-  //       );
-  //     }
-  //     const data = await res.json();
-  //     console.log("Response data:", data);
-  //     // Handle the successful response here (e.g., update state with the fetched data)
-  //   } catch (err) {
-  //     console.error("Fetch error:", err);
-  //     // Handle the error here (e.g., show an error message to the user)
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // };
-
-  //   useEffect(() => {
-  //     const handleResize = () => {
-  //       setIsSmallScreen(window.innerWidth < 640);
-  //     };
-
-  //     handleResize();
-
-  //     window.addEventListener("resize", handleResize);
-  //   });
-
-    
-
-  //   useEffect(() => {
-  //   const findUpcomingEvents = async () => {
-  //     try {
-  //       const res = await fetch(`/api/upcomingEvents`);
-  //       if (!res.ok) {
-  //         const errorData = await res.json();
-  //         throw new Error(
-  //           `HTTP error! status: ${res.status}, message: ${errorData.error || "Unknown error"}`
-  //         );
-  //       }
-  //       const data = await res.json();
-  //       setUpcomingEvents(data.results);
-  //       console.log(data);
-  //     } catch (err) {
-  //       console.error("Fetch error:", err);
-  //       // Handle the error here (e.g., show an error message to the user)
-  //     } finally {
-  //       setIsLoading(false);
-  //     }
-  //   };
-
-  //   findUpcomingEvents();
-
-  //   const findFeaturedEvents = async () => {
-  //     try {
-  //       const res = await fetch(`/api/featuredEvents`);
-  //       if (!res.ok) {
-  //         const errorData = await res.json();
-  //         throw new Error(
-  //           `HTTP error! status: ${res.status}, message: ${errorData.error || "Unknown error"}`
-  //         );
-  //       }
-  //       const data = await res.json();
-  //       setEvents(data.results);
-  //       console.log(data);
-  //     } catch (err) {
-  //       console.error("Fetch error:", err);
-  //       // Handle the error here (e.g., show an error message to the user)
-  //     } finally {
-  //       setIsLoading(false);
-  //     }
-  //   };
-
-    
-  //   findFeaturedEvents();
-    
-
-  // },
-  // []);

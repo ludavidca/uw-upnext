@@ -2,20 +2,37 @@ import { events } from "./types/eventType";
 import { CreateTimeline } from "./functions/createTimeline";
 import Event from "./Event";
 import { formatUnixTime } from "./functions/gettime";
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import FeaturedEvent from "./FeaturedEvent";
+
 
 interface TimelineProps {
   events: events[];
   onClick: (event: events) => void;
+  eventsPerPage?: number;
+  scrollOnPageChange?: boolean;
+  scrollOffset?: number;
 }
 
-export default function Timeline({ events, onClick }: TimelineProps) {
-  const timelineData = CreateTimeline(events);
+
+const Timeline: React.FC<TimelineProps> = ({ events, onClick, eventsPerPage = 20, scrollOnPageChange = false, scrollOffset = 80 }) => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const timelineRef = useRef<HTMLDivElement>(null);
+  const totalPages = Math.max(1, Math.ceil(events.length / eventsPerPage));
+  useEffect(() => {
+    if (scrollOnPageChange && timelineRef.current) {
+      const y = timelineRef.current.getBoundingClientRect().top + window.scrollY - scrollOffset;
+      window.scrollTo({ top: y, behavior: "smooth" });
+    }
+  }, [currentPage, scrollOnPageChange, scrollOffset]);
+
+  // Paginate events
+  const paginatedEvents = events.slice((currentPage - 1) * eventsPerPage, currentPage * eventsPerPage);
+  const timelineData = CreateTimeline(paginatedEvents);
 
   return (
-    <div className="sm:container ml-5 sm:ml-20 sm:border-l-4 sm:border-white">
+    <div ref={timelineRef} className="sm:container ml-5 sm:ml-20 sm:border-l-4 sm:border-gray-200">
       {timelineData.map(([date, eventsForDate], index) => (
         <div className="transform -translate-x-[3.2%]" key={index}>
           <div>
@@ -32,23 +49,18 @@ export default function Timeline({ events, onClick }: TimelineProps) {
               </p>
             </div>
             <div className="hidden sm:flex flex-col">
-              {eventsForDate
-                .map((event, index) => (
-                  <div
-                    className="w-full"
-                    onClick={() => onClick(event)}
-                    key={index}
-                  >
-                    <Event
-                      title={event.event_details.event_name}
-                      details={formatUnixTime(event.event_details.start_time)}
-                      clubName={event.account}
-                      description={event.event_details.event_description}
-                      imgSource={event.display_photo}
-                      url={event.url}
-                    />
-                  </div>
-                ))}
+              {eventsForDate.map((event, index) => (
+                <div className="w-full" onClick={() => onClick(event)} key={index}>
+                  <Event
+                    title={event.event_details.event_name}
+                    details={formatUnixTime(event.event_details.start_time)}
+                    clubName={event.account}
+                    description={event.event_details.event_description}
+                    imgSource={event.display_photo}
+                    url={event.url}
+                  />
+                </div>
+              ))}
             </div>
             <div className="w-full sm:hidden">
               {eventsForDate.map((event: events, index) => (
@@ -67,6 +79,45 @@ export default function Timeline({ events, onClick }: TimelineProps) {
           </div>
         </div>
       ))}
+      {/* Pagination Controls */}
+      <div className="flex justify-center items-center gap-4 py-4">
+        <button
+          className="p-2 bg-gray-200 rounded disabled:opacity-50"
+          onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+          disabled={currentPage === 1}
+          aria-label="Previous Page"
+        >
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <span className="text-white flex items-center gap-2">
+          Page
+          <input
+            type="number"
+            min={1}
+            max={totalPages}
+            value={currentPage}
+            onChange={e => {
+              let val = Number(e.target.value);
+              if (isNaN(val) || val < 1) val = 1;
+              if (val > totalPages) val = totalPages;
+              setCurrentPage(val);
+            }}
+            className="w-12 px-2 py-1 rounded bg-gray-100 text-black border border-gray-300 focus:outline-none"
+            style={{ textAlign: "center" }}
+          />
+          of {totalPages}
+        </span>
+        <button
+          className="p-2 bg-gray-200 rounded disabled:opacity-50"
+          onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+          disabled={currentPage === totalPages || totalPages === 0}
+          aria-label="Next Page"
+        >
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 6 15 12 9 18"/></svg>
+        </button>
+      </div>
     </div>
   );
-}
+};
+
+export default Timeline;
