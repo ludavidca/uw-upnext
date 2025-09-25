@@ -89,7 +89,7 @@ export default function CategoryPage({
 
   return (
     <div className="flex-row items-center">
-      <div className="flex-col sm:flex sm:flex-row sm:ml-[5%] items-center mt-[2%]">
+      <div className="flex-col sm:flex sm:flex-row ml-[10%] mr-[10%] sm:ml-[5%] items-center mt-[2%]">
         <div className="w-full sm:w-[30%] flex-col space-y-2 my-[5%] sm:my-0">
           <div className="flex items-center space-x-2">
             <Image
@@ -156,7 +156,7 @@ export default function CategoryPage({
               No Events Found
             </p>
           ) : (
-            <div className="overflow-x-hidden pr-[5%] w-full">
+            <div className="overflow-x-hidden sm:pr-[5%] w-full">
               <Timeline events={categoryEvents} onClick={fetchEventInfo} />
             </div>
           )}
