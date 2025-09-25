@@ -100,14 +100,11 @@ if '_id' in wusaDf.columns:
     wusaDf = wusaDf.drop(columns=['_id'])
 
 for index, row in wusaDf.iterrows():
-    # Construct the info string
     info = f'"id": "{int(index)}"|* "account": "{row["account"]}"|* "date": "{row["date"]}"|* "caption": "{row["caption"]}"|*'
     embeddedtext = ',\n'.join(x for x in info.replace('\n','\\n').split('|*')) 
 
-    # Create the document dictionary
     row_dict = {column: row[column] for column in wusaDf.columns.tolist()}
     
-    # Add the embedded field
     row_dict["embedded"] = generate_embedding([embeddedtext], embedding_model_string)
     
     # Remove '_id' if present to let MongoDB generate it
@@ -124,11 +121,9 @@ for index, row in wusaDf.iterrows():
     
     time.sleep(0.5)  # Adjust or remove delay as needed
 
-# Optionally, print all inserted ObjectIds
 print(f"All inserted document IDs: {insertObjectIds}")
 
 
-#Validating if it is an event
 load_dotenv()
 togetherAPI = os.getenv('TOGETHER_API')
 client = Together(api_key=togetherAPI)
@@ -244,14 +239,11 @@ def download_instagram_image(url, folder_path):
             image_response = requests.get(image_url)
             
             if image_response.status_code == 200:
-                # Create the folder if it doesn't exist
                 os.makedirs(folder_path, exist_ok=True)
                 
-                # Generate a filename from the URL
                 filename = os.path.basename(urlparse(image_url).path)
                 file_path = os.path.join(folder_path, filename)
                 
-                # Save the image
                 with open(file_path, 'wb') as file:
                     file.write(image_response.content)
                 
@@ -325,7 +317,6 @@ for index, row in postsDf.iterrows():
 together_api_key = os.getenv('TOGETHER_API')
 
 
-#code for embedding
 embedding_model_string = 'BAAI/bge-large-en-v1.5' # model API string from Together.
 
 def generate_embedding(input_texts: List[str], model_api_string: str) -> List[List[float]]:
@@ -348,37 +339,29 @@ for index, row in postsDf.iterrows():
       print(f"Inserted document ID: {result.inserted_id}")
       time.sleep(1)
 
-#Updating Events.json
 
 def download_future_events_to_json(output_file):
-    # Get current Unix timestamp
     current_timestamp = int(time.time())
 
-    # Connect to MongoDB
     load_dotenv()
     uri = os.getenv('DATABASE_URI')
     client = MongoClient(uri, server_api=ServerApi('1'))
     db = client['Instagram']
     collection = db["Events"]
 
-    # Query for future events
     query = {}
     future_events = list(collection.find(query))
 
-    # Convert ObjectId to string for JSON serialization
     for event in future_events:
         event['_id'] = str(event['_id'])
 
-    # Write to JSON file
     with open(output_file, 'w') as f:
         json.dump(future_events, f, indent=2)
 
-    # Close the MongoDB connection
     client.close()
 
     return future_events
 
-# Usage
 output_file = "../public/events.json"  # Name of the output JSON file
 
 future_events = download_future_events_to_json(output_file)
