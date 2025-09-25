@@ -89,7 +89,7 @@ export default function CategoryPage({
 
   return (
     <div className="flex-row items-center">
-      <div className="flex-col sm:flex sm:flex-row items-center mt-[2%] ml-[10%] mr-[10%] sm:mr-0 space-y-0">
+      <div className="flex-col sm:flex sm:flex-row sm:ml-[5%] items-center mt-[2%]">
         <div className="w-full sm:w-[30%] flex-col space-y-2 my-[5%] sm:my-0">
           <div className="flex items-center space-x-2">
             <Image
@@ -129,7 +129,7 @@ export default function CategoryPage({
           className="w-full sm:w-1/2 ml-0 sm:ml-[15%] "
         />
       </div>
-      <div className="ml-[5%] flex-col place-items-start">
+      <div className=" flex-col place-items-start">
         <SectionHeading text={`Upcoming ${name} Events`} />
         <div className="hidden sm:flex flex-row float-end pr-0 sm:pr-[5%]">
           <Switch
